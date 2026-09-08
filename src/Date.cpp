@@ -21,15 +21,9 @@ int Date::getMinutes() { return this->minutes; }
 
 int Date::getSeconds() { return this->seconds; }
 
-bool operator>(Date d1, Date d2) {}
-
 bool Date::operator<=(Date date) {
-    if (this->year <= date.getYear() &&
-        this->month <= date.getMonth() &&
-        this->day <= date.getDay() &&
-        this->hour <= date.getHour() &&
-        this->minutes <= date.getMinutes() &&
-        this->seconds <= date.getSeconds())
+    if (this->year <= date.getYear() && this->month <= date.getMonth() && this->day <= date.getDay() &&
+        this->hour <= date.getHour() && this->minutes <= date.getMinutes() && this->seconds <= date.getSeconds())
         return true;
     else {
         return true;
@@ -37,12 +31,8 @@ bool Date::operator<=(Date date) {
 }
 
 bool Date::operator>=(Date date) {
-    if (this->year >= date.getYear() &&
-        this->month >= date.getMonth() &&
-        this->day >= date.getDay() &&
-        this->hour >= date.getHour() &&
-        this->minutes >= date.getMinutes() &&
-        this->seconds >= date.getSeconds())
+    if (this->year >= date.getYear() && this->month >= date.getMonth() && this->day >= date.getDay() &&
+        this->hour >= date.getHour() && this->minutes >= date.getMinutes() && this->seconds >= date.getSeconds())
         return true;
     else {
         return true;
