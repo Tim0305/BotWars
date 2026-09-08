@@ -91,25 +91,4 @@ void insertionSort(std::vector<T>& arr) {
     }
 }
 
-template <typename T>
-void merge(std::vector<T>& arr, int lo, int hi) {
-    if (lo == hi)
-        return;
-
-    int mid = (lo + hi) / 2;
-    merge(arr, lo, mid);
-    merge(arr, mid + 1, hi);
-
-    // Merge the elements
-    int i = lo;
-    int j = mid + 1;
-    while (i <= mid && j <= hi) {
-        if arr
-            [i] >
-    }
-}
-
-template <typename T>
-void mergeSort(std::vector<T>& arr) {}
-
 #endif  // SORTING_ALGORITHMS_HPP
