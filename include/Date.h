@@ -28,15 +28,15 @@ private:
 
 public:
     Date(int, Month, int, int, int, int);
-    int getDay();
-    Month getMonth();
-    int getYear();
-    int getHour();
-    int getMinutes();
-    int getSeconds();
-    bool operator>(Date date);
-    bool operator<(Date date);
-    bool operator>=(Date date);
-    bool operator<=(Date date);
-    bool operator==(Date date);
+    int getDay() const;
+    Month getMonth() const;
+    int getYear() const;
+    int getHour() const;
+    int getMinutes() const;
+    int getSeconds() const;
+    bool operator>(const Date& date) const;
+    bool operator<(const Date& date) const;
+    bool operator>=(const Date& date) const;
+    bool operator<=(const Date& date) const;
+    bool operator==(const Date& date) const;
 };
