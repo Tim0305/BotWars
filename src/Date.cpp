@@ -26,7 +26,7 @@ bool Date::operator<=(Date date) {
         this->hour <= date.getHour() && this->minutes <= date.getMinutes() && this->seconds <= date.getSeconds())
         return true;
     else {
-        return true;
+        return false;
     }
 }
 
@@ -35,6 +35,6 @@ bool Date::operator>=(Date date) {
         this->hour >= date.getHour() && this->minutes >= date.getMinutes() && this->seconds >= date.getSeconds())
         return true;
     else {
-        return true;
+        return false;
     }
 }
