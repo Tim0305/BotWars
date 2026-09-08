@@ -24,18 +24,26 @@ int Date::getSeconds() { return this->seconds; }
 bool operator>(Date d1, Date d2) {}
 
 bool Date::operator<=(Date date) {
-    if (this->year > date.getYear())
-        return false;
-    else if (this->month > date.getMonth())
-        return false;
-    else if (this->day > date.getDay())
-        return false;
-    else if (this->hour > date.getHour())
-        return false;
-    else if (this->minutes > date.getMinutes())
-        return false;
-    else if (this->seconds > date.getSeconds())
-        return false;
+    if (this->year <= date.getYear() &&
+        this->month <= date.getMonth() &&
+        this->day <= date.getDay() &&
+        this->hour <= date.getHour() &&
+        this->minutes <= date.getMinutes() &&
+        this->seconds <= date.getSeconds())
+        return true;
+    else {
+        return true;
+    }
+}
+
+bool Date::operator>=(Date date) {
+    if (this->year >= date.getYear() &&
+        this->month >= date.getMonth() &&
+        this->day >= date.getDay() &&
+        this->hour >= date.getHour() &&
+        this->minutes >= date.getMinutes() &&
+        this->seconds >= date.getSeconds())
+        return true;
     else {
         return true;
     }
