@@ -32,7 +32,7 @@ bool Date::operator<=(Date date) {
         this->seconds <= date.getSeconds())
         return true;
     else {
-        return true;
+        return false;
     }
 }
 
@@ -45,6 +45,6 @@ bool Date::operator>=(Date date) {
         this->seconds >= date.getSeconds())
         return true;
     else {
-        return true;
+        return false;
     }
 }
