@@ -34,9 +34,9 @@ public:
     int getHour();
     int getMinutes();
     int getSeconds();
-    bool operator>(Date Date);
-    bool operator<(Date Date);
-    bool operator>=(Date Date);
-    bool operator<=(Date Date);
-    bool operator==(Date Date);
+    bool operator>(Date date);
+    bool operator<(Date date);
+    bool operator>=(Date date);
+    bool operator<=(Date date);
+    bool operator==(Date date);
 };
