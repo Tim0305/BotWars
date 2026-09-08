@@ -31,6 +31,9 @@ public:
     int getDay();
     Month getMonth();
     int getYear();
+    int getHour();
+    int getMinutes();
+    int getSeconds();
     bool operator>(Date Date);
     bool operator<(Date Date);
     bool operator>=(Date Date);
