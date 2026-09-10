@@ -6,6 +6,21 @@
 
 using namespace std;
 
+/**
+ * @file Log.h
+ * @brief Class that represents a system log entry containing a date, IP address, domain, and message.
+ * @author Team 1
+ * @date 2026-09-10
+ */
+
+ /**
+ * @class Log
+ * @brief Represents an individual log record.
+ * 
+ * @property Log timestamp, source IP, domain, and associated error or status message.
+ * Provides comparison operators for sorting based on its date attribute.
+ */
+
 class Log {
 private:
     Date date;

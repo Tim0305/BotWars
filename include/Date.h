@@ -3,6 +3,18 @@
 #include <string>
 using namespace std;
 
+/**
+ * @file Date.h
+ * @brief Header file defining the Date class, Month enum, and date utility functions.
+ * @author Team 1
+ * @date 2026-09-10
+ */
+
+/**
+ * @enum Month
+ * @brief Represents the months of the year mapped to their numerical values (1-12).
+ */
+
 enum Month {
     Jan = 1,
     Feb = 2,
@@ -21,6 +33,12 @@ enum Month {
 
 string monthToString(const Month&);
 Month stringToMonth(const string&);
+
+/**
+ * @class Date
+ * @brief Class that handles date and time operations, validation, comparison, and string parsing.
+ * @property Represents a date with day, month, year, hour, minutes, and seconds.
+ */
 
 class Date {
 private:
