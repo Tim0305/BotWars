@@ -43,7 +43,6 @@ Log parseLog(const string& log) {
 }
 
 int main() {
-
     // Obtain start and end date
     string startDateStr, endDateStr;
 
@@ -63,9 +62,9 @@ int main() {
     vector<Log> logs;
     string line;
 
-    //while (getline(file, line)) {
-    //    logs.emplace_back(parseLog(line));
-    //}
+    // while (getline(file, line)) {
+    //     logs.emplace_back(parseLog(line));
+    // }
 
     // Sort the vector
     insertionSort(logs);

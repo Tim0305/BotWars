@@ -62,7 +62,6 @@ Month stringToMonth(const string& str) {
     return Month::Unknown;  // Valor por defecto si el string no coincide
 }
 
-
 Date::Date(int day, Month month, int year, int hour, int minutes, int seconds) {
     this->day = day;
     this->month = month;
@@ -71,10 +70,11 @@ Date::Date(int day, Month month, int year, int hour, int minutes, int seconds) {
     this->minutes = minutes;
     this->seconds = seconds;
 
-    if(!isValid()) {
+    if (!isValid()) {
         throw std::invalid_argument("Invalid date");
     }
 }
+
 bool Date::isValid() const {
     int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -82,16 +82,19 @@ bool Date::isValid() const {
         daysInMonth[1] = 29;
     }
 
-    if (month < Month::Jan || month > Month::Dec) return false;
-    if (day < 1 || day > daysInMonth[month - 1]) return false;
-    if (hour < 0 || hour > 23) return false;
-    if (minutes < 0 || minutes > 59) return false;
-    if (seconds < 0 || seconds > 59) return false;
+    if (month < Month::Jan || month > Month::Dec)
+        return false;
+    if (day < 1 || day > daysInMonth[month - 1])
+        return false;
+    if (hour < 0 || hour > 23)
+        return false;
+    if (minutes < 0 || minutes > 59)
+        return false;
+    if (seconds < 0 || seconds > 59)
+        return false;
 
     return true;
 }
-
-
 
 int Date::getDay() const { return this->day; }
 
