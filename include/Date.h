@@ -20,6 +20,7 @@ enum Month {
 };
 
 string monthToString(const Month&);
+Month stringToMonth(const string&);
 
 class Date {
 private:
