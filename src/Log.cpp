@@ -115,7 +115,7 @@ bool Log::operator<=(const Log& log2) const { return this->date <= log2.date; }
  */
 string Log::toString() const {
     stringstream ss;
-    ss << date.toString();
+    ss << date.toString() << " ";
     ss << ip << " ";
     ss << domain << " ";
     ss << message;
@@ -138,7 +138,7 @@ Log Log::fromString(const string& strLog) {
 
     // Split each part using spaces
     stringstream input(strLog);
-    input >> month >> day >> time >> domain;
+    input >> month >> day >> time >> ip >> domain;
 
     // Get all the message
     getline(input >> std::ws, message);
