@@ -1,8 +1,8 @@
 /**
  * @file SearchAlgorithms.hpp
- * @author A01648827
+ * @author Team 1
  * @brief Library that defines sequential and binary search algorithms
- * @date 2026-09-05
+ * @date 2026-09-10
  */
 
 #ifndef SEARCH_ALGORITHMS_HPP

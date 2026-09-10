@@ -11,7 +11,7 @@ enum Month {
     May = 5,
     Jun = 6,
     Jul = 7,
-    Ago = 8,
+    Aug = 8,
     Sep = 9,
     Oct = 10,
     Nov = 11,
@@ -20,6 +20,7 @@ enum Month {
 };
 
 string monthToString(const Month&);
+Month stringToMonth(const string&);
 
 class Date {
 private:
@@ -45,5 +46,6 @@ public:
     bool operator>=(const Date& date) const;
     bool operator<=(const Date& date) const;
     bool operator==(const Date& date) const;
-    string toString();
+    string toString() const;
+    static Date fromString(const string& strDate);
 };

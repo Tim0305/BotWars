@@ -1,6 +1,7 @@
 #include "Date.h"
 
 #include <sstream>
+#include <stdexcept>
 
 string monthToString(const Month& month) {
     switch (month) {
@@ -59,9 +60,9 @@ Month stringToMonth(const string& str) {
     if (str == "Dec")
         return Month::Dec;
 
-    return Month::Unknown;  // Valor por defecto si el string no coincide
+    // Default value if the string has no coincidence
+    return Month::Unknown;
 }
-
 
 Date::Date(int day, Month month, int year, int hour, int minutes, int seconds) {
     this->day = day;
@@ -71,10 +72,11 @@ Date::Date(int day, Month month, int year, int hour, int minutes, int seconds) {
     this->minutes = minutes;
     this->seconds = seconds;
 
-    if(!isValid()) {
+    if (!isValid()) {
         throw std::invalid_argument("Invalid date");
     }
 }
+
 bool Date::isValid() const {
     int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -82,16 +84,19 @@ bool Date::isValid() const {
         daysInMonth[1] = 29;
     }
 
-    if (month < Month::Jan || month > Month::Dec) return false;
-    if (day < 1 || day > daysInMonth[month - 1]) return false;
-    if (hour < 0 || hour > 23) return false;
-    if (minutes < 0 || minutes > 59) return false;
-    if (seconds < 0 || seconds > 59) return false;
+    if (month < Month::Jan || month > Month::Dec)
+        return false;
+    if (day < 1 || day > daysInMonth[month - 1])
+        return false;
+    if (hour < 0 || hour > 23)
+        return false;
+    if (minutes < 0 || minutes > 59)
+        return false;
+    if (seconds < 0 || seconds > 59)
+        return false;
 
     return true;
 }
-
-
 
 int Date::getDay() const { return this->day; }
 
@@ -127,7 +132,7 @@ bool Date::operator<=(const Date& date) const { return !(date < *this); }
 
 bool Date::operator>=(const Date& date) const { return !(*this < date); }
 
-string Date::toString() {
+string Date::toString() const {
     stringstream ss;
     ss << monthToString(month) << " ";
     ss << day << " ";
@@ -135,4 +140,20 @@ string Date::toString() {
     ss << minutes << ":";
     ss << seconds;
     return ss.str();
+}
+
+Date Date::fromString(const string& strDate) {
+    string month, time;
+    int year = 0, day = 0, hour = 0, minutes = 0, seconds = 0;
+    char colon = ':';
+
+    // Split the date using spaces
+    stringstream input(strDate);
+    input >> month >> day >> year >> time;
+
+    // Split the time using :
+    stringstream timeInput(time);
+    timeInput >> hour >> colon >> minutes >> colon >> seconds;
+
+    return Date(day, stringToMonth(month), year, hour, minutes, seconds);
 }

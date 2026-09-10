@@ -1,12 +1,12 @@
 /**
  * @file SortingAlgorithms.hpp
- * @author A01648827
+ * @author Team 1
  * @brief Library that defines different algorithms for sorting values
- * @date 2026-09-05
+ * @date 2026-09-10
  */
 
 #ifndef SORTING_ALGORITHMS_HPP
-#define SORTING_ALTORITHMS_HPP
+#define SORTING_ALGORITHMS_HPP
 
 #include <vector>
 
@@ -94,14 +94,13 @@ void insertionSort(std::vector<T>& arr) {
 /**
  * @brief Helper function for QuickSort that partitions the vector around a pivot.
  */
-
 template <typename T>
 int partition(std::vector<T>& arr, int low, int high) {
     T pivot = high;
     int i = low - 1;
 
     for (int j = low; j < high; j++) {
-        if(arr[j] < pivot) {
+        if (arr[j] < pivot) {
             i++;
             std::swap(arr[i], arr[j]);
         }
@@ -113,7 +112,6 @@ int partition(std::vector<T>& arr, int low, int high) {
 /**
  * @brief Helper function that handles recursive QuickSort calls.
  */
-
 template <typename T>
 void quickSortHelper(std::vector<T>& arr, int low, int high) {
     if (low < high) {
@@ -133,10 +131,9 @@ void quickSortHelper(std::vector<T>& arr, int low, int high) {
  * @pre The vector<T> must contain the n values
  * @post The vector<T> will contain the data already sorted
  */
-
 template <typename T>
 void quickSort(std::vector<T>& arr) {
-    if (!arr.empty()){
+    if (!arr.empty()) {
         quickSortHelper(arr, 0, static_cast<int>(arr.size()) - 1);
     }
 }
