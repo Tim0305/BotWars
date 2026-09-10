@@ -91,4 +91,54 @@ void insertionSort(std::vector<T>& arr) {
     }
 }
 
+/**
+ * @brief Helper function for QuickSort that partitions the vector around a pivot.
+ */
+
+template <typename T>
+int partition(std::vector<T>& arr, int low, int high) {
+    T pivot = high;
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if(arr[j] < pivot) {
+            i++;
+            std::swap(arr[i], arr[j]);
+        }
+    }
+    std::swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+/**
+ * @brief Helper function that handles recursive QuickSort calls.
+ */
+
+template <typename T>
+void quickSortHelper(std::vector<T>& arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSortHelper(arr, low, pi - 1);
+        quickSortHelper(arr, pi + 1, high);
+    }
+}
+
+/**
+ * @brief Sorts the data in ascending order using the Quick sort method.
+ * Complexity: Average O(n log n), Worst Case O(n^2)
+ *
+ * @tparam T any comparable data type
+ * @param arr A vector<T> with the n values to sort
+ *
+ * @pre The vector<T> must contain the n values
+ * @post The vector<T> will contain the data already sorted
+ */
+
+template <typename T>
+void quickSort(std::vector<T>& arr) {
+    if (!arr.empty()){
+        quickSortHelper(arr, 0, static_cast<int>(arr.size()) - 1);
+    }
+}
+
 #endif  // SORTING_ALGORITHMS_HPP
