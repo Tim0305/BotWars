@@ -24,4 +24,5 @@ public:
     bool operator==(Log);
     bool operator>=(Log);
     bool operator<=(Log);
+    string toString();
 };

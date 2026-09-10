@@ -12,11 +12,6 @@
 using namespace std;
 
 int main() {
-    const int year = 0;
-    const string months[] = {
-        "", "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-    };
     ifstream file("bitacora.txt");
     vector<Log> logs;
     string line;
@@ -24,10 +19,13 @@ int main() {
     while (getline(file, line)) {
         string month, time, ip, domain, message;
         int day, hour, minute, second;
-        char colon;
+        char colon = ':';
+
+        // Split the log using spaces
         stringstream input(line);
         input >> month >> day >> time >> ip >> domain;
-        getline(input, message);
+
+        // Split the time
         stringstream timeInput(time);
         timeInput >> hour >> colon >> minute >> colon >> second;
 

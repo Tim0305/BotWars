@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+using namespace std;
 
 enum Month {
     Jan = 1,
@@ -14,8 +15,11 @@ enum Month {
     Sep = 9,
     Oct = 10,
     Nov = 11,
-    Dec = 12
+    Dec = 12,
+    Unknown = 0
 };
+
+string monthToString(const Month&);
 
 class Date {
 private:
@@ -39,4 +43,5 @@ public:
     bool operator>=(const Date& date) const;
     bool operator<=(const Date& date) const;
     bool operator==(const Date& date) const;
+    string toString();
 };
