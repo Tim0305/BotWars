@@ -12,6 +12,21 @@
 using namespace std;
 
 int main() {
+    const int year = 2026;
+
+    // Obtain start and end date
+    int startDay, startMonth, endDay, endMonth;
+    char dash;
+
+    cout << "Enter the start date in DD-MM format: ";
+    cin >> startDay >> dash >> startMonth;
+    cout << "Enter the end date in DD-MM format: ";
+    cin >> endDay >> dash >> endMonth;
+
+    Date start(startDay, static_cast<Month>(startMonth), year, 0, 0, 0);
+    Date end(endDay, static_cast<Month>(endMonth), year, 23, 59, 59);
+
+    // Read the file
     ifstream file("bitacora.txt");
     vector<Log> logs;
     string line;
@@ -25,7 +40,7 @@ int main() {
         stringstream input(line);
         input >> month >> day >> time >> ip >> domain;
 
-        // Split the time
+        // Split the time using :
         stringstream timeInput(time);
         timeInput >> hour >> colon >> minute >> colon >> second;
 
@@ -37,15 +52,4 @@ int main() {
     insertionSort(logs);
 
     ofstream sortedFile("bitacora_ordenada.txt");
-
-    int startDay, startMonth, endDay, endMonth;
-    char dash;
-
-    cout << "Enter the start date in DD-MM format: ";
-    cin >> startDay >> dash >> startMonth;
-    cout << "Enter the end date in DD-MM format: ";
-    cin >> endDay >> dash >> endMonth;
-
-    Date start(startDay, static_cast<Month>(startMonth), year, 0, 0, 0);
-    Date end(endDay, static_cast<Month>(endMonth), year, 23, 59, 59);
 }
