@@ -11,7 +11,7 @@ enum Month {
     May = 5,
     Jun = 6,
     Jul = 7,
-    Aug = 8,
+    Ago = 8,
     Sep = 9,
     Oct = 10,
     Nov = 11,
@@ -20,7 +20,6 @@ enum Month {
 };
 
 string monthToString(const Month&);
-Month stringToMonth(const string&);
 
 class Date {
 private:
@@ -30,6 +29,8 @@ private:
     int hour;
     int minutes;
     int seconds;
+
+    bool isValid() const;
 
 public:
     Date(int, Month, int, int, int, int);
