@@ -90,6 +90,18 @@ Month stringToMonth(const string& str) {
 }
 
 /**
+ * @brief Construct a new Date object using the default parameter
+ *
+ */
+Date::Date() {
+    this->day = 0;
+    this->month = Month::Unknown;
+    this->hour = 0;
+    this->minutes = 0;
+    this->seconds = 0;
+}
+
+/**
  * @brief Parameterized constructor for the Date class.
  *
  * @param day Day of the month.

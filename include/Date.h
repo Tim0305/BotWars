@@ -53,6 +53,7 @@ private:
     bool isValid() const;
 
 public:
+    Date();
     Date(int, Month, int, int, int);
     int getDay() const;
     Month getMonth() const;

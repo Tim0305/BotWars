@@ -49,13 +49,14 @@ int main() {
     cout << "Enter the end date and time (Month Day HH:MM:SS format): ";
     getline(cin, endDateStr);
 
-    Date startDate(1, Jan, 0, 0, 0, 0);
-    Date endDate(1, Jan, 0, 0, 0, 0);
+    Date startDate;
+    Date endDate;
+
     try {
         startDate = Date::fromString(startDateStr);
         endDate = Date::fromString(endDateStr);
     } catch (const invalid_argument& error) {
-        cerr << "Error: invalid date: " << error.what() << endl;
+        cerr << "Error: " << error.what() << endl;
         return 1;
     }
 
