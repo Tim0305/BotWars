@@ -2,23 +2,23 @@
 
 #include <sstream>
 
-Date Log::getDate() { return this->date; }
+Date Log::getDate() const { return this->date; }
 
-string Log::getIp() { return this->ip; }
+string Log::getIp() const { return this->ip; }
 
-string Log::getDomain() { return this->domain; }
+string Log::getDomain() const { return this->domain; }
 
-string Log::getMessage() { return this->message; }
+string Log::getMessage() const { return this->message; }
 
-bool Log::operator<(Log log2) { return this->date < log2.date; }
+bool Log::operator<(const Log& log2) const { return this->date < log2.date; }
 
-bool Log::operator>(Log log2) { return this->date > log2.date; }
+bool Log::operator>(const Log& log2) const { return this->date > log2.date; }
 
-bool Log::operator==(Log log2) { return this->date == log2.date; }
+bool Log::operator==(const Log& log2) const { return this->date == log2.date; }
 
-bool Log::operator>=(Log log2) { return this->date >= log2.date; }
+bool Log::operator>=(const Log& log2) const { return this->date >= log2.date; }
 
-bool Log::operator<=(Log log2) { return this->date <= log2.date; }
+bool Log::operator<=(const Log& log2) const { return this->date <= log2.date; }
 
 string Log::toString() {
     stringstream ss;
