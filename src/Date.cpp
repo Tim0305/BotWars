@@ -91,7 +91,6 @@ Month stringToMonth(const string& str) {
 
 /**
  * @brief Construct a new Date object using the default parameter
- *
  */
 Date::Date() {
     this->day = 0;
