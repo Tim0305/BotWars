@@ -1,5 +1,4 @@
 #include "Date.h"
-
 #include <sstream>
 
 string monthToString(const Month& month) {

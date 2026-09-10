@@ -31,6 +31,8 @@ private:
     int minutes;
     int seconds;
 
+    bool isValid() const;
+
 public:
     Date(int, Month, int, int, int, int);
     int getDay() const;
