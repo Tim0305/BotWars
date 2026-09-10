@@ -38,7 +38,6 @@ Month stringToMonth(const string&);
  *
  * @property day An integer that represents the day of the date
  * @property month Month type that represents the month of the date
- * @property year An integer that represents the year of the date
  * @property hour An integer that represents the hour of the date
  * @property minutes An integer that represents the minutes of the hour
  * @property seconds An integer that represents the seconds of the hour
@@ -47,7 +46,6 @@ class Date {
 private:
     int day;
     Month month;
-    int year;
     int hour;
     int minutes;
     int seconds;
@@ -55,10 +53,9 @@ private:
     bool isValid() const;
 
 public:
-    Date(int, Month, int, int, int, int);
+    Date(int, Month, int, int, int);
     int getDay() const;
     Month getMonth() const;
-    int getYear() const;
     int getHour() const;
     int getMinutes() const;
     int getSeconds() const;

@@ -53,10 +53,10 @@ int main() {
     // Create an output file
     ofstream sortedFile("bitacora_ordenada.txt");
     if (sortedFile.is_open()) {
-        cout << "True" << endl;
         for (const Log& log : logs) {
             string logInfo = log.toString();
             Date logDate = log.getDate();
+
             sortedFile << logInfo << '\n';
 
             // Filter the logs

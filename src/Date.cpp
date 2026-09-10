@@ -94,7 +94,6 @@ Month stringToMonth(const string& str) {
  *
  * @param day Day of the month.
  * @param month Month enum value.
- * @param year Year value.
  * @param hour Hour value (0-23).
  * @param minutes Minutes value (0-59).
  * @param seconds Seconds value (0-59).
@@ -102,10 +101,9 @@ Month stringToMonth(const string& str) {
  * @pre Input values must form a valid date and time combination.
  * @post A new Date instance is initialized with the specified values.
  */
-Date::Date(int day, Month month, int year, int hour, int minutes, int seconds) {
+Date::Date(int day, Month month, int hour, int minutes, int seconds) {
     this->day = day;
     this->month = month;
-    this->year = year;
     this->hour = hour;
     this->minutes = minutes;
     this->seconds = seconds;
@@ -119,18 +117,13 @@ Date::Date(int day, Month month, int year, int hour, int minutes, int seconds) {
 /**
  * @brief Helper function that validates if the date and time attributes are within correct bounds.
  *
- * @pre Internal attributes (day, month, year, hour, minutes, seconds) must be set.
- * @post Evaluates logical constraints for days per month, leap years, and time ranges.
+ * @pre Internal attributes (day, month, hour, minutes, seconds) must be set.
+ * @post Evaluates logical constraints for days per month, and time ranges.
  * @return true If the date and time combination is valid.
  * @return false Otherwise.
  */
 bool Date::isValid() const {
     int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-    // Leap-year case
-    if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
-        daysInMonth[1] = 29;
-    }
 
     if (month < Month::Jan || month > Month::Dec)
         return false;
@@ -163,15 +156,6 @@ int Date::getDay() const { return this->day; }
  * @return Month The month of the year.
  */
 Month Date::getMonth() const { return this->month; }
-
-/**
- * @brief Gets the year of the date.
- *
- * @pre The Date instance must be initialized.
- * @post Returns the year value.
- * @return int The year value.
- */
-int Date::getYear() const { return this->year; }
 
 /**
  * @brief Gets the hour component of the time.
@@ -211,8 +195,6 @@ int Date::getSeconds() const { return this->seconds; }
  * @return false Otherwise.
  */
 bool Date::operator<(const Date& date) const {
-    if (year != date.year)
-        return year < date.year;
     if (month != date.month)
         return month < date.month;
     if (day != date.day)
@@ -298,7 +280,7 @@ string Date::toString() const {
  */
 Date Date::fromString(const string& strDate) {
     string month, time;
-    int year = 0, day = 0, hour = 0, minutes = 0, seconds = 0;
+    int day = 0, hour = 0, minutes = 0, seconds = 0;
     char colon = ':';
 
     // Split the date using spaces
@@ -309,5 +291,5 @@ Date Date::fromString(const string& strDate) {
     stringstream timeInput(time);
     timeInput >> hour >> colon >> minutes >> colon >> seconds;
 
-    return Date(day, stringToMonth(month), year, hour, minutes, seconds);
+    return Date(day, stringToMonth(month), hour, minutes, seconds);
 }
