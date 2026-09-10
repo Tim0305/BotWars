@@ -1,3 +1,10 @@
+/**
+ * @file main.cpp
+ * @author Team 1
+ * @brief Main file that executes all the filtering and sorting methods to sort the "bitacora.txt" file
+ * @date 2026-09-10
+ */
+
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -11,6 +18,11 @@
 
 using namespace std;
 
+/**
+ * @brief main function that sorts and filters the logs in "bitacora.txt" file
+ *
+ * @return int
+ */
 int main() {
     // Obtain start and end date
     string startDateStr;
@@ -30,6 +42,7 @@ int main() {
 
     while (getline(file, line)) {
         Log log = Log::fromString(line);
+        // Filter the logs
         if (log.getDate() >= startDate && log.getDate() <= endDate)
             logs.push_back(log);
     }
@@ -45,5 +58,6 @@ int main() {
         }
         sortedFile.close();
     }
+
     return 0;
 }

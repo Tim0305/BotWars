@@ -104,7 +104,6 @@ void insertionSort(std::vector<T>& arr) {
  * @post Elements smaller than the pivot are placed to its left, and larger elements to its right.
  * @return int The final index position of the pivot element.
  */
-
 template <typename T>
 int partition(std::vector<T>& arr, int low, int high) {
     T pivot = high;
@@ -133,7 +132,6 @@ int partition(std::vector<T>& arr, int low, int high) {
  * @post The section arr[low...high] will be sorted in ascending order.
  * @return void
  */
-
 template <typename T>
 void quickSortHelper(std::vector<T>& arr, int low, int high) {
     if (low < high) {
@@ -154,14 +152,12 @@ void quickSortHelper(std::vector<T>& arr, int low, int high) {
  * @post The vector<T> will be sorted in non-decreasing order in-place.
  * @return void
  */
-
 template <typename T>
 void quickSort(std::vector<T>& arr) {
     if (!arr.empty()) {
         quickSortHelper(arr, 0, static_cast<int>(arr.size()) - 1);
     }
 }
-
 
 /**
  * @brief Helper function for MergeSort that merges two sorted contiguous subarrays into one.
@@ -179,7 +175,6 @@ void quickSort(std::vector<T>& arr) {
  * @post The section arr[left...right] is merged and fully sorted.
  * @return void
  */
-
 template <typename T>
 void merge(std::vector<T>& arr, int left, int mid, int right) {
     int n1 = mid - left + 1;
@@ -188,14 +183,12 @@ void merge(std::vector<T>& arr, int left, int mid, int right) {
     std::vector<T> L(n1);
     std::vector<T> R(n2);
 
-    for (int i = 0; i < n1; i++)
-        L[i] = arr[left + i];
-    for (int j = 0; j < n2; j++)
-        R[j] = arr[mid + 1 + j];
+    for (int i = 0; i < n1; i++) L[i] = arr[left + i];
+    for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
 
-    int i = 0;    
-    int j = 0;    
-    int k = left; 
+    int i = 0;
+    int j = 0;
+    int k = left;
 
     while (i < n1 && j < n2) {
         if (L[i] <= R[j]) {
@@ -234,7 +227,6 @@ void merge(std::vector<T>& arr, int left, int mid, int right) {
  * @post The section arr[left...right] will be sorted in ascending order.
  * @return void
  */
-
 template <typename T>
 void mergeSortHelper(std::vector<T>& arr, int left, int right) {
     if (left < right) {
@@ -258,14 +250,11 @@ void mergeSortHelper(std::vector<T>& arr, int left, int right) {
  * @post The vector<T> will be sorted in non-decreasing order in-place.
  * @return void
  */
-
 template <typename T>
 void mergeSort(std::vector<T>& arr) {
     if (!arr.empty()) {
         mergeSortHelper(arr, 0, static_cast<int>(arr.size()) - 1);
     }
 }
-
-
 
 #endif  // SORTING_ALGORITHMS_HPP

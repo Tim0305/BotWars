@@ -1,20 +1,18 @@
-#pragma once
-
-#include <string>
-using namespace std;
-
 /**
  * @file Date.h
  * @brief Header file defining the Date class, Month enum, and date utility functions.
  * @author Team 1
  * @date 2026-09-10
  */
+#pragma once
+
+#include <string>
+using namespace std;
 
 /**
  * @enum Month
  * @brief Represents the months of the year mapped to their numerical values (1-12).
  */
-
 enum Month {
     Jan = 1,
     Feb = 2,
@@ -37,9 +35,14 @@ Month stringToMonth(const string&);
 /**
  * @class Date
  * @brief Class that handles date and time operations, validation, comparison, and string parsing.
- * @property Represents a date with day, month, year, hour, minutes, and seconds.
+ *
+ * @property day An integer that represents the day of the date
+ * @property month Month type that represents the month of the date
+ * @property year An integer that represents the year of the date
+ * @property hour An integer that represents the hour of the date
+ * @property minutes An integer that represents the minutes of the hour
+ * @property seconds An integer that represents the seconds of the hour
  */
-
 class Date {
 private:
     int day;
