@@ -132,7 +132,7 @@ bool Date::operator<=(const Date& date) const { return !(date < *this); }
 
 bool Date::operator>=(const Date& date) const { return !(*this < date); }
 
-string Date::toString() {
+string Date::toString() const {
     stringstream ss;
     ss << monthToString(month) << " ";
     ss << day << " ";

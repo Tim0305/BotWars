@@ -22,7 +22,7 @@ bool Log::operator>=(const Log& log2) const { return this->date >= log2.date; }
 
 bool Log::operator<=(const Log& log2) const { return this->date <= log2.date; }
 
-string Log::toString() {
+string Log::toString() const {
     stringstream ss;
     ss << date.toString() << " ";
     ss << ip << " ";

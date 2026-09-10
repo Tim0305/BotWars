@@ -28,13 +28,22 @@ int main() {
     vector<Log> logs;
     string line;
 
-    // while (getline(file, line)) {
-    //     logs.emplace_back(parseLog(line));
-    // }
+    while (getline(file, line)) {
+        Log log = Log::fromString(line);
+        if (log.getDate() >= startDate && log.getDate() <= endDate)
+            logs.push_back(log);
+    }
 
     // Sort the vector
     insertionSort(logs);
 
     // Create an output file
     ofstream sortedFile("bitacora_ordenada.txt");
+    if (sortedFile.is_open()) {
+        for (const Log& log : logs) {
+            sortedFile << log.toString() << '\n';
+        }
+        sortedFile.close();
+    }
+    return 0;
 }

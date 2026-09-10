@@ -24,6 +24,6 @@ public:
     bool operator==(const Log& log) const;
     bool operator>=(const Log& log) const;
     bool operator<=(const Log& log) const;
-    string toString();
+    string toString() const;
     static Log fromString(const string& strLog);
 };
