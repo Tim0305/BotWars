@@ -47,4 +47,5 @@ public:
     bool operator<=(const Date& date) const;
     bool operator==(const Date& date) const;
     string toString();
+    static Date fromString(const string& strDate);
 };

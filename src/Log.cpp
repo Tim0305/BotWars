@@ -2,6 +2,8 @@
 
 #include <sstream>
 
+#include "Date.h"
+
 Date Log::getDate() const { return this->date; }
 
 string Log::getIp() const { return this->ip; }
@@ -27,4 +29,20 @@ string Log::toString() {
     ss << domain << " ";
     ss << message;
     return ss.str();
+}
+
+Log Log::fromString(const string& strLog) {
+    string month, time, ip, domain, message;
+    int day = 0;
+
+    // Split each part using spaces
+    stringstream input(strLog);
+    input >> month >> day >> time >> domain;
+    getline(input >> std::ws, message);
+
+    // Transform the date using the format Month Day Year HH:MM:SS
+    stringstream date;
+    date << month << " " << day << " " << 2026 << " " << time;
+
+    return Log(Date::fromString(date.str()), ip, domain, message);
 }

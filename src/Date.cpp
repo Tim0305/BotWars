@@ -141,3 +141,19 @@ string Date::toString() {
     ss << seconds;
     return ss.str();
 }
+
+Date Date::fromString(const string& strDate) {
+    string month, time;
+    int year = 0, day = 0, hour = 0, minutes = 0, seconds = 0;
+    char colon = ':';
+
+    // Split the date using spaces
+    stringstream input(strDate);
+    input >> month >> day >> year >> time;
+
+    // Split the time using :
+    stringstream timeInput(time);
+    timeInput >> hour >> colon >> minutes >> colon >> seconds;
+
+    return Date(day, stringToMonth(month), year, hour, minutes, seconds);
+}
