@@ -14,7 +14,7 @@ private:
     string message;
 
 public:
-    Log(Date date, string ip, string domain, string message) : date(date), ip(ip), domain(domain) {};
+    Log(Date date, string ip, string domain, string message) : date(date), ip(ip), domain(domain), message(message) {};
     Date getDate() const;
     string getIp() const;
     string getDomain() const;
