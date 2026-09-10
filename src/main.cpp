@@ -15,16 +15,17 @@ int main() {
     const int year = 2026;
 
     // Obtain start and end date
-    int startDay, startMonth, endDay, endMonth;
-    char dash;
+    int startDay, startMonth, startHour, startMinute, startSecond;
+    int endDay, endMonth, endHour, endMinute, endSecond;
+    char dash, colon;
 
-    cout << "Enter the start date in DD-MM format: ";
-    cin >> startDay >> dash >> startMonth;
-    cout << "Enter the end date in DD-MM format: ";
-    cin >> endDay >> dash >> endMonth;
+    cout << "Enter the start date and time in DD-MM HH:MM:SS format: ";
+    cin >> startDay >> dash >> startMonth >> startHour >> colon >> startMinute >> colon >> startSecond;
+    cout << "Enter the end date and time in DD-MM HH:MM:SS format: ";
+    cin >> endDay >> dash >> endMonth >> endHour >> colon >> endMinute >> colon >> endSecond;
 
-    Date start(startDay, static_cast<Month>(startMonth), year, 0, 0, 0);
-    Date end(endDay, static_cast<Month>(endMonth), year, 23, 59, 59);
+    Date start(startDay, static_cast<Month>(startMonth), year, startHour, startMinute, startSecond);
+    Date end(endDay, static_cast<Month>(endMonth), year, endHour, endMinute, endSecond);
 
     // Read the file
     ifstream file("bitacora.txt");
