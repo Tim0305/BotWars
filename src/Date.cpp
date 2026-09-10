@@ -288,7 +288,7 @@ string Date::toString() const {
 
 /**
  * @brief Parses a string representation of a date and constructs a Date object.
- * Format: Month Day Year HH:MM:SS
+ * Format: Month Day HH:MM:SS
  *
  * @param strDate Raw date string to be parsed.
  *
@@ -303,7 +303,7 @@ Date Date::fromString(const string& strDate) {
 
     // Split the date using spaces
     stringstream input(strDate);
-    input >> month >> day >> year >> time;
+    input >> month >> day >> time;
 
     // Split the time using :
     stringstream timeInput(time);

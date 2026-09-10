@@ -124,7 +124,7 @@ string Log::toString() const {
 
 /**
  * @brief Parses a string representation of a log and creates a Log object instance.
- * Format: Month Day Year HH:MM:SS IP:Port DomainName Message
+ * Format: Month Day HH:MM:SS IP:Port DomainName Message
  *
  * @param strLog The raw string containing log information to be parsed.
  *
@@ -143,9 +143,8 @@ Log Log::fromString(const string& strLog) {
     // Get all the message
     getline(input >> std::ws, message);
 
-    // Transform the date using the format: Month Day Year HH:MM:SS
-    stringstream date;
-    date << month << " " << day << " " << 2026 << " " << time;
+    // Transform the date using the format: Month Day HH:MM:SS
+    string dateStr = month + " " + to_string(day) + " " + time;
 
-    return Log(Date::fromString(date.str()), ip, domain, message);
+    return Log(Date::fromString(dateStr), ip, domain, message);
 }

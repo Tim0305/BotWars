@@ -24,17 +24,6 @@ using namespace std;
  * @return int
  */
 int main() {
-    // Obtain start and end date
-    string startDateStr;
-    cout << "Enter the start date and time (Month Day Year HH:MM:SS format): ";
-    getline(cin, startDateStr);
-    Date startDate = Date::fromString(startDateStr);
-
-    string endDateStr;
-    cout << "Enter the end date and time (Month Day Year HH:MM:SS format): ";
-    getline(cin, endDateStr);
-    Date endDate = Date::fromString(endDateStr);
-
     // Read the file
     ifstream file("bitacora.txt");
     vector<Log> logs;
@@ -42,19 +31,37 @@ int main() {
 
     while (getline(file, line)) {
         Log log = Log::fromString(line);
-        // Filter the logs
-        if (log.getDate() >= startDate && log.getDate() <= endDate)
-            logs.push_back(log);
+        logs.push_back(log);
     }
+    file.close();
+
+    // Obtain start and end date
+    string startDateStr;
+    cout << "Enter the start date and time (Month Day HH:MM:SS format): ";
+    getline(cin, startDateStr);
+    Date startDate = Date::fromString(startDateStr);
+
+    string endDateStr;
+    cout << "Enter the end date and time (Month Day HH:MM:SS format): ";
+    getline(cin, endDateStr);
+    Date endDate = Date::fromString(endDateStr);
 
     // Sort the vector
     insertionSort(logs);
+    cout << endl << "Logs" << endl;
 
     // Create an output file
     ofstream sortedFile("bitacora_ordenada.txt");
     if (sortedFile.is_open()) {
+        cout << "True" << endl;
         for (const Log& log : logs) {
-            sortedFile << log.toString() << '\n';
+            string logInfo = log.toString();
+            Date logDate = log.getDate();
+            sortedFile << logInfo << '\n';
+
+            // Filter the logs
+            if (logDate >= startDate && logDate <= endDate)
+                cout << logInfo << endl;
         }
         sortedFile.close();
     }
