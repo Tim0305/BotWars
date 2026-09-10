@@ -15,10 +15,10 @@ constexpr int YEAR = 2026;
 
 Date parseDate(const string& date) {
     string month, time;
-    int year, day, hour, minutes, seconds;
+    int year = 0, day = 0, hour = 0, minutes = 0, seconds = 0;
     char colon = ':';
 
-    // Split the log using spaces
+    // Split the date using spaces
     stringstream input(date);
     input >> month >> day >> year >> time;
 
@@ -31,11 +31,14 @@ Date parseDate(const string& date) {
 
 Log parseLog(const string& log) {
     string month, time, ip, domain, message;
-    int day;
+    int day = 0;
+
+    // Split each part using spaces
     stringstream input(log);
     input >> month >> day >> time >> domain;
     getline(input >> std::ws, message);
 
+    // Transform the date using the format Month Day Year HH:MM:SS
     stringstream date;
     date << month << " " << day << " " << YEAR;
 
@@ -44,18 +47,15 @@ Log parseLog(const string& log) {
 
 int main() {
     // Obtain start and end date
-    string startDateStr, endDateStr;
-
-    cout << "Enter the start date and time (MMM DD YYYY HH:MM:SS format): ";
+    string startDateStr;
+    cout << "Enter the start date and time (Month Day Year HH:MM:SS format): ";
     getline(cin, startDateStr);
+    Date startDate = parseDate(startDateStr);
 
-    cout << "Enter the end date and time (MMM DD YYYY HH:MM:SS format): ";
+    string endDateStr;
+    cout << "Enter the end date and time (Month Day Year HH:MM:SS format): ";
     getline(cin, endDateStr);
-
-    Date start = parseDate(startDateStr);
-    Date end = parseDate(endDateStr);
-
-    cout << start.toString() << " " << end.toString();
+    Date endDate = parseDate(endDateStr);
 
     // Read the file
     ifstream file("bitacora.txt");

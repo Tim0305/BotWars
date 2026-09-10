@@ -1,7 +1,7 @@
 #include "Date.h"
 
-#include <stdexcept>
 #include <sstream>
+#include <stdexcept>
 
 string monthToString(const Month& month) {
     switch (month) {
@@ -60,7 +60,8 @@ Month stringToMonth(const string& str) {
     if (str == "Dec")
         return Month::Dec;
 
-    return Month::Unknown;  // Valor por defecto si el string no coincide
+    // Default value if the string has no coincidence
+    return Month::Unknown;
 }
 
 Date::Date(int day, Month month, int year, int hour, int minutes, int seconds) {

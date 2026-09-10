@@ -6,7 +6,7 @@
  */
 
 #ifndef SORTING_ALGORITHMS_HPP
-#define SORTING_ALTORITHMS_HPP
+#define SORTING_ALGORITHMS_HPP
 
 #include <vector>
 
