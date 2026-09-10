@@ -141,4 +141,88 @@ void quickSort(std::vector<T>& arr) {
     }
 }
 
+
+/**
+ * @brief Helper function for MergeSort that merges two sorted subarrays.
+ * Subarray 1: arr[left ... mid]
+ * Subarray 2: arr[mid+1 ... right]
+ */
+
+template <typename T>
+void merge(std::vector<T>& arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    std::vector<T> L(n1);
+    std::vector<T> R(n2);
+
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = arr[mid + 1 + j];
+
+    int i = 0;    
+    int j = 0;    
+    int k = left; 
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+/**
+ * @brief Helper function that performs recursive Divide and Conquer for MergeSort.
+ */
+
+template <typename T>
+void mergeSortHelper(std::vector<T>& arr, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+
+        mergeSortHelper(arr, left, mid);
+        mergeSortHelper(arr, mid + 1, right);
+
+        merge(arr, left, mid, right);
+    }
+}
+
+/**
+ * @brief Sorts the data in ascending order using the Merge sort method.
+ * Complexity: O(n log n) in all cases (Worst, Average, Best)
+ *
+ * @tparam T any comparable data type
+ * @param arr A vector<T> with the n values to sort
+ *
+ * @pre The vector<T> must contain the n values
+ * @post The vector<T> will contain the data already sorted
+ */
+
+template <typename T>
+void mergeSort(std::vector<T>& arr) {
+    if (!arr.empty()) {
+        mergeSortHelper(arr, 0, static_cast<int>(arr.size()) - 1);
+    }
+}
+
+
+
 #endif  // SORTING_ALGORITHMS_HPP
