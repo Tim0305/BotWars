@@ -11,7 +11,7 @@
 
 using namespace std;
 
-inline constexpr int YEAR = 2026;
+constexpr int YEAR = 2026;
 
 Date parseDate(const string& date) {
     string month, time;
@@ -43,31 +43,29 @@ Log parseLog(const string& log) {
 }
 
 int main() {
-    const int year = 2026;
 
     // Obtain start and end date
-    int startDay, startMonth, startHour, startMinute, startSecond;
-    int endDay, endMonth, endHour, endMinute, endSecond;
-    char dash, colon;
+    string startDateStr, endDateStr;
 
-    cout << "Enter the start date and time in DD-MM HH:MM:SS format: ";
-    cin >> startDay >> dash >> startMonth >> startHour >> colon >> startMinute >> colon >> startSecond;
-    cout << "Enter the end date and time in DD-MM HH:MM:SS format: ";
-    cin >> endDay >> dash >> endMonth >> endHour >> colon >> endMinute >> colon >> endSecond;
+    cout << "Enter the start date and time (MMM DD YYYY HH:MM:SS format): ";
+    getline(cin, startDateStr);
 
-    Date start(startDay, static_cast<Month>(startMonth), year, startHour, startMinute, startSecond);
-    Date end(endDay, static_cast<Month>(endMonth), year, endHour, endMinute, endSecond);
+    cout << "Enter the end date and time (MMM DD YYYY HH:MM:SS format): ";
+    getline(cin, endDateStr);
+
+    Date start = parseDate(startDateStr);
+    Date end = parseDate(endDateStr);
+
+    cout << start.toString() << " " << end.toString();
 
     // Read the file
     ifstream file("bitacora.txt");
     vector<Log> logs;
     string line;
 
-    while (getline(file, line)) {
-        int monthNumber = 1;
-        while (months[monthNumber] != month) monthNumber++;
-        logs.emplace_back(Date(day, static_cast<Month>(monthNumber), year, hour, minute, second), ip, domain, message);
-    }
+    //while (getline(file, line)) {
+    //    logs.emplace_back(parseLog(line));
+    //}
 
     // Sort the vector
     insertionSort(logs);
