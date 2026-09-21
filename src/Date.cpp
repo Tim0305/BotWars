@@ -276,9 +276,21 @@ string Date::toString() const {
     stringstream ss;
     ss << monthToString(month) << " ";
     ss << day << " ";
-    ss << hour << ":";
-    ss << minutes << ":";
-    ss << seconds;
+
+    if (hour < 10)
+        ss << "0" << hour << ":";
+    else
+        ss << hour << ":";
+
+    if (minutes < 10)
+        ss << "0" << minutes << ":";
+    else
+        ss << minutes << ":";
+
+    if (seconds < 10)
+        ss << "0" << seconds;
+    else
+        ss << seconds;
     return ss.str();
 }
 

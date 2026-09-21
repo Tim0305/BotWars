@@ -61,7 +61,7 @@ int main() {
     }
 
     // Sort the vector
-    insertionSort(logs);
+    mergeSort(logs);
     cout << endl << "Logs" << endl;
 
     // Create an output file

@@ -2,7 +2,7 @@
  * @file SortingAlgorithms.hpp
  * @author Team 1
  * @brief Library that defines different algorithms for sorting values
- * @date 2026-09-10
+ * @date 2026-09-21
  */
 
 #ifndef SORTING_ALGORITHMS_HPP
@@ -73,7 +73,7 @@ void selectionSort(std::vector<T>& arr) {
  * Complexity: O(n^2)
  *
  * @tparam T any comparable data type
- * @param arr A vector<T> with the n values to sort
+ * @param arr a vector<T> with the n values to sort
  *
  * @pre The vector<T> must contain the n values
  * @post The vector<T> will contain the data already sorted
@@ -91,170 +91,171 @@ void insertionSort(std::vector<T>& arr) {
     }
 }
 
+// Merge Sort
 /**
- * @brief Helper function for QuickSort that partitions the vector around a pivot element.
- * Complexity: O(n)
+ * @brief Function that implements the merge logic of Merge sort algorithm
  *
- * @tparam T Any comparable data type (supports operator <).
- * @param arr A vector<T> reference containing elements to partition.
- * @param low Starting index of the subarray to partition.
- * @param high Ending index of the subarray to partition (used as pivot index).
+ * @tparam T any comparable data type
+ * @param arr a vector<T> with the n values to sort
+ * @param lo an int parameter that specifies the lowest index of the current window
+ * @param hi an int parameter that specifies the highest index of the current window
+ * @param mid an int parameter that specifies the mid point of the current window
  *
- * @pre 0 <= low <= high < arr.size().
- * @post Elements smaller than the pivot are placed to its left, and larger elements to its right.
- * @return int The final index position of the pivot element.
+ * @pre The vector<T> must contain the n values
+ * @post The vector<T> will contain the data already sorted
  */
 template <typename T>
-int partition(std::vector<T>& arr, int low, int high) {
-    T pivot = high;
-    int i = low - 1;
+void merge(std::vector<T>& arr, int lo, int hi, int mid) {
+    std::vector<T> temp;
 
-    for (int j = low; j < high; j++) {
-        if (arr[j] < pivot) {
-            i++;
-            std::swap(arr[i], arr[j]);
-        }
-    }
-    std::swap(arr[i + 1], arr[high]);
-    return i + 1;
-}
-
-/**
- * @brief Helper function that handles recursive QuickSort calls over a range [low, high].
- * Complexity: Average O(n log n), Worst Case O(n^2)
- *
- * @tparam T Any comparable data type.
- * @param arr A vector<T> reference to be sorted.
- * @param low Starting index of the current subarray.
- * @param high Ending index of the current subarray.
- *
- * @pre Valid bounds 'low' and 'high' within the range [0, arr.size() - 1].
- * @post The section arr[low...high] will be sorted in ascending order.
- * @return void
- */
-template <typename T>
-void quickSortHelper(std::vector<T>& arr, int low, int high) {
-    if (low < high) {
-        int pi = partition(arr, low, high);
-        quickSortHelper(arr, low, pi - 1);
-        quickSortHelper(arr, pi + 1, high);
-    }
-}
-
-/**
- * @brief Sorts the data in ascending order using the Quick sort method.
- * Complexity: Average O(n log n), Worst Case O(n^2)
- *
- * @tparam T Any comparable data type.
- * @param arr A vector<T> reference containing the n values to sort.
- *
- * @pre The vector<T> must contain valid elements.
- * @post The vector<T> will be sorted in non-decreasing order in-place.
- * @return void
- */
-template <typename T>
-void quickSort(std::vector<T>& arr) {
-    if (!arr.empty()) {
-        quickSortHelper(arr, 0, static_cast<int>(arr.size()) - 1);
-    }
-}
-
-/**
- * @brief Helper function for MergeSort that merges two sorted contiguous subarrays into one.
- * Subarray 1: arr[left ... mid]
- * Subarray 2: arr[mid+1 ... right]
- * Complexity: O(n)
- *
- * @tparam T Any comparable data type (supports operator <=).
- * @param arr A vector<T> reference containing the subarrays to merge.
- * @param left Lower bound index of the first subarray.
- * @param mid Upper bound index of the first subarray.
- * @param right Upper bound index of the second subarray.
- *
- * @pre 0 <= left <= mid < right < arr.size(), and both subarrays are already sorted.
- * @post The section arr[left...right] is merged and fully sorted.
- * @return void
- */
-template <typename T>
-void merge(std::vector<T>& arr, int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-
-    std::vector<T> L(n1);
-    std::vector<T> R(n2);
-
-    for (int i = 0; i < n1; i++) L[i] = arr[left + i];
-    for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
-
-    int i = 0;
-    int j = 0;
-    int k = left;
-
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            arr[k] = L[i];
+    // Merge the elements
+    int i = lo;
+    int j = mid + 1;
+    while (i <= mid && j <= hi) {
+        if (arr[i] <= arr[j]) {
+            temp.push_back(arr[i]);
             i++;
         } else {
-            arr[k] = R[j];
+            temp.push_back(arr[j]);
             j++;
         }
-        k++;
     }
 
-    while (i < n1) {
-        arr[k] = L[i];
+    // Add the remaining elements of the firt half
+    while (i <= mid) {
+        temp.push_back(arr[i]);
         i++;
-        k++;
     }
 
-    while (j < n2) {
-        arr[k] = R[j];
+    // Add the remaining elements of the second half
+    while (j <= hi) {
+        temp.push_back(arr[j]);
         j++;
-        k++;
     }
-}
 
-/**
- * @brief Helper function that performs recursive Divide and Conquer for MergeSort.
- * Complexity: O(n log n)
- *
- * @tparam T Any comparable data type.
- * @param arr A vector<T> reference to be sorted.
- * @param left Starting index of the current range.
- * @param right Ending index of the current range.
- *
- * @pre Valid bounds 'left' and 'right' within the range [0, arr.size() - 1].
- * @post The section arr[left...right] will be sorted in ascending order.
- * @return void
- */
-template <typename T>
-void mergeSortHelper(std::vector<T>& arr, int left, int right) {
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-
-        mergeSortHelper(arr, left, mid);
-        mergeSortHelper(arr, mid + 1, right);
-
-        merge(arr, left, mid, right);
+    // Reassign the sorted elements from temp vector
+    for (int i = lo; i <= hi; i++) {
+        arr[i] = temp[i - lo];
     }
 }
 
 /**
  * @brief Sorts the data in ascending order using the Merge sort method.
- * Complexity: O(n log n) in all cases (Worst, Average, Best)
+ * Complexity: O(nlogn)
  *
- * @tparam T Any comparable data type.
- * @param arr A vector<T> reference containing the n values to sort.
+ * @tparam T any comparable data type
+ * @param arr a vector<T> with the n values to sort
+ * @param lo an int parameter that specifies the lowest index of the current window
+ * @param hi an int parameter that specifies the highest index of the current window
  *
- * @pre The vector<T> must contain valid elements.
- * @post The vector<T> will be sorted in non-decreasing order in-place.
- * @return void
+ * @pre The vector<T> must contain the n values
+ * @post The vector<T> will contain the data already sorted
+ */
+template <typename T>
+void mergeSort(std::vector<T>& arr, int lo, int hi) {
+    // Already sorted
+    if (lo >= hi)
+        return;
+
+    // Split the array
+    int mid = (lo + hi) / 2;
+    mergeSort(arr, lo, mid);
+    mergeSort(arr, mid + 1, hi);
+
+    // Merge the arrays
+    merge(arr, lo, hi, mid);
+}
+
+/**
+ * @brief Sorts the data in ascending order using the Merge sort method.
+ * Complexity: O(nlogn)
+ *
+ * @tparam T any comparable data type
+ * @param arr a vector<T> with the n values to sort
+ *
+ * @pre The vector<T> must contain the n values
+ * @post The vector<T> will contain the data already sorted
  */
 template <typename T>
 void mergeSort(std::vector<T>& arr) {
-    if (!arr.empty()) {
-        mergeSortHelper(arr, 0, static_cast<int>(arr.size()) - 1);
+    if (!arr.size())
+        return;
+    mergeSort(arr, 0, arr.size() - 1);
+}
+
+// Quick Sort
+/**
+ * @brief Implementation of Lomuto partition algorithm with the pivot at the start.
+ *
+ * @tparam T any comparable data type
+ * @param arr a vector<T> with the n values to sort
+ * @param lo an int parameter that specifies the lowest index of the current window
+ * @param hi an int parameter that specifies the highest index of the current window
+ *
+ * @return int the index of the current pivot
+ *
+ * @pre The vector<T> must contain the n values
+ */
+template <typename T>
+int partition(std::vector<T>& arr, int lo, int hi) {
+    // Lomuto with the pivot at the start
+    T pivot = arr[lo];
+    int i = lo + 1;
+
+    for (int j = i; j <= hi; j++) {
+        if (arr[j] <= pivot) {
+            // Swap
+            T temp = arr[j];
+            arr[j] = arr[i];
+            arr[i] = temp;
+            i++;
+        }
     }
+
+    // Swap the pivot
+    arr[lo] = arr[i - 1];
+    arr[i - 1] = pivot;
+    return i - 1;
+}
+
+/**
+ * @brief Sorts the data in ascending order using the Quick sort method.
+ * Complexity: O(nlogn) or in the worst case O(n^2)
+ *
+ * @tparam T any comparable data type
+ * @param arr a vector<T> with the n values to sort
+ * @param lo an int parameter that specifies the lowest index of the current window
+ * @param hi an int parameter that specifies the highest index of the current window
+ *
+ * @pre The vector<T> must contain the n values
+ * @post The vector<T> will contain the data already sorted
+ */
+template <typename T>
+void quickSort(std::vector<T>& arr, int lo, int hi) {
+    // Already sorted
+    if (lo >= hi)
+        return;
+
+    int p = partition(arr, lo, hi);
+    quickSort(arr, lo, p - 1);
+    quickSort(arr, p + 1, hi);
+}
+
+/**
+ * @brief Sorts the data in ascending order using the Quick sort method.
+ * Complexity: O(nlogn) or in the worst case O(n^2)
+ *
+ * @tparam T any comparable data type
+ * @param arr a vector<T> with the n values to sort
+ *
+ * @pre The vector<T> must contain the n values
+ * @post The vector<T> will contain the data already sorted
+ */
+template <typename T>
+void quickSort(std::vector<T>& arr) {
+    if (!arr.size())
+        return;
+    quickSort(arr, 0, arr.size() - 1);
 }
 
 #endif  // SORTING_ALGORITHMS_HPP
