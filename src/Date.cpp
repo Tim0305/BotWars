@@ -196,13 +196,13 @@ int Date::getMinutes() const { return this->minutes; }
 int Date::getSeconds() const { return this->seconds; }
 
 /**
- * @brief Overloads the greater-than-or-equal-to operator to compare two Date objects.
+ * @brief Overloads the less-than operator to compare two Date objects.
  *
  * @param date The right-hand side Date instance to compare against.
  *
  * @pre Both Date objects must be valid.
  * @post Evaluates timestamp ordering.
- * @return true If this Date occurs on or after the given date.
+ * @return true If this Date occurs before the given date.
  * @return false Otherwise.
  */
 bool Date::operator<(const Date& date) const {
@@ -218,25 +218,16 @@ bool Date::operator<(const Date& date) const {
 }
 
 /**
- * @brief Overloads the less-than operator to chronologically compare two Date objects.
+ * @brief Overloads the greater-than operator to chronologically compare two Date objects.
  *
  * @param date The right-hand side Date instance to compare against.
  *
  * @pre Both Date objects must be valid.
  * @post Evaluates timestamp ordering.
- * @return true If this Date occurs before the given date.
+ * @return true If this Date occurs after the given date.
  * @return false Otherwise.
  */
 bool Date::operator>(const Date& date) const { return date < *this; }
-
-/**
- * @brief Converts the Date instance attributes into a formatted string.
- *
- * @pre The Date instance must contain valid member variables.
- * @post Generates a string representation of the date and time.
- * @return string Formatted date-time string.
- */
-bool Date::operator==(const Date& date) const { return !(*this < date) && !(date > *this); }
 
 /**
  * @brief Overloads the equality operator to compare two Date objects.
@@ -248,7 +239,7 @@ bool Date::operator==(const Date& date) const { return !(*this < date) && !(date
  * @return true If both Date instances represent the exact same timestamp.
  * @return false Otherwise.
  */
-bool Date::operator<=(const Date& date) const { return !(date < *this); }
+bool Date::operator==(const Date& date) const { return !(*this < date) && !(date > *this); }
 
 /**
  * @brief Overloads the less-than-or-equal-to operator to compare two Date objects.
@@ -258,6 +249,18 @@ bool Date::operator<=(const Date& date) const { return !(date < *this); }
  * @pre Both Date objects must be valid.
  * @post Evaluates timestamp ordering.
  * @return true If this Date occurs on or before the given date.
+ * @return false Otherwise.
+ */
+bool Date::operator<=(const Date& date) const { return !(date < *this); }
+
+/**
+ * @brief Overloads the greater-than-or-equal-to operator to compare two Date objects.
+ *
+ * @param date The right-hand side Date instance to compare against.
+ *
+ * @pre Both Date objects must be valid.
+ * @post Evaluates timestamp ordering.
+ * @return true If this Date occurs on or after the given date.
  * @return false Otherwise.
  */
 bool Date::operator>=(const Date& date) const { return !(*this < date); }
