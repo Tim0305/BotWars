@@ -13,6 +13,8 @@
 
 using namespace std;
 
+enum CompareMethod { IP_METHOD, DATE_METHOD };
+
 /**
  * @class Log
  * @brief Represents an individual log record.
@@ -32,6 +34,7 @@ private:
     int port;
     string domain;
     string message;
+    static CompareMethod compareMethod;
 
 public:
     Log(Date date, IP4 ip, int port, string domain, string message)
@@ -47,5 +50,6 @@ public:
     bool operator>=(const Log& log) const;
     bool operator<=(const Log& log) const;
     string toString() const;
+    static void setCompareMethod(const CompareMethod& compareMethod);
     static Log fromString(const string& strLog);
 };

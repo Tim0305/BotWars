@@ -10,6 +10,9 @@
 
 #include "Date.hpp"
 
+// Init the compare method
+CompareMethod Log::compareMethod = CompareMethod::DATE_METHOD;
+
 /**
  * @brief Gets the date of the log entry.
  *
@@ -49,64 +52,108 @@ string Log::getDomain() const { return this->domain; }
 string Log::getMessage() const { return this->message; }
 
 /**
- * @brief Overloads the less-than operator to compare two Log objects based on their Date.
+ * @brief Overloads the less-than operator to compare two Log objects based on the compareMethod attribute.
  *
  * @param log The right-hand side Log instance to compare against.
  *
- * @pre Both Log objects must have valid Date attributes.
- * @post Performs chronological evaluation between this log and the given log.
- * @return true If this log's date is strictly less (earlier) than the parameter's date.
+ * @pre Both Log objects must have valid Date/IP4 attributes.
+ * @return true If this log's date/ip is strictly earlier/less than the parameter's date/ip.
  * @return false Otherwise.
  */
-bool Log::operator<(const Log& log2) const { return this->date < log2.date; }
+bool Log::operator<(const Log& log) const {
+    switch (compareMethod) {
+        case CompareMethod::DATE_METHOD:
+            return this->date < log.date;
+        case CompareMethod::IP_METHOD:
+            return this->ip < log.ip;
+        default:
+            throw runtime_error("No compareMethod was defined");
+    }
+}
 
 /**
- * @brief Overloads the greater-than operator to compare two Log objects based on their Date.
+ * @brief Overloads the greater-than operator to compare two Log objects based on the compareMethod attribute.
  *
  * @param log The right-hand side Log instance to compare against.
  *
- * @pre Both Log objects must have valid Date attributes.
- * @post Performs chronological evaluation between this log and the given log.
- * @return true If this log's date is strictly greater (later) than the parameter's date.
+ * @pre Both Log objects must have valid Date/IP4 attributes.
+ * @return true If this log's date/ip is strictly later/greater than the parameter's date/ip.
  * @return false Otherwise.
  */
-bool Log::operator>(const Log& log2) const { return this->date > log2.date; }
+bool Log::operator>(const Log& log) const {
+    switch (compareMethod) {
+        case CompareMethod::DATE_METHOD:
+            return this->date > log.date;
+        case CompareMethod::IP_METHOD:
+            return this->ip > log.ip;
+        default:
+            throw runtime_error("No compareMethod was defined");
+    }
+}
 
 /**
- * @brief Overloads the equality operator to compare two Log objects based on their Date.
+ * @brief Overloads the equality operator to compare two Log objects based on the compareMethod attribute.
  *
  * @param log The right-hand side Log instance to compare against.
  *
- * @pre Both Log objects must have valid Date attributes.
- * @post Checks if both log dates match.
- * @return true If both log entries occurred at the exact same Date.
+ * @pre Both Log objects must have valid Date/IP4 attributes.
+ * @return true If both log entries occurred at the exact same Date or have the same ip address.
  * @return false Otherwise.
  */
-bool Log::operator==(const Log& log2) const { return this->date == log2.date; }
+bool Log::operator==(const Log& log) const {
+    switch (compareMethod) {
+        case CompareMethod::DATE_METHOD:
+            return this->date == log.date;
+        case CompareMethod::IP_METHOD:
+            return this->ip == log.ip;
+        default:
+            throw runtime_error("No compareMethod was defined");
+    }
+}
 
 /**
- * @brief Overloads the greater-than-or-equal-to operator based on Date.
+ * @brief Overloads the greater-than-or-equal-to operator based on the compareMethod attribute.
  *
  * @param log The right-hand side Log instance to compare against.
  *
- * @pre Both Log objects must have valid Date attributes.
- * @post Performs chronological evaluation between this log and the given log.
- * @return true If this log's date is later than or equal to the parameter's date.
+ * @pre Both Log objects must have valid Date/IP4 attributes.
+ * @return true If this log's date is later than or equal to the parameter's date or this log's ip address is greater
+ * than or equal to the parameter's ip.
  * @return false Otherwise.
  */
-bool Log::operator>=(const Log& log2) const { return this->date >= log2.date; }
+bool Log::operator>=(const Log& log) const {
+    switch (compareMethod) {
+        case CompareMethod::DATE_METHOD:
+            return this->date >= log.date;
+        case CompareMethod::IP_METHOD:
+            return this->ip >= log.ip;
+        default:
+            throw runtime_error("No compareMethod was defined");
+    }
+}
 
 /**
- * @brief Overloads the less-than-or-equal-to operator based on Date.
+ * @brief Overloads the less-than-or-equal-to operator based on the compareMethod attribute.
  *
  * @param log The right-hand side Log instance to compare against.
  *
- * @pre Both Log objects must have valid Date attributes.
- * @post Performs chronological evaluation between this log and the given log.
- * @return true If this log's date is earlier than or equal to the parameter's date.
+ * @pre Both Log objects must have valid Date/IP4 attributes.
+ * @return true If this log's date is earlier than or equal to the parameter's date or this log's ip address is less
+ * than or equal to the parameter's ip.
  * @return false Otherwise.
  */
-bool Log::operator<=(const Log& log2) const { return this->date <= log2.date; }
+bool Log::operator<=(const Log& log) const {
+    switch (compareMethod) {
+        case CompareMethod::DATE_METHOD:
+            return this->date <= log.date;
+        case CompareMethod::IP_METHOD:
+            return this->ip <= log.ip;
+        default:
+            throw runtime_error("No compareMethod was defined");
+    }
+}
+
+void Log::setCompareMethod(const CompareMethod& compareMethod) { Log::compareMethod = compareMethod; }
 
 /**
  * @brief Converts the Log instance attributes into a formatted string representation.
