@@ -18,9 +18,9 @@ bool IP4::operator==(const IP4& ip) const {
     return this->net1 == ip.net1 && this->net2 == ip.net2 && this->net3 == ip.net3 && this->host == ip.host;
 }
 
-bool IP4::operator>=(const IP4& ip) const { return (*this) == ip || (*this) > ip; }
+bool IP4::operator>=(const IP4& ip) const { return !(*this < ip); }
 
-bool IP4::operator<=(const IP4& ip) const { return (*this) == ip || (*this) < ip; }
+bool IP4::operator<=(const IP4& ip) const { return !(ip < *this); }
 
 string IP4::toString() const {
     stringstream ss;
