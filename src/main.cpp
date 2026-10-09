@@ -12,8 +12,8 @@
 #include <string>
 #include <vector>
 
-#include "Date.h"
-#include "Log.h"
+#include "Date.hpp"
+#include "Log.hpp"
 #include "SortingAlgorithms.hpp"
 
 using namespace std;

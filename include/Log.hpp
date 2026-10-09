@@ -1,5 +1,5 @@
 /**
- * @file Log.h
+ * @file Log.hpp
  * @brief Class that represents a system log entry containing a date, IP address, domain, and message.
  * @author Team 1
  * @date 2026-09-10
@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "Date.h"
+#include "Date.hpp"
 
 using namespace std;
 

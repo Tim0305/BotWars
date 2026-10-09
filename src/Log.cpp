@@ -4,11 +4,11 @@
  * @brief Source file that implements the class Log and all its methods
  * @date 2026-09-10
  */
-#include "Log.h"
+#include "Log.hpp"
 
 #include <sstream>
 
-#include "Date.h"
+#include "Date.hpp"
 
 /**
  * @brief Gets the date of the log entry.
