@@ -239,7 +239,10 @@ bool Date::operator>(const Date& date) const { return date < *this; }
  * @return true If both Date instances represent the exact same timestamp.
  * @return false Otherwise.
  */
-bool Date::operator==(const Date& date) const { return !(*this < date) && !(date > *this); }
+bool Date::operator==(const Date& date) const {
+    return this->month == date.month && this->day == date.day && this->hour == date.hour &&
+        this->minutes == date.minutes && this->seconds == date.seconds;
+}
 
 /**
  * @brief Overloads the less-than-or-equal-to operator to compare two Date objects.
