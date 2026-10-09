@@ -23,10 +23,12 @@ Date Log::getDate() const { return this->date; }
  * @brief Gets the IP address of the log entry.
  *
  * @pre The Log object must be initialized.
- * @post Returns the IP string.
- * @return string The IP address.
+ * @post Returns the IP object.
+ * @return instance of IP4 The IP address.
  */
-string Log::getIp() const { return this->ip; }
+IP4 Log::getIp() const { return this->ip; }
+
+int Log::getPort() const { return this->port; }
 
 /**
  * @brief Gets the domain of the log entry.
@@ -110,13 +112,14 @@ bool Log::operator<=(const Log& log2) const { return this->date <= log2.date; }
  * @brief Converts the Log instance attributes into a formatted string representation.
  *
  * @pre The Log instance must contain valid member variables.
- * @post Generates a string combining date, IP, domain, and message.
+ * @post Generates a string combining date, IP, port, domain, and message.
  * @return string A single formatted string containing all log information.
  */
 string Log::toString() const {
     stringstream ss;
     ss << date.toString() << " ";
-    ss << ip << " ";
+    ss << ip.toString() << ":";
+    ss << port << " ";
     ss << domain << " ";
     ss << message;
     return ss.str();
@@ -133,18 +136,29 @@ string Log::toString() const {
  * @return Log A populated Log instance extracted from the string.
  */
 Log Log::fromString(const string& strLog) {
-    string month, time, ip, domain, message;
-    int day = 0;
+    string month, day, time, ip, domain, message;
 
     // Split each part using spaces
-    stringstream input(strLog);
-    input >> month >> day >> time >> ip >> domain;
+    stringstream ss(strLog);
+    ss >> month >> day >> time >> ip >> domain;
 
     // Get all the message
-    getline(input >> std::ws, message);
+    getline(ss >> std::ws, message);
 
     // Transform the date using the format: Month Day HH:MM:SS
-    string dateStr = month + " " + to_string(day) + " " + time;
+    string dateStr = month + " " + day + " " + time;
 
-    return Log(Date::fromString(dateStr), ip, domain, message);
+    // Get the ip and port;
+    // Clean and set the stringstream buffer
+    ss.clear();
+    ss.str(ip);
+    vector<string> tokens;
+    string token;
+
+    while (getline(ss, token, ':')) tokens.push_back(token);
+
+    if (tokens.size() != 2)
+        throw invalid_argument("Invalid IP:Port");
+
+    return Log(Date::fromString(dateStr), IP4::fromString(tokens[0]), stoi(tokens[1]), domain, message);
 }

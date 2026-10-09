@@ -9,6 +9,7 @@
 #include <string>
 
 #include "Date.hpp"
+#include "IP4.hpp"
 
 using namespace std;
 
@@ -19,21 +20,25 @@ using namespace std;
  * @property Log timestamp, source IP, domain, and associated error or status message.
  * Provides comparison operators for sorting based on its date attribute.
  * @property date An instance of the Date class that indicates when the log occurred
- * @property ip A string containing the source ip address that registered the log
+ * @property ip An IP4 instance containing the source ip address that registered the log
+ * @property port
  * @property domain A string containing the host domain name the attempt was directed to
  * @property message A string containing the action or result of the user attempt
  */
 class Log {
 private:
     Date date;
-    string ip;
+    IP4 ip;
+    int port;
     string domain;
     string message;
 
 public:
-    Log(Date date, string ip, string domain, string message) : date(date), ip(ip), domain(domain), message(message) {};
+    Log(Date date, IP4 ip, int port, string domain, string message)
+        : date(date), ip(ip), port(port), domain(domain), message(message) {};
     Date getDate() const;
-    string getIp() const;
+    IP4 getIp() const;
+    int getPort() const;
     string getDomain() const;
     string getMessage() const;
     bool operator>(const Log& log) const;
