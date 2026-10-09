@@ -2,7 +2,7 @@
  * @file Log.cpp
  * @author Team 1
  * @brief Source file that implements the class Log and all its methods
- * @date 2026-09-10
+ * @date 2026-10-09
  */
 #include "Log.hpp"
 

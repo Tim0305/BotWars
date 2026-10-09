@@ -2,7 +2,7 @@
  * @file Log.hpp
  * @brief Class that represents a system log entry containing a date, IP address, domain, and message.
  * @author Team 1
- * @date 2026-09-10
+ * @date 2026-10-09
  */
 #pragma once
 
@@ -23,7 +23,7 @@ enum CompareMethod { IP_METHOD, DATE_METHOD };
  * Provides comparison operators for sorting based on its date attribute.
  * @property date An instance of the Date class that indicates when the log occurred
  * @property ip An IP4 instance containing the source ip address that registered the log
- * @property port
+ * @property port An int containing the port which registered the log
  * @property domain A string containing the host domain name the attempt was directed to
  * @property message A string containing the action or result of the user attempt
  */
