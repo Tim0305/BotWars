@@ -87,9 +87,9 @@ int main() {
             cout << "> ";
             cin >> option;
 
-            if (option <= 0 && option >= 3)
+            if (option < 0 || option > 3)
                 cout << endl << "Invalid option. Try again" << endl;
-        } while (option <= 0 && option >= 3);
+        } while (option < 0 || option > 3);
 
         switch (option) {
             case 0:
@@ -98,6 +98,28 @@ int main() {
                 break;
             case 1: {
                 // Sort the vector
+                char sortingOption = ' ';
+                do {
+                    cout << endl;
+                    cout << "\t[a] By Date" << endl;
+                    cout << "\t[b] By IP" << endl;
+                    cout << "> ";
+                    cin >> sortingOption;
+                    sortingOption = tolower(sortingOption);
+
+                    if (sortingOption < 'a' || sortingOption > 'b')
+                        cout << endl << "Invalid option. Try again" << endl;
+                } while (sortingOption < 'a' || sortingOption > 'b');
+
+                switch (sortingOption) {
+                    case 'a':
+                        Log::setCompareMethod(CompareMethod::DATE_METHOD);
+                        break;
+                    case 'b':
+                        Log::setCompareMethod(CompareMethod::IP_METHOD);
+                        break;
+                }
+
                 cout << "Sorting..." << endl;
                 mergeSort(logs);
                 string sortedFilename = "bitacora_ordenada.txt";
@@ -111,7 +133,6 @@ int main() {
                 for (const Log& log : logs) {
                     sortedFile << log.toString() << endl;
                 }
-
                 break;
             }
             case 2: {
