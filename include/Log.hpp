@@ -13,19 +13,27 @@
 
 using namespace std;
 
-enum CompareMethod { IP_METHOD, DATE_METHOD };
+/**
+ * @enum CompareMethod
+ * @brief Selects the field used by Log operators.
+ */
+enum CompareMethod {
+    IP_METHOD,   /**< Compares Log objects by their IP address. */
+    DATE_METHOD  /**< Compares Log objects by their timestamp. */
+};
 
 /**
  * @class Log
  * @brief Represents an individual log record.
  *
- * @property Log timestamp, source IP, domain, and associated error or status message.
- * Provides comparison operators for sorting based on its date attribute.
+ * @details Each record contains a timestamp, source IP, port, domain, and log message.
+ * Comparison operators use the compareMethod setting to compare records by date or by IP address.
  * @property date An instance of the Date class that indicates when the log occurred
  * @property ip An IP4 instance containing the source ip address that registered the log
  * @property port An int containing the port which registered the log
  * @property domain A string containing the host domain name the attempt was directed to
  * @property message A string containing the action or result of the user attempt
+ * @property compareMethod Static comparison mode shared by all Logs.
  */
 class Log {
 private:
@@ -50,6 +58,11 @@ public:
     bool operator>=(const Log& log) const;
     bool operator<=(const Log& log) const;
     string toString() const;
+
+    /**
+     * @brief Sets the comparison mode used by all Log comparison operators.
+     * @param compareMethod IP_METHOD or DATE_METHOD.
+     */
     static void setCompareMethod(const CompareMethod& compareMethod);
     static Log fromString(const string& strLog);
 };

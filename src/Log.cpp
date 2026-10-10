@@ -8,14 +8,18 @@
 
 #include <sstream>
 
+#include <vector>
+
 #include "Date.hpp"
 
-// Init the compare method
+/**
+ * @brief Initializes comparison mode shared by all Log instances.
+ * @details Date comparison is the default until setCompareMethod selects another mode.
+ */
 CompareMethod Log::compareMethod = CompareMethod::DATE_METHOD;
 
 /**
  * @brief Gets the date of the log entry.
- *
  * @pre The Log object must be initialized.
  * @post Returns the internal Date object.
  * @return Date The timestamp of the log.
@@ -31,11 +35,14 @@ Date Log::getDate() const { return this->date; }
  */
 IP4 Log::getIp() const { return this->ip; }
 
+/**
+ * @brief Gets the port associated with the log entry.
+ * @return int The port number.
+ */
 int Log::getPort() const { return this->port; }
 
 /**
  * @brief Gets the domain of the log entry.
- *
  * @pre The Log object must be initialized.
  * @post Returns the domain string.
  * @return string The domain name.
@@ -44,7 +51,6 @@ string Log::getDomain() const { return this->domain; }
 
 /**
  * @brief Gets the message of the log entry.
- *
  * @pre The Log object must be initialized.
  * @post Returns the log message content.
  * @return string The message string.
@@ -153,6 +159,11 @@ bool Log::operator<=(const Log& log) const {
     }
 }
 
+/**
+ * @brief Sets the comparison mode shared by all Log objects.
+ * @param compareMethod Comparison field to use: IP_METHOD or DATE_METHOD.
+ * @post All subsequent Log comparisons use the selected field.
+ */
 void Log::setCompareMethod(const CompareMethod& compareMethod) { Log::compareMethod = compareMethod; }
 
 /**
