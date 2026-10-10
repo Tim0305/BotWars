@@ -18,27 +18,7 @@
 
 using namespace std;
 
-void printFilteredLogsByDate(const vector<Log>& logs, const Date& startDate, const Date& endDate) {
-    cout << endl;
-    for (const Log& log : logs) {
-        Date logDate = log.getDate();
-
-        // Filter the logs
-        if (logDate >= startDate && logDate <= endDate)
-            cout << log.toString() << endl;
-    }
-}
-
-void printFilteredLogsByIP4(const vector<Log>& logs, const IP4& startIp, const IP4& endIp) {
-    cout << endl;
-    for (const Log& log : logs) {
-        IP4 ip = log.getIp();
-
-        // Filter the logs
-        if (ip >= startIp && ip <= endIp)
-            cout << log.toString() << endl;
-    }
-}
+void printFilteredLogsByIP4(const vector<Log>& logs, const IP4& startIp, const IP4& endIp) {}
 
 /**
  * @brief main function that sorts and filters the logs in "bitacora.txt" file
@@ -122,16 +102,40 @@ int main() {
 
                 cout << "Sorting..." << endl;
                 mergeSort(logs);
-                string sortedFilename = "bitacora_ordenada.txt";
-                cout << "Saving result into '" << sortedFilename << "'" << endl;
 
-                // Create an output file
-                ofstream sortedFile(sortedFilename);
-                if (!sortedFile.is_open())
-                    cerr << "Error: could not create txt file" << endl;
+                char saveFile = ' ';
+                cout << "Save the result into a file (y/n)? ";
+                cin >> saveFile;
+                saveFile = tolower(saveFile);
 
-                for (const Log& log : logs) {
-                    sortedFile << log.toString() << endl;
+                switch (saveFile) {
+                    case 'y': {
+                        string sortedFilename;
+                        cout << "Filename ('bitacora_ordenada.txt'): ";
+                        cin.ignore();
+                        getline(cin, sortedFilename);
+
+                        if (sortedFilename.empty())
+                            sortedFilename = "bitacora_ordenada.txt";
+
+                        // Create an output file
+                        cout << "Creating file..." << endl;
+                        ofstream sortedFile(sortedFilename);
+                        if (sortedFile.is_open()) {
+                            for (const Log& log : logs) {
+                                sortedFile << log.toString() << endl;
+                            }
+                            sortedFile.close();
+                        } else
+                            cerr << "Error: could not create txt file" << endl;
+
+                        break;
+                    }
+                    case 'n':
+                        break;
+                    default:
+                        cout << endl << "Invalid option. Returning home..." << endl;
+                        break;
                 }
                 break;
             }
@@ -146,13 +150,29 @@ int main() {
                 cout << "Enter the end date and time (Month Day HH:MM:SS format): ";
                 getline(cin, endDateStr);
 
-                Date startDate;
-                Date endDate;
-
                 try {
-                    startDate = Date::fromString(startDateStr);
-                    endDate = Date::fromString(endDateStr);
-                    printFilteredLogsByDate(logs, startDate, endDate);
+                    Date startDate = Date::fromString(startDateStr);
+                    Date endDate = Date::fromString(endDateStr);
+
+                    // Filter and save the logs into a file
+                    string filteredFilename = "filtered_logs_date.txt";
+                    ofstream filteredFile(filteredFilename);
+                    cout << "Saving filtered logs into '" << filteredFilename << "'" << endl;
+                    if (filteredFile.is_open()) {
+                        cout << endl;
+                        for (const Log& log : logs) {
+                            string logInfo = log.toString();
+                            Date logDate = log.getDate();
+
+                            if (logDate >= startDate && logDate <= endDate) {
+                                cout << logInfo << endl;
+                                filteredFile << logInfo << endl;
+                            }
+                        }
+                        filteredFile.close();
+                    } else
+                        cerr << "Error: could not create txt file" << endl;
+
                 } catch (const invalid_argument& error) {
                     cerr << "Error: " << error.what() << endl;
                 }
@@ -161,21 +181,39 @@ int main() {
             }
             case 3: {
                 // Obtain start and end ip
-                string startDateStr;
-                cout << "Enter the start date and time (Month Day HH:MM:SS format): ";
-                getline(cin, startDateStr);
+                string startIpStr;
+                cout << "Enter the start ip (192.168.1.2 format): ";
+                cin.ignore();
+                getline(cin, startIpStr);
 
-                string endDateStr;
-                cout << "Enter the end date and time (Month Day HH:MM:SS format): ";
-                getline(cin, endDateStr);
-
-                Date startDate;
-                Date endDate;
+                string endIpStr;
+                cout << "Enter the end ip (192.168.1.2 format): ";
+                getline(cin, endIpStr);
 
                 try {
-                    startDate = Date::fromString(startDateStr);
-                    endDate = Date::fromString(endDateStr);
-                    printFilteredLogsByDate(logs, startDate, endDate);
+                    IP4 startIp = IP4::fromString(startIpStr);
+                    IP4 endIp = IP4::fromString(endIpStr);
+
+                    // Filter and save the logs into a file
+                    string filteredFilename = "filtered_logs_ip.txt";
+                    ofstream filteredFile(filteredFilename);
+                    cout << "Saving filtered logs into '" << filteredFilename << "'" << endl;
+                    if (filteredFile.is_open()) {
+                        cout << endl;
+                        for (const Log& log : logs) {
+                            string logInfo = log.toString();
+                            IP4 ip = log.getIp();
+
+                            // Filter the logs
+                            if (ip >= startIp && ip <= endIp) {
+                                cout << logInfo << endl;
+                                filteredFile << logInfo << endl;
+                            }
+                        }
+                        filteredFile.close();
+                    } else
+                        cerr << "Error: could not create txt file" << endl;
+
                 } catch (const invalid_argument& error) {
                     cerr << "Error: " << error.what() << endl;
                 }

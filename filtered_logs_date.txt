@@ -1,0 +1,9 @@
+Jun 1 00:17:45 192.0.2.90:5786 git.dev-interno.example Failed password for illegal user test
+Jun 1 00:11:09 192.0.2.106:4828 nas.respaldo-mx.example Failed password for illegal user test
+Jun 1 00:30:12 192.0.2.157:5944 vpn.nube-sur.example Illegal user
+Jun 1 00:31:52 192.0.2.166:6399 ci.dev-interno.example Failed password for root
+Jun 1 00:20:15 192.0.2.189:6172 auth.nube-sur.example Failed password for illegal user guest
+Jun 1 00:59:10 198.51.100.8:5205 db.nube-sur.example Failed password for illegal user test
+Jun 1 00:35:25 198.51.100.163:5317 db.nube-sur.example Failed password for root
+Jun 1 00:34:47 203.0.113.140:5054 backup.respaldo-mx.example Failed password for root
+Jun 1 00:06:23 203.0.113.245:4757 ftp.almacen-norte.example Failed password for admin
