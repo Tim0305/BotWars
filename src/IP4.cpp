@@ -1,13 +1,16 @@
 /**
  * @file IP4.cpp
- * @brief Implements IPv4 address comparison, formatting, and parsing.
+ * @author Team 1
+ * @brief Implements the funcionality and methods of the IP4 class
+ * @date 2026-10-09
  */
 #include "IP4.hpp"
-#include <vector>
+
 #include <sstream>
+#include <vector>
 
 /**
- * @brief Compares IPv4 addresses from the first component to the last.
+ * @brief Checks if this address is greater than another address.
  * @param ip Address to compare.
  * @return true If this address is greater than @p ip.
  * @return false Otherwise.

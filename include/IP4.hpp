@@ -1,3 +1,9 @@
+/**
+ * @file IP4.hpp
+ * @brief Class that represents an IPv4 address
+ * @author Team 1
+ * @date 2026-10-09
+ */
 #pragma once
 
 #include <string>

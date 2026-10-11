@@ -7,7 +7,6 @@
 #include "Log.hpp"
 
 #include <sstream>
-
 #include <vector>
 
 #include "Date.hpp"
@@ -28,7 +27,6 @@ Date Log::getDate() const { return this->date; }
 
 /**
  * @brief Gets the IP address of the log entry.
- *
  * @pre The Log object must be initialized.
  * @post Returns the IP object.
  * @return instance of IP4 The IP address.
@@ -37,6 +35,7 @@ IP4 Log::getIp() const { return this->ip; }
 
 /**
  * @brief Gets the port associated with the log entry.
+ * @pre The Log object must be initialized.
  * @return int The port number.
  */
 int Log::getPort() const { return this->port; }

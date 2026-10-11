@@ -1,6 +1,6 @@
 /**
  * @file Log.hpp
- * @brief Class that represents a system log entry containing a date, IP address, domain, and message.
+ * @brief Class that represents a system log entry containing a date, IP address, port, domain, and message.
  * @author Team 1
  * @date 2026-10-09
  */
@@ -16,11 +16,10 @@ using namespace std;
 /**
  * @enum CompareMethod
  * @brief Selects the field used by Log operators.
+ * IP_METHOD: Compares Log objects by their IP address.
+ * DATE_METHOD: Compares Log objects by their timestamp.
  */
-enum CompareMethod {
-    IP_METHOD,   /**< Compares Log objects by their IP address. */
-    DATE_METHOD  /**< Compares Log objects by their timestamp. */
-};
+enum CompareMethod { IP_METHOD, DATE_METHOD };
 
 /**
  * @class Log
@@ -59,10 +58,6 @@ public:
     bool operator<=(const Log& log) const;
     string toString() const;
 
-    /**
-     * @brief Sets the comparison mode used by all Log comparison operators.
-     * @param compareMethod IP_METHOD or DATE_METHOD.
-     */
     static void setCompareMethod(const CompareMethod& compareMethod);
     static Log fromString(const string& strLog);
 };

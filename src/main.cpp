@@ -18,11 +18,8 @@
 
 using namespace std;
 
-void printFilteredLogsByIP4(const vector<Log>& logs, const IP4& startIp, const IP4& endIp) {}
-
 /**
- * @brief main function that sorts and filters the logs in "bitacora.txt" file
- *
+ * @brief main function that sorts and filters the logs stored in a specified text file
  * @return int
  */
 int main() {
@@ -102,6 +99,7 @@ int main() {
 
                 cout << "Sorting..." << endl;
                 mergeSort(logs);
+                cout << "Sorted " << logs.size() << " elements" << endl;
 
                 char saveFile = ' ';
                 cout << "Save the result into a file (y/n)? ";
@@ -158,6 +156,7 @@ int main() {
                     string filteredFilename = "filtered_logs_date.txt";
                     ofstream filteredFile(filteredFilename);
                     cout << "Saving filtered logs into '" << filteredFilename << "'" << endl;
+                    int filteredLogs = 0;
                     if (filteredFile.is_open()) {
                         cout << endl;
                         for (const Log& log : logs) {
@@ -167,8 +166,10 @@ int main() {
                             if (logDate >= startDate && logDate <= endDate) {
                                 cout << logInfo << endl;
                                 filteredFile << logInfo << endl;
+                                filteredLogs++;
                             }
                         }
+                        cout << "Filtered " << filteredLogs << " elements" << endl;
                         filteredFile.close();
                     } else
                         cerr << "Error: could not create txt file" << endl;
@@ -198,6 +199,7 @@ int main() {
                     string filteredFilename = "filtered_logs_ip.txt";
                     ofstream filteredFile(filteredFilename);
                     cout << "Saving filtered logs into '" << filteredFilename << "'" << endl;
+                    int filteredLogs = 0;
                     if (filteredFile.is_open()) {
                         cout << endl;
                         for (const Log& log : logs) {
@@ -208,8 +210,10 @@ int main() {
                             if (ip >= startIp && ip <= endIp) {
                                 cout << logInfo << endl;
                                 filteredFile << logInfo << endl;
+                                filteredLogs++;
                             }
                         }
+                        cout << "Filtered " << filteredLogs << " elements" << endl;
                         filteredFile.close();
                     } else
                         cerr << "Error: could not create txt file" << endl;
