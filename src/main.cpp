@@ -15,6 +15,7 @@
 #include "Date.hpp"
 #include "Log.hpp"
 #include "SortingAlgorithms.hpp"
+#include "Splay.hpp"
 
 using namespace std;
 
