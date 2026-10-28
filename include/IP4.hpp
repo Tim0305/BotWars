@@ -8,8 +8,6 @@
 
 #include <string>
 
-using namespace std;
-
 /**
  * @class IP4
  * @brief Represents an IPv4 address as four integer components.
@@ -37,7 +35,7 @@ public:
      * @param net3 Third octet.
      * @param host Fourth octet.
      */
-    IP4(int net1, int net2, int net3, int host) : net1(net1), net2(net2), net3(net3), host(host) {};
+    IP4(int net1, int net2, int net3, int host) : net1(net1), net2(net2), net3(net3), host(host) {}
 
     /**
      * @brief Checks if an address is greater than another address.
@@ -64,6 +62,14 @@ public:
     bool operator==(const IP4& ip) const;
 
     /**
+     * @brief Checks if two addresses are different.
+     * @param ip Address to compare with.
+     * @return true If at least one component differs.
+     * @return false Otherwise.
+     */
+    bool operator!=(const IP4& ip) const;
+
+    /**
      * @brief Checks if an address is greater than or equal to another address.
      * @param ip Address to compare with.
      * @return true If this address is greater than or equal to @p ip.
@@ -81,14 +87,16 @@ public:
 
     /**
      * @brief Formats the address.
-     * @return string Address formatted as `a.b.c.d`.
+     * @return std::string Address formatted as `a.b.c.d`.
      */
-    string toString() const;
+    std::string toString() const;
 
     /**
      * @brief Parses the formatted address.
-     * @param strIp String containing four dot-separated integer components.
+     * @param strIp String with exactly four dot-separated decimal components, each between 0 and 255
+     *        (no spaces, signs, empty components or trailing dot).
      * @return IP4 Address created from the parsed components.
+     * @throws std::invalid_argument If the string does not follow that format.
      */
-    static IP4 fromString(const string& strIp);
+    static IP4 fromString(const std::string& strIp);
 };
