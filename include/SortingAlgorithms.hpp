@@ -183,6 +183,84 @@ void mergeSort(std::vector<T>& arr) {
     mergeSort(arr, 0, arr.size() - 1);
 }
 
+// Merge Sort with a custom comparator
+/**
+ * @brief Merge logic of Merge sort using a custom comparator.
+ *
+ * @tparam T any data type
+ * @tparam Compare callable such that comp(a, b) is true if a must go strictly before b
+ * @param arr a vector<T> with the n values to sort
+ * @param lo an int parameter that specifies the lowest index of the current window
+ * @param hi an int parameter that specifies the highest index of the current window
+ * @param mid an int parameter that specifies the mid point of the current window
+ * @param comp the comparator
+ *
+ * @post The window [lo, hi] will contain the data sorted according to comp (stable)
+ */
+template <typename T, typename Compare>
+void mergeBy(std::vector<T>& arr, int lo, int hi, int mid, Compare comp) {
+    std::vector<T> temp;
+
+    int i = lo;
+    int j = mid + 1;
+    while (i <= mid && j <= hi) {
+        // Take from the left unless the right one must go strictly before
+        if (!comp(arr[j], arr[i]))
+            temp.push_back(arr[i++]);
+        else
+            temp.push_back(arr[j++]);
+    }
+
+    while (i <= mid) temp.push_back(arr[i++]);
+    while (j <= hi) temp.push_back(arr[j++]);
+
+    for (int k = lo; k <= hi; k++) {
+        arr[k] = temp[k - lo];
+    }
+}
+
+/**
+ * @brief Sorts the data using the Merge sort method and a custom comparator.
+ * Complexity: O(nlogn)
+ *
+ * @tparam T any data type
+ * @tparam Compare callable such that comp(a, b) is true if a must go strictly before b
+ * @param arr a vector<T> with the n values to sort
+ * @param lo an int parameter that specifies the lowest index of the current window
+ * @param hi an int parameter that specifies the highest index of the current window
+ * @param comp the comparator (use a strict order: > or <, never >= or <=)
+ *
+ * @post The vector<T> will contain the data sorted according to comp (stable)
+ */
+template <typename T, typename Compare>
+void mergeSortBy(std::vector<T>& arr, int lo, int hi, Compare comp) {
+    if (lo >= hi)
+        return;
+
+    int mid = (lo + hi) / 2;
+    mergeSortBy(arr, lo, mid, comp);
+    mergeSortBy(arr, mid + 1, hi, comp);
+    mergeBy(arr, lo, hi, mid, comp);
+}
+
+/**
+ * @brief Sorts the whole vector using the Merge sort method and a custom comparator.
+ * Complexity: O(nlogn)
+ *
+ * @tparam T any data type
+ * @tparam Compare callable such that comp(a, b) is true if a must go strictly before b
+ * @param arr a vector<T> with the n values to sort
+ * @param comp the comparator (use a strict order: > or <, never >= or <=)
+ *
+ * @post The vector<T> will contain the data sorted according to comp (stable)
+ */
+template <typename T, typename Compare>
+void mergeSortBy(std::vector<T>& arr, Compare comp) {
+    if (arr.empty())
+        return;
+    mergeSortBy(arr, 0, (int)arr.size() - 1, comp);
+}
+
 // Quick Sort
 /**
  * @brief Implementation of Lomuto partition algorithm with the pivot at the start.
