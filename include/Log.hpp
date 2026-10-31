@@ -1,6 +1,7 @@
 /**
  * @file Log.hpp
- * @brief Class that represents a system log entry containing a date, IP address, port, domain, and message.
+ * @brief Class that represents a system log entry containing a date, IP address, port, domain, and
+ * message.
  * @author Team 1
  * @date 2026-10-09
  */
@@ -44,6 +45,7 @@ private:
     static CompareMethod compareMethod;
 
 public:
+    Log() : date(Date()), ip(IP4(0, 0, 0, 0)), port(0), domain(""), message("") {};
     Log(Date date, IP4 ip, int port, string domain, string message)
         : date(date), ip(ip), port(port), domain(domain), message(message) {};
     Date getDate() const;

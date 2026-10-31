@@ -25,21 +25,19 @@ struct IPRecord {
      * @param ip The IP4 address
      * @param success Whether the initial access was successful (Accepted)
      */
-    IPRecord(const IP4& ip, bool success) : ip(ip), totalAccesses(1), successfulAccesses(success ? 1 : 0) {}
+    IPRecord(const IP4& ip, bool success)
+        : ip(ip), totalAccesses(1), successfulAccesses(success ? 1 : 0) {}
 
     /**
      * @brief Registers a new access of this IP address
      * @param success Whether the access was successful (Accepted)
      */
-    void registerAccess(bool success) {
-        totalAccesses++;
-        if (success)
-            successfulAccesses++;
-    }
+    void registerAccess(bool success);
 
-    bool operator<(const IPRecord& other) const { return successfulAccesses < other.successfulAccesses; }
-    bool operator>(const IPRecord& other) const { return successfulAccesses > other.successfulAccesses; }
-    bool operator==(const IPRecord& other) const { return successfulAccesses == other.successfulAccesses; }
-    bool operator<=(const IPRecord& other) const { return successfulAccesses <= other.successfulAccesses; }
-    bool operator>=(const IPRecord& other) const { return successfulAccesses >= other.successfulAccesses; }
+    bool operator<(const IPRecord& other) const;
+    bool operator>(const IPRecord& other) const;
+    bool operator==(const IPRecord& other) const;
+    bool operator!=(const IPRecord& other) const;
+    bool operator<=(const IPRecord& other) const;
+    bool operator>=(const IPRecord& other) const;
 };

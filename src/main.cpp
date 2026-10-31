@@ -1,7 +1,8 @@
 /**
  * @file main.cpp
  * @author Team 1
- * @brief Main file that executes all the filtering and sorting methods to sort the "bitacora.txt" file
+ * @brief Main file that executes all the filtering and sorting methods to sort the "bitacora.txt"
+ * file
  * @date 2026-10-09
  */
 
@@ -13,7 +14,9 @@
 #include <vector>
 
 #include "Date.hpp"
+#include "IPRecord.hpp"
 #include "Log.hpp"
+#include "Monitor.hpp"
 #include "SortingAlgorithms.hpp"
 #include "Splay.hpp"
 
@@ -29,6 +32,7 @@ void searchByIp(vector<Log>& logs);
 Date getUserDate();
 IP4 getUserIp4();
 void monitor(vector<Log>& logs);
+void printMonthSummary(SplayTree<IPRecord>& splayTree);
 
 /**
  * @brief main function that sorts and filters the logs stored in a specified text file
@@ -78,6 +82,8 @@ int main() {
             }
             case 4: {
                 // Monitor mode
+                monitor(logs);
+                break;
             }
         }
     }
@@ -284,5 +290,56 @@ void searchByIp(vector<Log>& logs) {
         saveLogsIntoFile(filteredLogs, filteredFilename);
     } catch (const exception& e) {
         cerr << "Error: " << e.what() << endl;
+    }
+}
+
+void printMonthSummary(SplayTree<IPRecord>& splayTree, Month month) {
+    // Get all the IP records accumulated up to that moment
+    vector<IPRecord> records = splayTree.inorder();
+
+    cout << endl << "==== " << monthToString(month) << " ====" << endl;
+    cout << "Total IPs: " << records.size() << endl;
+
+    if (!records.empty()) {
+        // Total accesses monthly
+        int totalAccesses = 0;
+        for (const IPRecord& record : records) totalAccesses += record.totalAccesses;
+
+        float avgAccesses = (float)totalAccesses / records.size();
+        cout << "Average accesses per IP: " << avgAccesses << endl;
+
+        // Print the 5 IPs with the most accesses
+        cout << endl << "Top 5 IPs with the most accesses:" << endl;
+        vector<IPRecord> top5Ips = topIPs(splayTree, 5);
+        for (const IPRecord& record : top5Ips)
+            cout << record.ip.toString() << "\t -> \t" << record.totalAccesses << endl;
+    }
+}
+
+void monitor(vector<Log>& logs) {
+    SplayTree<IPRecord> splayTree;
+    Log prevRecord;
+    bool isFirstLog = true;
+
+    // Read each log one at a time
+    for (const Log& log : logs) {
+        stringstream ss(log.getMessage());
+        string firstWord;
+        ss >> firstWord;
+
+        if (!isFirstLog && prevRecord.getDate().getMonth() - log.getDate().getMonth() != 0) {
+            // New month
+            printMonthSummary(splayTree, prevRecord.getDate().getMonth());
+        }
+
+        bool isSuccessful = firstWord == "Accepted";
+        IPRecord record(log.getIp(), isSuccessful);
+        if (!splayTree.insert(record)) {
+            // Update the totalAccesses
+            splayTree.getRootValue().registerAccess(isSuccessful);
+        }
+
+        prevRecord = log;
+        isFirstLog = false;
     }
 }

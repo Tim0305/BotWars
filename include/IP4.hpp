@@ -93,8 +93,8 @@ public:
 
     /**
      * @brief Parses the formatted address.
-     * @param strIp String with exactly four dot-separated decimal components, each between 0 and 255
-     *        (no spaces, signs, empty components or trailing dot).
+     * @param strIp String with exactly four dot-separated decimal components, each between 0 and
+     * 255 (no spaces, signs, empty components or trailing dot).
      * @return IP4 Address created from the parsed components.
      * @throws std::invalid_argument If the string does not follow that format.
      */

@@ -1,6 +1,7 @@
 /**
  * @file Splay.hpp
- * @brief Header file defining the SplayTree (bottom-up) class with parent links. Values do not repeat.
+ * @brief Header file defining the SplayTree (bottom-up) class with parent links. Values do not
+ * repeat.
  * @author Team 1
  * @date 2026-10-31
  */
@@ -9,6 +10,7 @@
 #define SPLAY_H
 
 #include <iostream>
+#include <vector>
 using namespace std;
 
 template <typename T>
@@ -19,8 +21,6 @@ private:
         Node* left;
         Node* right;
         Node* parent;
-
-        explicit Node(const T& val) : data(val), left(nullptr), right(nullptr), parent(nullptr) {}
     };
 
 public:
@@ -31,10 +31,9 @@ public:
     SplayTree(const SplayTree&) = delete;
     SplayTree& operator=(const SplayTree&) = delete;
 
-    // Searches for x and splays the node where the search ends: x if it is in the tree, otherwise the
-    // last node of its search path (lastOnPath gives it). Returns whether x is in the tree.
-    // An empty tree returns false.
-    // Complexity: amortized O(log n)
+    // Searches for x and splays the node where the search ends: x if it is in the tree, otherwise
+    // the last node of its search path (lastOnPath gives it). Returns whether x is in the tree. An
+    // empty tree returns false. Complexity: amortized O(log n)
     bool contains(T x) {
         if (root == nullptr)
             return false;
@@ -45,9 +44,9 @@ public:
     }
 
     // Inserts x as in a BST, as a new leaf, and splays the new node. Returns true.
-    // lastOnPath(x) gives the node that holds x, or the node where x must hang. A repeated value adds
-    // no node: it splays the node that already holds x and returns false. Set the parent of the new node.
-    // Complexity: amortized O(log n)
+    // lastOnPath(x) gives the node that holds x, or the node where x must hang. A repeated value
+    // adds no node: it splays the node that already holds x and returns false. Set the parent of
+    // the new node. Complexity: amortized O(log n)
     bool insert(T x) {
         if (root == nullptr) {
             root = new Node{x, nullptr, nullptr, nullptr};
@@ -71,10 +70,10 @@ public:
 
     // Removes x. First contains(x): if x is not there, returns false (the tree was still splayed).
     // Otherwise x is the root: delete it, and TL and TR, its two subtrees, become separate trees.
-    // With no TL, TR is the whole tree. Otherwise make TL the tree, splay its maximum (lastOnPath(x)
-    // finds it, because x is greater than every key of TL), and hang TR as the right child of the new
-    // root. Keep every parent link correct. Returns true.
-    // Complexity: amortized O(log n)
+    // With no TL, TR is the whole tree. Otherwise make TL the tree, splay its maximum
+    // (lastOnPath(x) finds it, because x is greater than every key of TL), and hang TR as the right
+    // child of the new root. Keep every parent link correct. Returns true. Complexity: amortized
+    // O(log n)
     bool remove(T x) {
         if (!contains(x))
             return false;
@@ -92,6 +91,7 @@ public:
             Node* max = TL;
             while (max->right != nullptr) max = max->right;
             splay(max);  // Moves max to the root
+            root = max;
             max->right = TR;
             if (TR != nullptr)
                 TR->parent = max;
@@ -100,21 +100,29 @@ public:
         return true;
     }
 
-    // The public methods that print also end the line.
-    void preorder() const {
-        preorder(root);
-        cout << "\n";
+    T& getRootValue() {
+        if (root == nullptr)
+            throw runtime_error("Splay Tree is empty");
+        return root->data;
     }
 
-    void inorder() const {
-        inorder(root);
-        cout << "\n";
+    // The public methods that print also end the line.
+    vector<T> preorder() const {
+        vector<T> dataList;
+        preorder(root, dataList);
+        return dataList;
+    }
+
+    vector<T> inorder() const {
+        vector<T> dataList;
+        inorder(root, dataList);
+        return dataList;
     }
 
 private:
     Node* root = nullptr;
 
-    // b takes the place of a: under the parent of a, or as the root. Already written.
+    // b takes the place of a: under the parent of a, or as the root.
     void replaceInParent(Node* a, Node* b) {
         b->parent = a->parent;
         if (a->parent == nullptr)
@@ -125,10 +133,9 @@ private:
             a->parent->right = b;
     }
 
-    // Rotates right at a: b, the left child of a, rises and a goes down to its right. The right subtree
-    // of b becomes the left subtree of a. Keep every parent link correct; replaceInParent puts b where
-    // a was (it also updates root when a was the root).
-    // Complexity: O(1)
+    // Rotates right at a: b, the left child of a, rises and a goes down to its right. The right
+    // subtree of b becomes the left subtree of a. Keep every parent link correct; replaceInParent
+    // puts b where a was (it also updates root when a was the root). Complexity: O(1)
     void rotateRight(Node* a) {
         if (a == nullptr || a->left == nullptr)
             return;
@@ -159,8 +166,9 @@ private:
 
     // Moves x to the root. While x has a parent P, look at its grandparent G and apply the case:
     //   no G:                          zig (rotate right at P) or zag (rotate left at P)
-    //   P is the left child of G:      zig-zig (right at G, then right at P) or zig-zag (left at P, then right at G)
-    //   P is the right child of G:     zag-zag (left at G, then left at P) or zag-zig (right at P, then left at G)
+    //   P is the left child of G:      zig-zig (right at G, then right at P) or zig-zag (left at P,
+    //   then right at G) P is the right child of G:     zag-zag (left at G, then left at P) or
+    //   zag-zig (right at P, then left at G)
     // Complexity: amortized O(log n)
     void splay(Node* x) {
         if (x == nullptr)
@@ -200,7 +208,7 @@ private:
         }
     }
 
-    // Returns the node with x, or the last node of the search path of x. root is not null. Already written.
+    // Returns the node with x, or the last node of the search path of x. root is not null.
     Node* lastOnPath(T x) const {
         Node* n = root;
         while (x != n->data) {
@@ -212,22 +220,20 @@ private:
         return n;
     }
 
-    // The methods below are already written.
-
-    void preorder(Node* n) const {
+    void preorder(Node* n, vector<T>& dataList) const {
         if (n == nullptr)
             return;
-        cout << n->data << " ";
-        preorder(n->left);
-        preorder(n->right);
+        dataList.push_back(n->data);
+        preorder(n->left, dataList);
+        preorder(n->right, dataList);
     }
 
-    void inorder(Node* n) const {
+    void inorder(Node* n, vector<T>& dataList) const {
         if (n == nullptr)
             return;
-        inorder(n->left);
-        cout << n->data << " ";
-        inorder(n->right);
+        inorder(n->left, dataList);
+        dataList.push_back(n->data);
+        inorder(n->right, dataList);
     }
 
     void destroy(Node* n) {

@@ -42,8 +42,11 @@ bool IP4::operator<(const IP4& ip) const { return (ip > (*this)); }
  * @return false Otherwise.
  */
 bool IP4::operator==(const IP4& ip) const {
-    return this->net1 == ip.net1 && this->net2 == ip.net2 && this->net3 == ip.net3 && this->host == ip.host;
+    return this->net1 == ip.net1 && this->net2 == ip.net2 && this->net3 == ip.net3 &&
+        this->host == ip.host;
 }
+
+bool IP4::operator!=(const IP4& ip) const { return !(*this == ip); }
 
 /**
  * @brief Checks if this address is greater than or equal to another address.
@@ -99,7 +102,8 @@ IP4 IP4::fromString(const string& strIp) {
 
         // Only 1 to 3 digits, so stoi can never overflow
         if (token.empty() || token.size() > 3 ||
-            !std::all_of(token.begin(), token.end(), [](unsigned char c) { return std::isdigit(c); }))
+            !std::all_of(token.begin(), token.end(),
+                         [](unsigned char c) { return std::isdigit(c); }))
             throw invalid_argument("Invalid ip");
 
         parts[i] = std::stoi(token);
