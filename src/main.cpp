@@ -33,6 +33,7 @@ Date getUserDate();
 IP4 getUserIp4();
 void monitor(vector<Log>& logs);
 void printMonthSummary(SplayTree<IPRecord>& splayTree);
+void printTop15IpRecords(SplayTree<IPRecord>& splayTree);
 
 /**
  * @brief main function that sorts and filters the logs stored in a specified text file
@@ -305,14 +306,28 @@ void printMonthSummary(SplayTree<IPRecord>& splayTree, Month month) {
         int totalAccesses = 0;
         for (const IPRecord& record : records) totalAccesses += record.totalAccesses;
 
+        // Get the average number of accesses per IP
         float avgAccesses = (float)totalAccesses / records.size();
         cout << "Average accesses per IP: " << avgAccesses << endl;
 
         // Print the 5 IPs with the most accesses
         cout << endl << "Top 5 IPs with the most accesses:" << endl;
-        vector<IPRecord> top5Ips = topIPs(splayTree, 5);
-        for (const IPRecord& record : top5Ips)
-            cout << record.ip.toString() << "\t -> \t" << record.totalAccesses << endl;
+        vector<IPRecord> top5IPs = topIPs(splayTree, 5);
+        for (const IPRecord& record : top5IPs)
+            cout << record.ip.toString() << "\t | \t" << record.totalAccesses << endl;
+    }
+}
+
+void printTop15IpRecords(SplayTree<IPRecord>& splayTree) {
+    // Get all the IP records
+    vector<IPRecord> top15IPs = topIPs(splayTree, 15);
+
+    cout << endl << "==== TOP 15 IPs ====" << endl;
+
+    for (const IPRecord& record : top15IPs) {
+        cout << record.ip.toString() << "\t | \t" << record.totalAccesses << "\t | \t"
+             << record.successfulAccesses << "\t | \t"
+             << (float)record.successfulAccesses / record.totalAccesses << "%" << endl;
     }
 }
 
@@ -342,4 +357,12 @@ void monitor(vector<Log>& logs) {
         prevRecord = log;
         isFirstLog = false;
     }
+
+    // Print the last report of the current month
+    printMonthSummary(splayTree, prevRecord.getDate().getMonth());
+
+    // Print top 15 IP records
+    printTop15IpRecords(splayTree);
+
+    // Queries by IP range
 }
