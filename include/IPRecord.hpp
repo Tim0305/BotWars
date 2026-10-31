@@ -37,9 +37,9 @@ struct IPRecord {
             successfulAccesses++;
     }
 
-    bool operator<(const IPRecord& other) const { return ip < other.ip; }
-    bool operator>(const IPRecord& other) const { return ip > other.ip; }
-    bool operator==(const IPRecord& other) const { return ip == other.ip; }
-    bool operator<=(const IPRecord& other) const { return ip <= other.ip; }
-    bool operator>=(const IPRecord& other) const { return ip >= other.ip; }
+    bool operator<(const IPRecord& other) const { return successfulAccesses < other.successfulAccesses; }
+    bool operator>(const IPRecord& other) const { return successfulAccesses > other.successfulAccesses; }
+    bool operator==(const IPRecord& other) const { return successfulAccesses == other.successfulAccesses; }
+    bool operator<=(const IPRecord& other) const { return successfulAccesses <= other.successfulAccesses; }
+    bool operator>=(const IPRecord& other) const { return successfulAccesses >= other.successfulAccesses; }
 };
