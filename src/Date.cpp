@@ -53,7 +53,7 @@ string monthToString(const Month& month) {
 /**
  * @brief Parses a string and converts it to its corresponding Month enum value.
  *
- * @param strMonth A constant reference to the string containing the month name/abbreviation.
+ * @param str A constant reference to the string containing the month abbreviation.
  *
  * @pre The string should contain a recognizable month format.
  * @post Maps the text to its matching Month enum.
@@ -91,6 +91,8 @@ Month stringToMonth(const string& str) {
 
 /**
  * @brief Construct a new Date object using the default parameter
+ * 
+ * @post Creates a placeholder date (day 0, month Unknown, 00:00:00).
  */
 Date::Date() {
     this->day = 0;
@@ -111,6 +113,8 @@ Date::Date() {
  *
  * @pre Input values must form a valid date and time combination.
  * @post A new Date instance is initialized with the specified values.
+ * 
+ * @throws std::invalid_argument If the provided date and time values are invalid.
  */
 Date::Date(int day, Month month, int hour, int minutes, int seconds) {
     this->day = day;
