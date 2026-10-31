@@ -6,16 +6,10 @@
  */
 #include "IP4.hpp"
 
-#include <algorithm>
-#include <cctype>
 #include <sstream>
-#include <stdexcept>
-#include <tuple>
+#include <vector>
 
-using std::invalid_argument;
-using std::string;
-using std::stringstream;
-using std::tie;
+using namespace std;
 
 /**
  * @brief Checks if this address is greater than another address.
@@ -24,7 +18,13 @@ using std::tie;
  * @return false Otherwise.
  */
 bool IP4::operator>(const IP4& ip) const {
-    return tie(net1, net2, net3, host) > tie(ip.net1, ip.net2, ip.net3, ip.host);
+    if (this->net1 != ip.net1)
+        return this->net1 > ip.net1;
+    if (this->net2 != ip.net2)
+        return this->net2 > ip.net2;
+    if (this->net3 != ip.net3)
+        return this->net3 > ip.net3;
+    return this->host > ip.host;
 }
 
 /**
@@ -33,9 +33,7 @@ bool IP4::operator>(const IP4& ip) const {
  * @return true If @p ip is greater than this address.
  * @return false Otherwise.
  */
-bool IP4::operator<(const IP4& ip) const {
-    return tie(net1, net2, net3, host) < tie(ip.net1, ip.net2, ip.net3, ip.host);
-}
+bool IP4::operator<(const IP4& ip) const { return (ip > (*this)); }
 
 /**
  * @brief Checks if all four components match another address.
@@ -44,16 +42,8 @@ bool IP4::operator<(const IP4& ip) const {
  * @return false Otherwise.
  */
 bool IP4::operator==(const IP4& ip) const {
-    return tie(net1, net2, net3, host) == tie(ip.net1, ip.net2, ip.net3, ip.host);
+    return this->net1 == ip.net1 && this->net2 == ip.net2 && this->net3 == ip.net3 && this->host == ip.host;
 }
-
-/**
- * @brief Checks if at least one component differs from another address.
- * @param ip Address to compare with.
- * @return true If the addresses are different.
- * @return false Otherwise.
- */
-bool IP4::operator!=(const IP4& ip) const { return !(*this == ip); }
 
 /**
  * @brief Checks if this address is greater than or equal to another address.
