@@ -23,11 +23,12 @@ int showMenu();
 void loadLogs(vector<Log>& logs, const string& filename);
 void sortLogs(vector<Log>& logs);
 char getSortingOption();
-void saveLogsIntoFile();
+void saveLogsIntoFile(vector<Log>& logs, const string& filename);
 void searchByDate(vector<Log>& logs);
 void searchByIp(vector<Log>& logs);
 Date getUserDate();
 IP4 getUserIp4();
+void monitor(vector<Log>& logs);
 
 /**
  * @brief main function that sorts and filters the logs stored in a specified text file
@@ -133,7 +134,7 @@ void loadLogs(vector<Log>& logs, const string& filename) {
 
     // Opening file
     if (!file.is_open())
-        throw runtime_error("Error: could not open '" + filename + "'");
+        throw runtime_error("Could not open '" + filename + "'");
 
     // Reading file
     string line;
@@ -200,7 +201,7 @@ void saveLogsIntoFile(vector<Log>& logs, const string& filename) {
         }
         sortedFile.close();
     } else
-        throw runtime_error("Error: could not create txt file");
+        throw runtime_error("Could not create txt file");
 }
 
 Date getUserDate() {

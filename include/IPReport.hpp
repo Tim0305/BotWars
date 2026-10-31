@@ -33,12 +33,12 @@ inline bool byAccessesDesc(const IPRecord& a, const IPRecord& b) { return a.tota
  * @return std::vector<IPRecord> Up to n records sorted by totalAccesses, highest first.
  *         It has fewer than n elements if the tree has fewer different IPs.
  */
-inline std::vector<IPRecord> topIPs(const SplayTree& tree, std::size_t n) {
-    std::vector<IPRecord> records = tree.getAllRecords();
+// inline std::vector<IPRecord> topIPs(const SplayTree& tree, std::size_t n) {
+//     std::vector<IPRecord> records = tree.getAllRecords();
 
-    mergeSortBy(records, byAccessesDesc);
+//     mergeSortBy(records, byAccessesDesc);
 
-    if (records.size() > n)
-        records.erase(records.begin() + n, records.end());
-    return records;
-}
+//     if (records.size() > n)
+//         records.erase(records.begin() + n, records.end());
+//     return records;
+// }
