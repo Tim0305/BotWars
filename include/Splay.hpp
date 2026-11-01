@@ -125,6 +125,8 @@ public:
         return dataList;
     }
 
+    int height() const { return getHeight(root); }
+
 private:
     Node* root = nullptr;
 
@@ -262,6 +264,12 @@ private:
         destroy(n->left);
         destroy(n->right);
         delete n;
+    }
+
+    int getHeight(Node* n) const {
+        if (n == nullptr)
+            return 0;
+        return 1 + std::max(getHeight(n->left), getHeight(n->right));
     }
 };
 

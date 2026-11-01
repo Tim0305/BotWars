@@ -6,9 +6,12 @@
  * @date 2026-10-09
  */
 
+#include <algorithm>
+#include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <random>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -21,6 +24,7 @@
 #include "Splay.hpp"
 
 using namespace std;
+using namespace std::chrono;
 
 int showMenu();
 void loadLogs(vector<Log>& logs, const string& filename);
@@ -37,6 +41,11 @@ void printWriteTop15IpRecords(const SplayTree<IPRecord>& splayTree, ofstream& ou
 void printWriteIpRangeQuery(const SplayTree<IPRecord>& splayTree, const IP4& startIp,
                             const IP4& endIp, ofstream& outputFile);
 void printWriteTopIpBlockQuery(const SplayTree<IPRecord>& splayTree, ofstream& outputFile);
+void monitorTest();
+char monitorTestMenu();
+void ascendingOrder(int N);
+void descendingOrder(int N);
+void shuffled(int N);
 
 /**
  * @brief main function that sorts and filters the logs stored in a specified text file
@@ -46,7 +55,6 @@ int main() {
     bool appIsRunning = true;
 
     cout << "Monitor -> use file 'bitacora_ordenada_date.txt'" << endl;
-    cout << "Monitor test -> use file 'monitor_test.txt'" << endl;
 
     // Get the filename
     string bitacoraFilename;
@@ -92,6 +100,11 @@ int main() {
                 monitor(logs);
                 break;
             }
+            case 5: {
+                // Monitor test
+                monitorTest();
+                break;
+            }
         }
     }
 
@@ -108,11 +121,12 @@ int showMenu() {
         cout << "[2] Search by date" << endl;
         cout << "[3] Search by ip address" << endl;
         cout << "[4] Monitor" << endl;
+        cout << "[5] Monitor Test" << endl;
         cout << "[0] Exit" << endl;
         cout << "> ";
         cin >> option;
 
-        if (option < 0 || option > 4)
+        if (option < 0 || option > 5)
             cout << endl << "Invalid option. Try again" << endl;
         else
             isValid = true;
@@ -382,4 +396,123 @@ void monitor(vector<Log>& logs) {
     // Query for the most accesed ip block
     printWriteTopIpBlockQuery(splayTree, outputFile);
     outputFile.close();
+}
+
+char monitorTestMenu() {
+    char option;
+    bool isValid = false;
+
+    do {
+        cout << endl;
+        cout << "\t[a] Ascending order" << endl;
+        cout << "\t[b] Descending order" << endl;
+        cout << "\t[c] Shuffled" << endl;
+        cout << "> ";
+        cin >> option;
+
+        if (option < 'a' || option > 'c')
+            cout << endl << "Invalid option. Try again" << endl;
+        else
+            isValid = true;
+    } while (!isValid);
+
+    return option;
+}
+
+void ascendingOrder(int N) {
+    SplayTree<IPRecord> splayTree;
+
+    cout << "==== Ascending order ====" << endl;
+    auto start = high_resolution_clock::now();
+
+    for (int i = 0; i < N; ++i) {
+        // Each net part has to be within 0 and 255
+        int d = i & 0xFF;
+        int c = (i >> 8) & 0xFF;
+        int b = (i >> 16) & 0xFF;
+        int a = (i >> 24) & 0xFF;
+
+        splayTree.insert(IPRecord(IP4(a, b, c, d), true));
+    }
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Splay Tree height: " << splayTree.height() << endl;
+    cout << ">> Time (Ascending): " << duration.count() << " us" << endl;
+}
+
+void descendingOrder(int N) {
+    SplayTree<IPRecord> splayTree;
+
+    cout << "==== Descending order ====" << endl;
+    auto start = high_resolution_clock::now();
+
+    for (int i = N - 1; i >= 0; --i) {
+        // Each net part has to be within 0 and 255
+        int d = i & 0xFF;
+        int c = (i >> 8) & 0xFF;
+        int b = (i >> 16) & 0xFF;
+        int a = (i >> 24) & 0xFF;
+
+        splayTree.insert(IPRecord(IP4(a, b, c, d), true));
+    }
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Splay Tree height: " << splayTree.height() << endl;
+    cout << ">> Time (Descending): " << duration.count() << " us" << endl;
+}
+
+void shuffled(int N) {
+    SplayTree<IPRecord> splayTree;
+    vector<IPRecord> records;
+    records.reserve(N);
+
+    for (int i = 0; i < N; ++i) {
+        // Each net part has to be within 0 and 255
+        int d = i & 0xFF;
+        int c = (i >> 8) & 0xFF;
+        int b = (i >> 16) & 0xFF;
+        int a = (i >> 24) & 0xFF;
+        records.push_back(IPRecord(IP4(a, b, c, d), true));
+    }
+
+    // Shuffle
+    auto rng = default_random_engine(42);
+    shuffle(records.begin(), records.end(), rng);
+
+    cout << "--- Shuffled ---" << "\n";
+
+    auto start = high_resolution_clock::now();
+
+    for (int i = 0; i < N; ++i) {
+        splayTree.insert(records[i]);
+    }
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    cout << "Splay Tree height: " << splayTree.height() << endl;
+    cout << ">> Time (Shuffled): " << duration.count() << " us" << endl;
+}
+
+void monitorTest() {
+    char option = monitorTestMenu();
+    int N;
+    cout << "Number of registers: ";
+    cin >> N;
+
+    switch (option) {
+        case 'a': {
+            ascendingOrder(N);
+            break;
+        }
+        case 'b': {
+            descendingOrder(N);
+            break;
+        }
+        case 'c': {
+            shuffled(N);
+            break;
+        }
+    }
 }
