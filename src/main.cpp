@@ -1,9 +1,8 @@
 /**
  * @file main.cpp
  * @author Team 1
- * @brief Main file that executes all the filtering and sorting methods to sort the "bitacora.txt"
- * file
- * @date 2026-10-09
+ * @brief Main file that sorts logs, searches ranges and runs the IP monitor and its tests.
+ * @date 2026-10-30
  */
 
 #include <algorithm>
@@ -26,30 +25,161 @@
 using namespace std;
 using namespace std::chrono;
 
+/**
+ * @brief Shows the main menu and reads the selected option.
+ * @return int An option between 0 and 5.
+ */
 int showMenu();
+
+/**
+ * @brief Reads a file and adds its logs to the vector.
+ * @param logs Vector where the logs are added.
+ * @param filename Name of the file to read.
+ * @post Keeps the logs in the same order as the file.
+ * @throws std::runtime_error If the file cannot be opened.
+ * @throws std::invalid_argument If a log contains invalid values.
+ * @throws std::out_of_range If a port number is too large for an int.
+ */
 void loadLogs(vector<Log>& logs, const string& filename);
+
+/**
+ * @brief Sorts the logs by date or IP and asks whether to save them.
+ * @param logs Vector of logs to sort.
+ * @post The vector is sorted in ascending order using the selected field.
+ * The selected field is also used for later Log comparisons.
+ */
 void sortLogs(vector<Log>& logs);
+
+/**
+ * @brief Asks the user how to sort the logs.
+ * @return char 'a' to sort by date or 'b' to sort by IP.
+ */
 char getSortingOption();
+
+/**
+ * @brief Saves the logs into a text file, one log per line.
+ * @param logs Vector of logs to save; it is not changed.
+ * @param filename Name of the output file.
+ * @post Replaces any previous contents of the file.
+ * @throws std::runtime_error If the file cannot be created.
+ */
 void saveLogsIntoFile(vector<Log>& logs, const string& filename);
+
+/**
+ * @brief Finds logs between two dates entered by the user, including both dates.
+ * @param logs Vector of logs to search; it is not changed.
+ * @post Prints the results and saves them in filtered_logs_date.txt.
+ * The logs do not need to be sorted. Any previous file contents are replaced.
+ */
 void searchByDate(vector<Log>& logs);
+
+/**
+ * @brief Finds logs between two IP addresses, including both addresses.
+ * @param logs Vector of logs to search; it is not changed.
+ * @post Prints the results and saves them in filtered_logs_ip.txt.
+ * The logs do not need to be sorted. Any previous file contents are replaced.
+ */
 void searchByIp(vector<Log>& logs);
+
+/**
+ * @brief Asks the user for a date in Month Day HH:MM:SS format.
+ * @return Date The date entered by the user.
+ * @throws std::invalid_argument If the date values are invalid.
+ */
 Date getUserDate();
+
+/**
+ * @brief Asks the user for an IP address in a.b.c.d format.
+ * @return IP4 The address entered by the user.
+ * @throws std::invalid_argument If the address is invalid.
+ */
 IP4 getUserIp4();
-void monitor(vector<Log>& logs);
-void printWriteMonthSummary(const SplayTree<IPRecord>& splayTree, ofstream& outputFile);
+
+/**
+ * @brief Counts accesses by IP and shows reports and IP range searches.
+ * @param logs Vector of logs to read.
+ * @pre The vector must not be empty and must be sorted by date.
+ * @post Prints the reports and replaces the contents of output.txt.
+ * @details Reports include all accesses read so far, including earlier months.
+ * An access is successful when the first word of its message is "Accepted".
+ * The final block search uses the block of the most accessed IP.
+ */
+void monitor(const vector<Log>& logs);
+
+/**
+ * @brief Prints the report with all accesses read so far and writes it to the output file.
+ * @param splayTree Tree with all IP records read so far.
+ * @param month Month shown in the report title.
+ * @param outputFile Open file where the report is written.
+ * @details Includes accesses from earlier months, not just the named month.
+ */
+void printWriteMonthSummary(const SplayTree<IPRecord>& splayTree, const Month month,
+                            ofstream& outputFile);
+
+/**
+ * @brief Prints the top 15 IPs and writes them to the output file.
+ * @param splayTree Tree with the IP records.
+ * @param outputFile Open file where the report is written.
+ */
 void printWriteTop15IpRecords(const SplayTree<IPRecord>& splayTree, ofstream& outputFile);
+
+/**
+ * @brief Prints the IP range report and writes it to the output file.
+ * @param splayTree Tree with the IP records.
+ * @param startIp First IP in the range, included in the search.
+ * @param endIp Last IP in the range, included in the search.
+ * @param outputFile Open file where the report is written.
+ */
 void printWriteIpRangeQuery(const SplayTree<IPRecord>& splayTree, const IP4& startIp,
                             const IP4& endIp, ofstream& outputFile);
+
+/**
+ * @brief Prints the block of the most accessed IP and writes it to the output file.
+ * @param splayTree Tree with the IP records.
+ * @param outputFile Open file where the report is written.
+ * @pre The tree must contain at least one record.
+ */
 void printWriteTopIpBlockQuery(const SplayTree<IPRecord>& splayTree, ofstream& outputFile);
+
+/**
+ * @brief Asks for the insertion order and number of records, then runs the test.
+ * @pre The number of records entered by the user must be zero or greater.
+ */
 void monitorTest();
+
+/**
+ * @brief Asks the user which insertion order to test.
+ * @return char 'a' for ascending, 'b' for descending or 'c' for shuffled order.
+ */
 char monitorTestMenu();
+
+/**
+ * @brief Inserts IP records in ascending order to measure the time taken.
+ * @param N Number of records to insert; it must be zero or greater.
+ * @post Prints the insertion time in microseconds and the tree height.
+ * The measured time includes creating the records.
+ */
 void ascendingOrder(int N);
+
+/**
+ * @brief Inserts IP records in descending order to measure the time taken.
+ * @param N Number of records to insert; it must be zero or greater.
+ * @post Prints the insertion time in microseconds and the tree height.
+ * The measured time includes creating the records.
+ */
 void descendingOrder(int N);
+
+/**
+ * @brief Inserts IP records in shuffled order to measure the time taken.
+ * @param N Number of records to insert; it must be zero or greater.
+ * @post Prints the insertion time in microseconds and the tree height.
+ * The measured time does not include creating or shuffling the records.
+ */
 void shuffled(int N);
 
 /**
- * @brief main function that sorts and filters the logs stored in a specified text file
- * @return int
+ * @brief Loads the log file and shows the application menu.
+ * @return int 0 when the program finishes, or 1 if the file cannot be loaded.
  */
 int main() {
     bool appIsRunning = true;
@@ -111,6 +241,10 @@ int main() {
     return 0;
 }
 
+/**
+ * @brief Shows the main menu and reads the selected option.
+ * @return int An option between 0 and 5.
+ */
 int showMenu() {
     int option;
     bool isValid = false;
@@ -135,6 +269,10 @@ int showMenu() {
     return option;
 }
 
+/**
+ * @brief Asks the user how to sort the logs.
+ * @return char 'a' to sort by date or 'b' to sort by IP.
+ */
 char getSortingOption() {
     bool isValid = false;
     char sortingOption = ' ';
@@ -156,6 +294,15 @@ char getSortingOption() {
     return sortingOption;
 }
 
+/**
+ * @brief Reads a file and adds its logs to the vector.
+ * @param logs Vector where the logs are added.
+ * @param filename Name of the file to read.
+ * @post Keeps the logs in the same order as the file.
+ * @throws std::runtime_error If the file cannot be opened.
+ * @throws std::invalid_argument If a log contains invalid values.
+ * @throws std::out_of_range If a port number is too large for an int.
+ */
 void loadLogs(vector<Log>& logs, const string& filename) {
     ifstream file(filename);
 
@@ -172,6 +319,12 @@ void loadLogs(vector<Log>& logs, const string& filename) {
     file.close();
 }
 
+/**
+ * @brief Sorts the logs by date or IP and asks whether to save them.
+ * @param logs Vector of logs to sort.
+ * @post The vector is sorted in ascending order using the selected field.
+ * The selected field is also used for later Log comparisons.
+ */
 void sortLogs(vector<Log>& logs) {
     char sortingOption = getSortingOption();
 
@@ -219,6 +372,13 @@ void sortLogs(vector<Log>& logs) {
     }
 }
 
+/**
+ * @brief Saves the logs into a text file, one log per line.
+ * @param logs Vector of logs to save; it is not changed.
+ * @param filename Name of the output file.
+ * @post Replaces any previous contents of the file.
+ * @throws std::runtime_error If the file cannot be created.
+ */
 void saveLogsIntoFile(vector<Log>& logs, const string& filename) {
     ofstream sortedFile(filename);
 
@@ -231,6 +391,11 @@ void saveLogsIntoFile(vector<Log>& logs, const string& filename) {
         throw runtime_error("Could not create txt file");
 }
 
+/**
+ * @brief Asks the user for a date in Month Day HH:MM:SS format.
+ * @return Date The date entered by the user.
+ * @throws std::invalid_argument If the date values are invalid.
+ */
 Date getUserDate() {
     string dateStr;
     cout << "Enter the date and time (Month Day HH:MM:SS format): ";
@@ -238,6 +403,11 @@ Date getUserDate() {
     return Date::fromString(dateStr);
 }
 
+/**
+ * @brief Asks the user for an IP address in a.b.c.d format.
+ * @return IP4 The address entered by the user.
+ * @throws std::invalid_argument If the address is invalid.
+ */
 IP4 getUserIp4() {
     string ipStr;
     cout << "Enter the ip (192.168.1.2 format): ";
@@ -245,6 +415,12 @@ IP4 getUserIp4() {
     return IP4::fromString(ipStr);
 }
 
+/**
+ * @brief Finds logs between two dates entered by the user, including both dates.
+ * @param logs Vector of logs to search; it is not changed.
+ * @post Prints the results and saves them in filtered_logs_date.txt.
+ * The logs do not need to be sorted. Any previous file contents are replaced.
+ */
 void searchByDate(vector<Log>& logs) {
     try {
         // Obtain start and end date
@@ -279,6 +455,12 @@ void searchByDate(vector<Log>& logs) {
     }
 }
 
+/**
+ * @brief Finds logs between two IP addresses, including both addresses.
+ * @param logs Vector of logs to search; it is not changed.
+ * @post Prints the results and saves them in filtered_logs_ip.txt.
+ * The logs do not need to be sorted. Any previous file contents are replaced.
+ */
 void searchByIp(vector<Log>& logs) {
     try {
         // Obtain start and end ip
@@ -314,6 +496,13 @@ void searchByIp(vector<Log>& logs) {
     }
 }
 
+/**
+ * @brief Prints the report with all accesses read so far and writes it to the output file.
+ * @param splayTree Tree with all IP records read so far.
+ * @param month Month shown in the report title.
+ * @param outputFile Open file where the report is written.
+ * @details Includes accesses from earlier months, not just the named month.
+ */
 void printWriteMonthSummary(const SplayTree<IPRecord>& splayTree, const Month month,
                             ofstream& outputFile) {
     string summary = monthSummary(splayTree, month);
@@ -321,12 +510,24 @@ void printWriteMonthSummary(const SplayTree<IPRecord>& splayTree, const Month mo
     outputFile << summary;
 }
 
+/**
+ * @brief Prints the top 15 IPs and writes them to the output file.
+ * @param splayTree Tree with the IP records.
+ * @param outputFile Open file where the report is written.
+ */
 void printWriteTop15IpRecords(const SplayTree<IPRecord>& splayTree, ofstream& outputFile) {
     string top15Str = top15IpRecords(splayTree);
     cout << top15Str;
     outputFile << top15Str;
 }
 
+/**
+ * @brief Prints the IP range report and writes it to the output file.
+ * @param splayTree Tree with the IP records.
+ * @param startIp First IP in the range, included in the search.
+ * @param endIp Last IP in the range, included in the search.
+ * @param outputFile Open file where the report is written.
+ */
 void printWriteIpRangeQuery(const SplayTree<IPRecord>& splayTree, const IP4& startIp,
                             const IP4& endIp, ofstream& outputFile) {
     string result = queryByIpRange(splayTree, startIp, endIp);
@@ -334,13 +535,28 @@ void printWriteIpRangeQuery(const SplayTree<IPRecord>& splayTree, const IP4& sta
     outputFile << result;
 }
 
+/**
+ * @brief Prints the block of the most accessed IP and writes it to the output file.
+ * @param splayTree Tree with the IP records.
+ * @param outputFile Open file where the report is written.
+ * @pre The tree must contain at least one record.
+ */
 void printWriteTopIpBlockQuery(const SplayTree<IPRecord>& splayTree, ofstream& outputFile) {
     string result = queryMostAccessedIpBlock(splayTree);
     cout << result;
     outputFile << result;
 }
 
-void monitor(vector<Log>& logs) {
+/**
+ * @brief Counts accesses by IP and shows reports and IP range searches.
+ * @param logs Vector of logs to read; it is not changed.
+ * @pre The vector must not be empty and must be sorted by date.
+ * @post Prints the reports and replaces the contents of output.txt.
+ * @details Reports include all accesses read so far, including earlier months.
+ * An access is successful when the first word of its message is "Accepted".
+ * The final block search uses the block of the most accessed IP.
+ */
+void monitor(const vector<Log>& logs) {
     SplayTree<IPRecord> splayTree;
     Log prevRecord;
     bool isFirstLog = true;
@@ -365,7 +581,7 @@ void monitor(vector<Log>& logs) {
         bool isSuccessful = firstWord == "Accepted";
         IPRecord record(log.getIp(), isSuccessful);
         if (!splayTree.insert(record)) {
-            // Update the totalAccesses
+            // Update total accesses and, when applicable, successful accesses
             splayTree.getRootValue().registerAccess(isSuccessful);
         }
 
@@ -373,7 +589,7 @@ void monitor(vector<Log>& logs) {
         isFirstLog = false;
     }
 
-    // Print the last report of the current month
+    // Print the last report with all accesses read so far
     printWriteMonthSummary(splayTree, prevRecord.getDate().getMonth(), outputFile);
 
     // Print top 15 IP records
@@ -393,11 +609,15 @@ void monitor(vector<Log>& logs) {
         cerr << "Error: " << e.what() << endl;
     }
 
-    // Query for the most accesed ip block
+    // Query the block of the most accessed IP
     printWriteTopIpBlockQuery(splayTree, outputFile);
     outputFile.close();
 }
 
+/**
+ * @brief Asks the user which insertion order to test.
+ * @return char 'a' for ascending, 'b' for descending or 'c' for shuffled order.
+ */
 char monitorTestMenu() {
     char option;
     bool isValid = false;
@@ -419,6 +639,12 @@ char monitorTestMenu() {
     return option;
 }
 
+/**
+ * @brief Inserts IP records in ascending order to measure the time taken.
+ * @param N Number of records to insert; it must be zero or greater.
+ * @post Prints the insertion time in microseconds and the tree height.
+ * The measured time includes creating the records.
+ */
 void ascendingOrder(int N) {
     SplayTree<IPRecord> splayTree;
 
@@ -441,6 +667,12 @@ void ascendingOrder(int N) {
     cout << ">> Time (Ascending): " << duration.count() << " us" << endl;
 }
 
+/**
+ * @brief Inserts IP records in descending order to measure the time taken.
+ * @param N Number of records to insert; it must be zero or greater.
+ * @post Prints the insertion time in microseconds and the tree height.
+ * The measured time includes creating the records.
+ */
 void descendingOrder(int N) {
     SplayTree<IPRecord> splayTree;
 
@@ -463,6 +695,12 @@ void descendingOrder(int N) {
     cout << ">> Time (Descending): " << duration.count() << " us" << endl;
 }
 
+/**
+ * @brief Inserts IP records in shuffled order to measure the time taken.
+ * @param N Number of records to insert; it must be zero or greater.
+ * @post Prints the insertion time in microseconds and the tree height.
+ * The measured time does not include creating or shuffling the records.
+ */
 void shuffled(int N) {
     SplayTree<IPRecord> splayTree;
     vector<IPRecord> records;
@@ -495,6 +733,10 @@ void shuffled(int N) {
     cout << ">> Time (Shuffled): " << duration.count() << " us" << endl;
 }
 
+/**
+ * @brief Asks for the insertion order and number of records, then runs the test.
+ * @pre The number of records entered by the user must be zero or greater.
+ */
 void monitorTest() {
     char option = monitorTestMenu();
     int N;

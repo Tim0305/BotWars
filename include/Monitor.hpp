@@ -16,26 +16,24 @@
 using namespace std;
 
 /**
- * @brief Comparator that sorts IPRecords by totalAccesses from highest to lowest.
- * @details It does not use the IPRecord operators (those compare by IP for the SplayTree).
- * Ties are left as they come, so with getAllRecords() they stay in ascending IP order
- * (mergeSortBy is stable).
+ * @brief Compares two IP records by their total number of accesses.
  * @param a First record.
  * @param b Second record.
- * @return true If a has strictly more accesses than b.
+ * @return true If a has more accesses than b.
  */
 inline bool byAccessesDesc(const IPRecord& a, const IPRecord& b) {
     return a.totalAccesses > b.totalAccesses;
 }
 
 /**
- * @brief Gets the n most accessed IP addresses of the tree.
+ * @brief Gets the n IP addresses with the most accesses.
  * Complexity: O(mlogm), where m is the number of different IPs in the tree.
  *
- * @param tree The tree with the records (it is not modified).
- * @param n How many IPs to return (5, 15, ...).
- * @return std::vector<IPRecord> Up to n records sorted by totalAccesses, highest first.
- *         It has fewer than n elements if the tree has fewer different IPs.
+ * @param splayTree Tree with the IP records; it is not changed.
+ * @param n Maximum number of IPs to return.
+ * @pre n must be zero or greater.
+ * @return vector<IPRecord> Up to n records, from most to least accesses.
+ * IPs with the same number of accesses are returned in ascending IP order.
  */
 vector<IPRecord> topIPs(const SplayTree<IPRecord>& splayTree, const int n) {
     vector<IPRecord> records = splayTree.inorder();
@@ -48,6 +46,14 @@ vector<IPRecord> topIPs(const SplayTree<IPRecord>& splayTree, const int n) {
     return records;
 }
 
+/**
+ * @brief Creates the report shown at the end of a month.
+ * @param splayTree Tree with all IP records read so far.
+ * @param month Month shown in the report title.
+ * @return string Number of different IPs, average accesses and top 5 IPs.
+ * If the tree is empty, returns only the title and "Total IPs: 0".
+ * @details Includes accesses from earlier months, not just the named month.
+ */
 string monthSummary(const SplayTree<IPRecord>& splayTree, const Month month) {
     stringstream ss;
 
@@ -58,7 +64,6 @@ string monthSummary(const SplayTree<IPRecord>& splayTree, const Month month) {
     ss << "Total IPs: " << records.size() << endl;
 
     if (!records.empty()) {
-        // Total accesses monthly
         int totalAccesses = 0;
         for (const IPRecord& record : records) totalAccesses += record.totalAccesses;
 
@@ -66,7 +71,7 @@ string monthSummary(const SplayTree<IPRecord>& splayTree, const Month month) {
         float avgAccesses = (float)totalAccesses / records.size();
         ss << "Average accesses per IP: " << fixed << setprecision(2) << avgAccesses << endl;
 
-        // Print the 5 IPs with the most accesses
+        // Add up to five IPs with the most accesses
         ss << endl << "Top 5 IPs with the most accesses:" << endl;
         vector<IPRecord> top5IPs = topIPs(splayTree, 5);
         for (const IPRecord& record : top5IPs)
@@ -76,10 +81,17 @@ string monthSummary(const SplayTree<IPRecord>& splayTree, const Month month) {
     return ss.str();
 }
 
+/**
+ * @brief Creates a report of the 15 IPs with the most accesses.
+ * @param splayTree Tree with the IP records.
+ * @pre Each record must have at least one access.
+ * @return string Up to 15 IPs with their total accesses, successful accesses
+ * and percentage of successful accesses. Ties use ascending IP order.
+ */
 string top15IpRecords(const SplayTree<IPRecord>& splayTree) {
     stringstream ss;
 
-    // Get all the IP records
+    // Get up to fifteen records ranked by access count
     vector<IPRecord> top15IPs = topIPs(splayTree, 15);
 
     ss << endl << "==== TOP 15 IPs ====" << endl;
@@ -94,6 +106,14 @@ string top15IpRecords(const SplayTree<IPRecord>& splayTree) {
     return ss.str();
 }
 
+/**
+ * @brief Creates a report of the IPs between two IP addresses.
+ * @param splayTree Tree with the IP records; it is not changed.
+ * @param startIp First IP in the range, included in the search.
+ * @param endIp Last IP in the range, included in the search.
+ * @return string Matching IPs in ascending order, their counters and total accesses.
+ * Returns a report with zero matches if no IP is found or startIp is greater than endIp.
+ */
 string queryByIpRange(const SplayTree<IPRecord>& splayTree, const IP4& startIp, const IP4& endIp) {
     stringstream ss;
 
@@ -118,6 +138,15 @@ string queryByIpRange(const SplayTree<IPRecord>& splayTree, const IP4& startIp, 
     return ss.str();
 }
 
+/**
+ * @brief Creates a report of the block containing the most accessed IP.
+ * @param splayTree Tree with the IP records; it is not changed.
+ * @pre The tree must contain at least one record.
+ * @return string The most accessed IP and the records in its block.
+ * @details The range keeps the first three numbers of that IP and uses 0 through
+ * 255 for the last number. For example, 192.168.1.5 gives 192.168.1.0 to 192.168.1.255.
+ * If IPs have the same highest access count, the lowest IP is selected.
+ */
 string queryMostAccessedIpBlock(const SplayTree<IPRecord>& splayTree) {
     stringstream ss;
 

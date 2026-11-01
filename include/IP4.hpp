@@ -30,6 +30,7 @@ private:
 public:
     /**
      * @brief Constructs an address from its four components.
+     * @pre Each number should be between 0 and 255
      * @param net1 First octet.
      * @param net2 Second octet.
      * @param net3 Third octet.
@@ -93,15 +94,34 @@ public:
 
     /**
      * @brief Parses the formatted address.
-     * @param strIp String with exactly four dot-separated decimal components, each between 0 and
-     * 255 (no spaces, signs, empty components or trailing dot).
+     * @param strIp Address in a.b.c.d format. Each number must have one to three
+     * digits and be between 0 and 255. Spaces, signs and extra dots are not accepted.
      * @return IP4 Address created from the parsed components.
      * @throws std::invalid_argument If the string does not follow that format.
      */
     static IP4 fromString(const std::string& strIp);
 
+    /**
+     * @brief Gets the first part of the address.
+     * @return int The stored number.
+     */
     int getNet1() const;
+
+    /**
+     * @brief Gets the second part of the address.
+     * @return int The stored number.
+     */
     int getNet2() const;
+
+    /**
+     * @brief Gets the third part of the address.
+     * @return int The stored number.
+     */
     int getNet3() const;
+
+    /**
+     * @brief Gets the fourth part of the address.
+     * @return int The stored number.
+     */
     int getHost() const;
 };

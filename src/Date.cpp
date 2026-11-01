@@ -15,7 +15,7 @@
  *
  * @param month A constant reference to the Month enum value.
  *
- * @pre The Month enum value should ideally be within the defined range [Jan..Dec].
+ * @details Unknown and values outside Jan..Dec are formatted as "Unknown".
  * @post Converts the enum to its standard string name (e.g., Jan -> "Jan").
  * @return string The string representation of the month, or "Unknown" if invalid.
  */
@@ -55,7 +55,8 @@ string monthToString(const Month& month) {
  *
  * @param str A constant reference to the string containing the month abbreviation.
  *
- * @pre The string should contain a recognizable month format.
+ * @details Accepts only the exact English abbreviations Jan, Feb, Mar, Apr, May, Jun,
+ * Jul, Aug, Sep, Oct, Nov and Dec; matching is case-sensitive.
  * @post Maps the text to its matching Month enum.
  * @return Month The corresponding Month enum value, or Unknown if no match is found.
  */
@@ -85,13 +86,13 @@ Month stringToMonth(const string& str) {
     if (str == "Dec")
         return Month::Dec;
 
-    // Default value if the string has no coincidence
+    // Return Unknown when no abbreviation matches
     return Month::Unknown;
 }
 
 /**
- * @brief Construct a new Date object using the default parameter
- * 
+ * @brief Constructs a Date object with default values.
+ *
  * @post Creates a placeholder date (day 0, month Unknown, 00:00:00).
  */
 Date::Date() {
@@ -113,7 +114,7 @@ Date::Date() {
  *
  * @pre Input values must form a valid date and time combination.
  * @post A new Date instance is initialized with the specified values.
- * 
+ *
  * @throws std::invalid_argument If the provided date and time values are invalid.
  */
 Date::Date(int day, Month month, int hour, int minutes, int seconds) {
@@ -134,6 +135,7 @@ Date::Date(int day, Month month, int hour, int minutes, int seconds) {
  *
  * @pre Internal attributes (day, month, hour, minutes, seconds) must be set.
  * @post Evaluates logical constraints for days per month, and time ranges.
+ * @details February always has 28 days because no year is stored.
  * @return true If the date and time combination is valid.
  * @return false Otherwise.
  */
@@ -159,7 +161,7 @@ bool Date::isValid() const {
  *
  * @pre The Date instance must be initialized.
  * @post Returns the day value.
- * @return int Day of the month.
+ * @return int Day of the month, or 0 for a default Date.
  */
 int Date::getDay() const { return this->day; }
 
@@ -168,7 +170,7 @@ int Date::getDay() const { return this->day; }
  *
  * @pre The Date instance must be initialized.
  * @post Returns the Month enum value.
- * @return Month The month of the year.
+ * @return Month The month of the year, or Unknown for a default Date.
  */
 Month Date::getMonth() const { return this->month; }
 
@@ -275,9 +277,10 @@ bool Date::operator>=(const Date& date) const { return !(*this < date); }
 /**
  * @brief Converts the Date instance attributes into a formatted string.
  *
- * @pre The Date instance must contain valid member variables.
+ * @pre The Date instance must be initialized.
  * @post Generates a string representation of the date and time.
- * @return string Formatted date-time string.
+ * @return string Date in "Month Day HH:MM:SS" format, such as "Jan 1 08:05:09".
+ * A default Date returns "Unknown 0 00:00:00".
  */
 string Date::toString() const {
     stringstream ss;
@@ -308,8 +311,10 @@ string Date::toString() const {
  * @param strDate Raw date string to be parsed.
  *
  * @pre The string 'strDate' must follow the expected date string format.
- * @post Extracts and validates date/time fields to create a Date instance.
+ * @post Creates a Date using the values read from the string.
+ * @details Checks the date and time values, but does not fully check the text format.
  * @return Date A populated Date object extracted from the string.
+ * @throws std::invalid_argument If the resulting date/time values are invalid.
  */
 Date Date::fromString(const string& strDate) {
     string month, time;

@@ -101,8 +101,9 @@ void insertionSort(std::vector<T>& arr) {
  * @param hi an int parameter that specifies the highest index of the current window
  * @param mid an int parameter that specifies the mid point of the current window
  *
- * @pre The vector<T> must contain the n values
- * @post The vector<T> will contain the data already sorted
+ * @pre lo and hi must be valid indices of the range to process
+ * @post The values from lo to hi will be sorted in ascending order
+ * @pre Both halves, from lo to mid and from mid + 1 to hi, must already be sorted.
  */
 template <typename T>
 void merge(std::vector<T>& arr, int lo, int hi, int mid) {
@@ -121,7 +122,7 @@ void merge(std::vector<T>& arr, int lo, int hi, int mid) {
         }
     }
 
-    // Add the remaining elements of the firt half
+    // Add the remaining elements of the first half
     while (i <= mid) {
         temp.push_back(arr[i]);
         i++;
@@ -148,8 +149,8 @@ void merge(std::vector<T>& arr, int lo, int hi, int mid) {
  * @param lo an int parameter that specifies the lowest index of the current window
  * @param hi an int parameter that specifies the highest index of the current window
  *
- * @pre The vector<T> must contain the n values
- * @post The vector<T> will contain the data already sorted
+ * @pre lo and hi must be valid indices of the range to process
+ * @post The values from lo to hi will be sorted in ascending order
  */
 template <typename T>
 void mergeSort(std::vector<T>& arr, int lo, int hi) {
@@ -188,14 +189,16 @@ void mergeSort(std::vector<T>& arr) {
  * @brief Merge logic of Merge sort using a custom comparator.
  *
  * @tparam T any data type
- * @tparam Compare callable such that comp(a, b) is true if a must go strictly before b
+ * @tparam Compare Function that returns true if a should come before b
  * @param arr a vector<T> with the n values to sort
  * @param lo an int parameter that specifies the lowest index of the current window
  * @param hi an int parameter that specifies the highest index of the current window
  * @param mid an int parameter that specifies the mid point of the current window
  * @param comp the comparator
  *
- * @post The window [lo, hi] will contain the data sorted according to comp (stable)
+ * @post The window [lo, hi] will contain the data sorted according to comp (keeps the original order of equal values)
+ * @pre Both halves, from lo to mid and from mid + 1 to hi, must already be sorted.
+ * @pre lo, mid and hi must be valid indices, with lo <= mid < hi.
  */
 template <typename T, typename Compare>
 void mergeBy(std::vector<T>& arr, int lo, int hi, int mid, Compare comp) {
@@ -224,13 +227,13 @@ void mergeBy(std::vector<T>& arr, int lo, int hi, int mid, Compare comp) {
  * Complexity: O(nlogn)
  *
  * @tparam T any data type
- * @tparam Compare callable such that comp(a, b) is true if a must go strictly before b
+ * @tparam Compare Function that returns true if a should come before b
  * @param arr a vector<T> with the n values to sort
  * @param lo an int parameter that specifies the lowest index of the current window
  * @param hi an int parameter that specifies the highest index of the current window
  * @param comp the comparator (use a strict order: > or <, never >= or <=)
  *
- * @post The vector<T> will contain the data sorted according to comp (stable)
+ * @post The values from lo to hi will be sorted according to comp (keeps the original order of equal values)
  */
 template <typename T, typename Compare>
 void mergeSortBy(std::vector<T>& arr, int lo, int hi, Compare comp) {
@@ -248,11 +251,11 @@ void mergeSortBy(std::vector<T>& arr, int lo, int hi, Compare comp) {
  * Complexity: O(nlogn)
  *
  * @tparam T any data type
- * @tparam Compare callable such that comp(a, b) is true if a must go strictly before b
+ * @tparam Compare Function that returns true if a should come before b
  * @param arr a vector<T> with the n values to sort
  * @param comp the comparator (use a strict order: > or <, never >= or <=)
  *
- * @post The vector<T> will contain the data sorted according to comp (stable)
+ * @post The vector<T> will contain the data sorted according to comp (keeps the original order of equal values)
  */
 template <typename T, typename Compare>
 void mergeSortBy(std::vector<T>& arr, Compare comp) {
@@ -272,7 +275,7 @@ void mergeSortBy(std::vector<T>& arr, Compare comp) {
  *
  * @return int the index of the current pivot
  *
- * @pre The vector<T> must contain the n values
+ * @pre lo and hi must be valid indices of the range to process
  */
 template <typename T>
 int partition(std::vector<T>& arr, int lo, int hi) {
@@ -305,8 +308,8 @@ int partition(std::vector<T>& arr, int lo, int hi) {
  * @param lo an int parameter that specifies the lowest index of the current window
  * @param hi an int parameter that specifies the highest index of the current window
  *
- * @pre The vector<T> must contain the n values
- * @post The vector<T> will contain the data already sorted
+ * @pre lo and hi must be valid indices of the range to process
+ * @post The values from lo to hi will be sorted in ascending order
  */
 template <typename T>
 void quickSort(std::vector<T>& arr, int lo, int hi) {

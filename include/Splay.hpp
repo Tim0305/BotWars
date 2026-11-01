@@ -13,9 +13,19 @@
 #include <vector>
 using namespace std;
 
+/**
+ * @class SplayTree
+ * @brief Tree that moves inserted or searched values to the root.
+ * @tparam T Any comparable data type.
+ * @details Repeated values are not added. The tree cannot be copied.
+ * For complexity, n is the number of nodes in the tree.
+ */
 template <typename T>
 class SplayTree {
 private:
+    /**
+     * @brief Stores a value and links to its children and parent.
+     */
     struct Node {
         T data;
         Node* left;
@@ -24,16 +34,36 @@ private:
     };
 
 public:
+    /**
+     * @brief Creates an empty tree.
+     * Complexity: O(1).
+     */
     SplayTree() = default;
+
+    /**
+     * @brief Deletes all nodes in the tree.
+     * Complexity: O(n).
+     */
     ~SplayTree() { destroy(root); }
 
-    // Copying is disabled so that two trees never own the same nodes.
+    /**
+     * @brief Prevents copying the tree.
+     */
     SplayTree(const SplayTree&) = delete;
+
+    /**
+     * @brief Prevents replacing the tree with a copy of another tree.
+     */
     SplayTree& operator=(const SplayTree&) = delete;
 
-    // Searches for x and splays the node where the search ends: x if it is in the tree, otherwise
-    // the last node of its search path (lastOnPath gives it). Returns whether x is in the tree. An
-    // empty tree returns false. Complexity: amortized O(log n)
+    /**
+     * @brief Searches for a value and moves the found node to the root.
+     * Complexity: amortized O(log n), O(n) in the worst case.
+     * @param x Value to search for.
+     * @return true If the value is found.
+     * @return false Otherwise.
+     * @post If the value is not found, the last node visited is moved to the root.
+     */
     bool contains(T x) {
         if (root == nullptr)
             return false;
@@ -43,10 +73,14 @@ public:
         return n->data == x;
     }
 
-    // Inserts x as in a BST, as a new leaf, and splays the new node. Returns true.
-    // lastOnPath(x) gives the node that holds x, or the node where x must hang. A repeated value
-    // adds no node: it splays the node that already holds x and returns false. Set the parent of
-    // the new node. Complexity: amortized O(log n)
+    /**
+     * @brief Adds a value and moves it to the root.
+     * Complexity: amortized O(log n), O(n) in the worst case.
+     * @param x Value to insert.
+     * @return true If a new value is added.
+     * @return false If the value is already in the tree.
+     * @post An existing value is moved to the root without being added again.
+     */
     bool insert(T x) {
         if (root == nullptr) {
             root = new Node{x, nullptr, nullptr, nullptr};
@@ -68,12 +102,13 @@ public:
         return true;
     }
 
-    // Removes x. First contains(x): if x is not there, returns false (the tree was still splayed).
-    // Otherwise x is the root: delete it, and TL and TR, its two subtrees, become separate trees.
-    // With no TL, TR is the whole tree. Otherwise make TL the tree, splay its maximum
-    // (lastOnPath(x) finds it, because x is greater than every key of TL), and hang TR as the right
-    // child of the new root. Keep every parent link correct. Returns true. Complexity: amortized
-    // O(log n)
+    /**
+     * @brief Removes a value from the tree.
+     * Complexity: amortized O(log n), O(n) in the worst case.
+     * @param x Value to remove.
+     * @return true If the value is removed.
+     * @return false If the value is not found.
+     */
     bool remove(T x) {
         if (!contains(x))
             return false;
@@ -100,37 +135,72 @@ public:
         return true;
     }
 
+    /**
+     * @brief Gets the value stored at the root.
+     * Complexity: O(1).
+     * @return T& The root value, which can be updated.
+     * @pre Updates must not change the order of the tree. IPRecord counters may be changed.
+     * @throws std::runtime_error If the tree is empty.
+     */
     T& getRootValue() {
         if (root == nullptr)
             throw runtime_error("Splay Tree is empty");
         return root->data;
     }
 
-    // The public methods that print also end the line.
+    /**
+     * @brief Gets the values by visiting the root, left side and right side.
+     * Complexity: O(n).
+     * @return vector<T> Values in preorder, or an empty vector if the tree is empty.
+     */
     vector<T> preorder() const {
         vector<T> dataList;
         preorder(root, dataList);
         return dataList;
     }
 
+    /**
+     * @brief Gets all values in ascending order.
+     * Complexity: O(n).
+     * @return vector<T> Sorted values, or an empty vector if the tree is empty.
+     */
     vector<T> inorder() const {
         vector<T> dataList;
         inorder(root, dataList);
         return dataList;
     }
 
+    /**
+     * @brief Gets values between start and end, including both limits.
+     * Complexity: O(n).
+     * @param start First value in the range.
+     * @param end Last value in the range.
+     * @return vector<T> Matching values in ascending order, or an empty vector if none match.
+     */
     vector<T> inorderRange(T start, T end) const {
         vector<T> dataList;
         inorderRange(root, start, end, dataList);
         return dataList;
     }
 
+    /**
+     * @brief Gets the height of the tree.
+     * Complexity: O(n).
+     * @return int Number of edges on the longest path from the root to a leaf.
+     * An empty tree has height -1 and a tree with one node has height 0.
+     */
     int height() const { return getHeight(root); }
 
 private:
     Node* root = nullptr;
 
-    // b takes the place of a: under the parent of a, or as the root.
+    /**
+     * @brief Replaces a with b under its parent, or at the root.
+     * Complexity: O(1).
+     * @param a Node to replace.
+     * @param b Node that takes its place.
+     * @pre Both nodes must exist.
+     */
     void replaceInParent(Node* a, Node* b) {
         b->parent = a->parent;
         if (a->parent == nullptr)
@@ -141,9 +211,12 @@ private:
             a->parent->right = b;
     }
 
-    // Rotates right at a: b, the left child of a, rises and a goes down to its right. The right
-    // subtree of b becomes the left subtree of a. Keep every parent link correct; replaceInParent
-    // puts b where a was (it also updates root when a was the root). Complexity: O(1)
+    /**
+     * @brief Moves the left child above its parent.
+     * Complexity: O(1).
+     * @param a Parent node to rotate.
+     * @post Does nothing if a or its left child does not exist.
+     */
     void rotateRight(Node* a) {
         if (a == nullptr || a->left == nullptr)
             return;
@@ -157,8 +230,12 @@ private:
         a->parent = b;
     }
 
-    // The mirror image: the right child of a rises and a goes down to its left.
-    // Complexity: O(1)
+    /**
+     * @brief Moves the right child above its parent.
+     * Complexity: O(1).
+     * @param a Parent node to rotate.
+     * @post Does nothing if a or its right child does not exist.
+     */
     void rotateLeft(Node* a) {
         if (a == nullptr || a->right == nullptr)
             return;
@@ -172,12 +249,11 @@ private:
         a->parent = b;
     }
 
-    // Moves x to the root. While x has a parent P, look at its grandparent G and apply the case:
-    //   no G:                          zig (rotate right at P) or zag (rotate left at P)
-    //   P is the left child of G:      zig-zig (right at G, then right at P) or zig-zag (left at P,
-    //   then right at G) P is the right child of G:     zag-zag (left at G, then left at P) or
-    //   zag-zig (right at P, then left at G)
-    // Complexity: amortized O(log n)
+    /**
+     * @brief Moves a node to the root using rotations.
+     * Complexity: amortized O(log n), O(n) in the worst case.
+     * @param x Node to move; does nothing if it does not exist.
+     */
     void splay(Node* x) {
         if (x == nullptr)
             return;
@@ -216,7 +292,13 @@ private:
         }
     }
 
-    // Returns the node with x, or the last node of the search path of x. root is not null.
+    /**
+     * @brief Finds a value or the last node visited while looking for it.
+     * Complexity: O(log n) if the tree is balanced, O(n) in the worst case.
+     * @param x Value to search for.
+     * @pre The tree must not be empty.
+     * @return Node* The matching node, or the last node visited.
+     */
     Node* lastOnPath(T x) const {
         Node* n = root;
         while (x != n->data) {
@@ -228,6 +310,12 @@ private:
         return n;
     }
 
+    /**
+     * @brief Adds values by visiting the node, left side and right side.
+     * Complexity: O(n).
+     * @param n First node to visit.
+     * @param dataList Vector where the values are added.
+     */
     void preorder(Node* n, vector<T>& dataList) const {
         if (n == nullptr)
             return;
@@ -236,6 +324,12 @@ private:
         preorder(n->right, dataList);
     }
 
+    /**
+     * @brief Adds the values below a node in ascending order.
+     * Complexity: O(n).
+     * @param n First node to visit.
+     * @param dataList Vector where the values are added.
+     */
     void inorder(Node* n, vector<T>& dataList) const {
         if (n == nullptr)
             return;
@@ -244,6 +338,14 @@ private:
         inorder(n->right, dataList);
     }
 
+    /**
+     * @brief Adds values between start and end, including both limits.
+     * Complexity: O(n).
+     * @param n First node to visit.
+     * @param start First value in the range.
+     * @param end Last value in the range.
+     * @param dataList Vector where matching values are added.
+     */
     void inorderRange(Node* n, T start, T end, vector<T>& dataList) const {
         if (n == nullptr)
             return;
@@ -258,6 +360,11 @@ private:
         }
     }
 
+    /**
+     * @brief Deletes a node and all nodes below it.
+     * Complexity: O(n).
+     * @param n First node to delete; does nothing if it does not exist.
+     */
     void destroy(Node* n) {
         if (n == nullptr)
             return;
@@ -266,9 +373,15 @@ private:
         delete n;
     }
 
+    /**
+     * @brief Gets the height starting from a node.
+     * Complexity: O(n).
+     * @param n First node of the part of the tree to measure.
+     * @return int Height in edges, or -1 if n does not exist.
+     */
     int getHeight(Node* n) const {
         if (n == nullptr)
-            return 0;
+            return -1;
         return 1 + std::max(getHeight(n->left), getHeight(n->right));
     }
 };

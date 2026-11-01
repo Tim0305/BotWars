@@ -22,9 +22,9 @@ inline constexpr int NOT_FOUND = -1;
  * @tparam T any comparable data type
  * @param arr a vector<T> (the search space)
  * @param target value of type T to search for
- * @return int the index where the value is found, or NOT_FOUND if it is not located
+ * @return int The first matching index, or NOT_FOUND if absent (including an empty vector).
  *
- * @pre The vector<T> must contain the n values
+ * @pre The vector must contain the values to search.
  */
 template <typename T>
 int sequentialSearch(const std::vector<T>& arr, const T& target) {
@@ -42,9 +42,11 @@ int sequentialSearch(const std::vector<T>& arr, const T& target) {
  * @tparam T any comparable data type
  * @param arr a sorted vector<T> (the search space)
  * @param target value of type T to search for
- * @return int the index where the value is found, or NOT_FOUND if it is not located
+ * @return int An index where the value is found, or NOT_FOUND if it is not found.
+ * If the value appears more than once, the result may be any matching index.
  *
- * @pre The vector<T> must contain the n values sorted in ascending order
+ * @pre The vector must be sorted in ascending order.
+ * For Log values, use the same comparison method that was used to sort the vector.
  */
 template <typename T>
 int binarySearch(const std::vector<T>& arr, const T& target) {

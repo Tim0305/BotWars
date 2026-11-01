@@ -1,35 +1,36 @@
-# Directorios
+# Source, header and build directories
 BIN_DIR = bin
 SRC_DIR = src
 INC_DIR = include
 
-# Compilador y banderas
+# Compiler and flags: C++17 with project headers
 CXX = g++
 CXXFLAGS = -std=c++17 -I$(INC_DIR)
 
-# Extraer todos los archivos fuente
+# Get all source files and their object filenames
 SRCS = $(wildcard $(SRC_DIR)/*.cpp)
 OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(BIN_DIR)/%.o)
 
-# Target
+# Executable path
 TARGET = $(BIN_DIR)/main
 
-# Regla por defecto: compila todo usando main.cpp
+# Build the application
 all: $(TARGET)
 
 $(OBJS): | $(BIN_DIR)
 
-# Enlazar los .o para crear el ejecutable
+# Link all object files into the executable
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-# Compilar .cpp -> .o
+# Compile each .cpp file into an object file
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Crear el directorio bin si no existe
+# Create the build directory when needed
 $(BIN_DIR):
 	mkdir $(BIN_DIR)
 
+# Remove files inside bin; the build directory itself is retained
 clean:
 	rm bin/*

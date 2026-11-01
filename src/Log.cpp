@@ -4,6 +4,7 @@
  * @brief Source file that implements the class Log and all its methods
  * @date 2026-10-09
  */
+
 #include "Log.hpp"
 
 #include <sstream>
@@ -20,7 +21,7 @@ CompareMethod Log::compareMethod = CompareMethod::DATE_METHOD;
 /**
  * @brief Gets the date of the log entry.
  * @pre The Log object must be initialized.
- * @post Returns the internal Date object.
+ * @post Returns a copy of the stored Date object.
  * @return Date The timestamp of the log.
  */
 Date Log::getDate() const { return this->date; }
@@ -28,8 +29,8 @@ Date Log::getDate() const { return this->date; }
 /**
  * @brief Gets the IP address of the log entry.
  * @pre The Log object must be initialized.
- * @post Returns the IP object.
- * @return instance of IP4 The IP address.
+ * @post Returns a copy of the stored IP object.
+ * @return IP4 A copy of the IP address.
  */
 IP4 Log::getIp() const { return this->ip; }
 
@@ -57,11 +58,13 @@ string Log::getDomain() const { return this->domain; }
 string Log::getMessage() const { return this->message; }
 
 /**
- * @brief Overloads the less-than operator to compare two Log objects based on the compareMethod attribute.
+ * @brief Overloads the less-than operator to compare two Log objects based on the compareMethod
+ * attribute.
  *
  * @param log The right-hand side Log instance to compare against.
  *
  * @pre Both Log objects must have valid Date/IP4 attributes.
+ * @throws std::runtime_error If the shared comparison mode is not IP_METHOD or DATE_METHOD.
  * @return true If this log's date/ip is strictly earlier/less than the parameter's date/ip.
  * @return false Otherwise.
  */
@@ -77,11 +80,13 @@ bool Log::operator<(const Log& log) const {
 }
 
 /**
- * @brief Overloads the greater-than operator to compare two Log objects based on the compareMethod attribute.
+ * @brief Overloads the greater-than operator to compare two Log objects based on the compareMethod
+ * attribute.
  *
  * @param log The right-hand side Log instance to compare against.
  *
  * @pre Both Log objects must have valid Date/IP4 attributes.
+ * @throws std::runtime_error If the shared comparison mode is not IP_METHOD or DATE_METHOD.
  * @return true If this log's date/ip is strictly later/greater than the parameter's date/ip.
  * @return false Otherwise.
  */
@@ -97,12 +102,15 @@ bool Log::operator>(const Log& log) const {
 }
 
 /**
- * @brief Overloads the equality operator to compare two Log objects based on the compareMethod attribute.
+ * @brief Overloads the equality operator to compare two Log objects based on the compareMethod
+ * attribute.
  *
  * @param log The right-hand side Log instance to compare against.
  *
  * @pre Both Log objects must have valid Date/IP4 attributes.
- * @return true If both log entries occurred at the exact same Date or have the same ip address.
+ * @throws std::runtime_error If the shared comparison mode is not IP_METHOD or DATE_METHOD.
+ * @return true If the selected field matches (date in DATE_METHOD, IP in IP_METHOD).
+ * The port, domain and message are not compared.
  * @return false Otherwise.
  */
 bool Log::operator==(const Log& log) const {
@@ -122,8 +130,8 @@ bool Log::operator==(const Log& log) const {
  * @param log The right-hand side Log instance to compare against.
  *
  * @pre Both Log objects must have valid Date/IP4 attributes.
- * @return true If this log's date is later than or equal to the parameter's date or this log's ip address is greater
- * than or equal to the parameter's ip.
+ * @throws std::runtime_error If the shared comparison mode is not IP_METHOD or DATE_METHOD.
+ * @return true If the selected date or IP is greater than or equal to the corresponding field.
  * @return false Otherwise.
  */
 bool Log::operator>=(const Log& log) const {
@@ -143,8 +151,8 @@ bool Log::operator>=(const Log& log) const {
  * @param log The right-hand side Log instance to compare against.
  *
  * @pre Both Log objects must have valid Date/IP4 attributes.
- * @return true If this log's date is earlier than or equal to the parameter's date or this log's ip address is less
- * than or equal to the parameter's ip.
+ * @throws std::runtime_error If the shared comparison mode is not IP_METHOD or DATE_METHOD.
+ * @return true If the selected date or IP is less than or equal to the corresponding field.
  * @return false Otherwise.
  */
 bool Log::operator<=(const Log& log) const {
@@ -162,15 +170,19 @@ bool Log::operator<=(const Log& log) const {
  * @brief Sets the comparison mode shared by all Log objects.
  * @param compareMethod Comparison field to use: IP_METHOD or DATE_METHOD.
  * @post All subsequent Log comparisons use the selected field.
+ * @pre Use IP_METHOD or DATE_METHOD. Keep the same method while sorting or searching.
  */
-void Log::setCompareMethod(const CompareMethod& compareMethod) { Log::compareMethod = compareMethod; }
+void Log::setCompareMethod(const CompareMethod& compareMethod) {
+    Log::compareMethod = compareMethod;
+}
 
 /**
  * @brief Converts the Log instance attributes into a formatted string representation.
  *
  * @pre The Log instance must contain valid member variables.
  * @post Generates a string combining date, IP, port, domain, and message.
- * @return string A single formatted string containing all log information.
+ * @return string A line formatted as "Month Day HH:MM:SS a.b.c.d:Port Domain Message",
+ * without a final line break.
  */
 string Log::toString() const {
     stringstream ss;
@@ -191,6 +203,11 @@ string Log::toString() const {
  * @pre The string 'strLog' must conform to the expected log text format.
  * @post Constructs and returns a new Log object with parsed attributes.
  * @return Log A populated Log instance extracted from the string.
+ * @details The domain is one word; the rest of the line is the message.
+ * The port range and missing domain or message are not checked. The date and port
+ * readers may accept extra text, so the full input format is not checked.
+ * @throws std::invalid_argument If the date, IP or port cannot be read as expected.
+ * @throws std::out_of_range If the port number is too large for an int.
  */
 Log Log::fromString(const string& strLog) {
     string month, day, time, ip, domain, message;
@@ -217,5 +234,6 @@ Log Log::fromString(const string& strLog) {
     if (tokens.size() != 2)
         throw invalid_argument("Invalid IP:Port");
 
-    return Log(Date::fromString(dateStr), IP4::fromString(tokens[0]), stoi(tokens[1]), domain, message);
+    return Log(Date::fromString(dateStr), IP4::fromString(tokens[0]), stoi(tokens[1]), domain,
+               message);
 }

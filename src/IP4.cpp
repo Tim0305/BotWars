@@ -1,9 +1,10 @@
 /**
  * @file IP4.cpp
  * @author Team 1
- * @brief Implements the funcionality and methods of the IP4 class
+ * @brief Implements the functionality and methods of the IP4 class
  * @date 2026-10-09
  */
+
 #include "IP4.hpp"
 
 #include <sstream>
@@ -46,6 +47,12 @@ bool IP4::operator==(const IP4& ip) const {
         this->host == ip.host;
 }
 
+/**
+ * @brief Checks if two addresses are different.
+ * @param ip Address to compare with.
+ * @return true If at least one component differs.
+ * @return false Otherwise.
+ */
 bool IP4::operator!=(const IP4& ip) const { return !(*this == ip); }
 
 /**
@@ -83,7 +90,8 @@ string IP4::toString() const {
  * @return IP4 Parsed address.
  * @throws std::invalid_argument If the input does not have exactly four dot-separated
  *         components, or if a component is empty, has anything other than digits
- *         (spaces and signs included) or is greater than 255.
+ *         (spaces and signs included), has more than three digits or is greater than 255.
+ * @details Leading zeros are accepted when the component has at most three digits.
  */
 IP4 IP4::fromString(const string& strIp) {
     int parts[4];
@@ -116,7 +124,26 @@ IP4 IP4::fromString(const string& strIp) {
     return IP4(parts[0], parts[1], parts[2], parts[3]);
 }
 
+/**
+ * @brief Gets the first part of the address.
+ * @return int The stored number.
+ */
 int IP4::getNet1() const { return net1; };
+
+/**
+ * @brief Gets the second part of the address.
+ * @return int The stored number.
+ */
 int IP4::getNet2() const { return net2; };
+
+/**
+ * @brief Gets the third part of the address.
+ * @return int The stored number.
+ */
 int IP4::getNet3() const { return net3; };
+
+/**
+ * @brief Gets the fourth part of the address.
+ * @return int The stored number.
+ */
 int IP4::getHost() const { return host; };
