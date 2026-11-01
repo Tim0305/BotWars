@@ -99,4 +99,9 @@ public:
      * @throws std::invalid_argument If the string does not follow that format.
      */
     static IP4 fromString(const std::string& strIp);
+
+    int getNet1() const;
+    int getNet2() const;
+    int getNet3() const;
+    int getHost() const;
 };

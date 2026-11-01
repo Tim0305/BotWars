@@ -119,6 +119,12 @@ public:
         return dataList;
     }
 
+    vector<T> inorderRange(T start, T end) const {
+        vector<T> dataList;
+        inorderRange(root, start, end, dataList);
+        return dataList;
+    }
+
 private:
     Node* root = nullptr;
 
@@ -234,6 +240,20 @@ private:
         inorder(n->left, dataList);
         dataList.push_back(n->data);
         inorder(n->right, dataList);
+    }
+
+    void inorderRange(Node* n, T start, T end, vector<T>& dataList) const {
+        if (n == nullptr)
+            return;
+        if (n->data >= start) {
+            inorderRange(n->left, start, end, dataList);
+        }
+        if (n->data >= start && n->data <= end) {
+            dataList.push_back(n->data);
+        }
+        if (n->data <= end) {
+            inorderRange(n->right, start, end, dataList);
+        }
     }
 
     void destroy(Node* n) {

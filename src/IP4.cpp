@@ -115,3 +115,8 @@ IP4 IP4::fromString(const string& strIp) {
 
     return IP4(parts[0], parts[1], parts[2], parts[3]);
 }
+
+int IP4::getNet1() const { return net1; };
+int IP4::getNet2() const { return net2; };
+int IP4::getNet3() const { return net3; };
+int IP4::getHost() const { return host; };
