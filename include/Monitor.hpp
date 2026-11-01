@@ -2,6 +2,7 @@
  * @file Monitor.hpp
  * @author Team 1
  * @brief File that defines the functionality of the IPRecords monitor
+ * @details For complexity, m is the number of different IPs in the tree.
  * @date 2026-10-30
  */
 
@@ -17,6 +18,7 @@ using namespace std;
 
 /**
  * @brief Compares two IP records by their total number of accesses.
+ * Complexity: O(1).
  * @param a First record.
  * @param b Second record.
  * @return true If a has more accesses than b.
@@ -27,7 +29,7 @@ inline bool byAccessesDesc(const IPRecord& a, const IPRecord& b) {
 
 /**
  * @brief Gets the n IP addresses with the most accesses.
- * Complexity: O(mlogm), where m is the number of different IPs in the tree.
+ * Complexity: O(m log m), where m is the number of different IPs in the tree.
  *
  * @param splayTree Tree with the IP records; it is not changed.
  * @param n Maximum number of IPs to return.
@@ -48,6 +50,7 @@ vector<IPRecord> topIPs(const SplayTree<IPRecord>& splayTree, const int n) {
 
 /**
  * @brief Creates the report shown at the end of a month.
+ * Complexity: O(m log m), where m is the number of different IPs in the tree.
  * @param splayTree Tree with all IP records read so far.
  * @param month Month shown in the report title.
  * @return string Number of different IPs, average accesses and top 5 IPs.
@@ -83,6 +86,7 @@ string monthSummary(const SplayTree<IPRecord>& splayTree, const Month month) {
 
 /**
  * @brief Creates a report of the 15 IPs with the most accesses.
+ * Complexity: O(m log m), where m is the number of different IPs in the tree.
  * @param splayTree Tree with the IP records.
  * @pre Each record must have at least one access.
  * @return string Up to 15 IPs with their total accesses, successful accesses
@@ -108,6 +112,7 @@ string top15IpRecords(const SplayTree<IPRecord>& splayTree) {
 
 /**
  * @brief Creates a report of the IPs between two IP addresses.
+ * Complexity: O(m) in the worst case, where m is the number of different IPs in the tree.
  * @param splayTree Tree with the IP records; it is not changed.
  * @param startIp First IP in the range, included in the search.
  * @param endIp Last IP in the range, included in the search.
@@ -140,6 +145,7 @@ string queryByIpRange(const SplayTree<IPRecord>& splayTree, const IP4& startIp, 
 
 /**
  * @brief Creates a report of the block containing the most accessed IP.
+ * Complexity: O(m log m), where m is the number of different IPs in the tree.
  * @param splayTree Tree with the IP records; it is not changed.
  * @pre The tree must contain at least one record.
  * @return string The most accessed IP and the records in its block.
