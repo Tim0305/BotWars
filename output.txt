@@ -64,12 +64,12 @@ Top 5 IPs with the most accesses:
 192.0.2.254		 | 	Accesses: 408	 | 	Successful: 0	 | 	Success rate: 0.00%
 198.51.100.117		 | 	Accesses: 407	 | 	Successful: 0	 | 	Success rate: 0.00%
 198.51.100.8		 | 	Accesses: 397	 | 	Successful: 0	 | 	Success rate: 0.00%
-192.0.2.14		 | 	Accesses: 307	 | 	Successful: 293	 | 	Success rate: 0.95%
-192.0.2.11		 | 	Accesses: 299	 | 	Successful: 285	 | 	Success rate: 0.95%
-192.0.2.18		 | 	Accesses: 296	 | 	Successful: 285	 | 	Success rate: 0.96%
-192.0.2.12		 | 	Accesses: 294	 | 	Successful: 277	 | 	Success rate: 0.94%
-192.0.2.19		 | 	Accesses: 291	 | 	Successful: 268	 | 	Success rate: 0.92%
-192.0.2.16		 | 	Accesses: 281	 | 	Successful: 264	 | 	Success rate: 0.94%
+192.0.2.14		 | 	Accesses: 307	 | 	Successful: 293	 | 	Success rate: 95.44%
+192.0.2.11		 | 	Accesses: 299	 | 	Successful: 285	 | 	Success rate: 95.32%
+192.0.2.18		 | 	Accesses: 296	 | 	Successful: 285	 | 	Success rate: 96.28%
+192.0.2.12		 | 	Accesses: 294	 | 	Successful: 277	 | 	Success rate: 94.22%
+192.0.2.19		 | 	Accesses: 291	 | 	Successful: 268	 | 	Success rate: 92.10%
+192.0.2.16		 | 	Accesses: 281	 | 	Successful: 264	 | 	Success rate: 93.95%
 
 ==== Records within 192.0.2.1 - 192.0.2.1 ====
 Total IPs: 1

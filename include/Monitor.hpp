@@ -1,3 +1,10 @@
+/**
+ * @file Monitor.hpp
+ * @author Team 1
+ * @brief File that defines the functionality of the IPRecords monitor
+ * @date 2026-10-30
+ */
+
 #pragma once
 
 #include <vector>
@@ -80,7 +87,7 @@ string top15IpRecords(const SplayTree<IPRecord>& splayTree) {
     for (const IPRecord& record : top15IPs) {
         ss << record.ip.toString() << "\t\t | \tAccesses: " << record.totalAccesses
            << "\t | \tSuccessful: " << record.successfulAccesses << "\t | \tSuccess rate: " << fixed
-           << setprecision(2) << (float)record.successfulAccesses / record.totalAccesses << "%"
+           << setprecision(2) << (100.0 * record.successfulAccesses / record.totalAccesses) << "%"
            << endl;
     }
 
