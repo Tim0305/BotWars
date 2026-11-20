@@ -1,59 +1,74 @@
-#include <iostream>
-#include <string>
+#ifndef ARCH_HPP
+#define ARCH_HPP
+
 #include <vector>
+#include "ArcVertex.hpp"
+
 using namespace std;
 
+template<typename T, typename U>
 class ArcListGraph {
-    // Define Vertex/Arc and store them.
+private:
     int n;
+
     struct Arc {
-        int from, to;
+        T from;          // Se corrigió el punto y coma faltante
+        U to;
+        int weight;
         Arc* nextOut;
         Arc* nextIn;
     };
 
-    struct Vertex {
-        Arc* out = nullptr;
-        Arc* in = nullptr;
-    };
-    vector<Vertex> vertices;
+    vector<ArcVertex<Arc>> vertices;
+
 public:
     explicit ArcListGraph(int n) {
-        // your code here
         this->n = n;
         this->vertices.resize(n + 1);
     }
 
-    void addEdge(int u, int v) {
-        // your code here
-        Arc* arc = new Arc{u, v, vertices[u].out, vertices[v].in};
-        vertices[u].out = arc;
-        vertices[v].in = arc;
+    // Se agregó un valor por defecto para weight (1) y se usan los tipos T y U
+    void addEdge(T u, U v, int weight = 1) {
+        Arc* arc = new Arc{u, v, weight, vertices[u].getOut(), vertices[v].getIn()};
+        vertices[u].setOut(arc);
+        vertices[v].setIn(arc);
+        
+        // Actualizamos los grados de entrada y salida
+        vertices[u].incrementOutDeg();
+        vertices[v].incrementInDeg();
     }
 
-    bool hasEdge(int u, int v) const {
-        // your code here
-        for (Arc* arc = vertices[u].out; arc != nullptr; arc = arc->nextOut){
+    bool hasEdge(T u, U v) const {
+        for (Arc* arc = vertices[u].getOut(); arc != nullptr; arc = arc->nextOut) {
             if (arc->to == v) return true;
         }
         return false;
     }
 
-    vector<int> outNeighbors(int u) const {
-        // your code here
-        vector<int> result;
-        for (Arc* arc = vertices[u].out; arc != nullptr; arc = arc->nextOut){
+    vector<U> outNeighbors(T u) const {
+        vector<U> result;
+        for (Arc* arc = vertices[u].getOut(); arc != nullptr; arc = arc->nextOut) {
             result.push_back(arc->to);
         }
         return result;
     }
 
-    vector<int> inNeighbors(int v) const {
-        // your code here
-         vector<int> result;
-        for (Arc* arc = vertices[v].in; arc != nullptr; arc = arc->nextIn){
+    vector<T> inNeighbors(U v) const {
+        vector<T> result;
+        for (Arc* arc = vertices[v].getIn(); arc != nullptr; arc = arc->nextIn) {
             result.push_back(arc->from);
         }
         return result;
     }
+
+    // Métodos opcionales para consultar los grados aprovechando los atributos de ArcVertex
+    int getOutDegree(T u) const {
+        return vertices[u].getOutDeg();
+    }
+
+    int getInDegree(U v) const {
+        return vertices[v].getInDeg();
+    }
 };
+
+#endif
