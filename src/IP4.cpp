@@ -7,10 +7,9 @@
 
 #include "IP4.hpp"
 
-#include <sstream>
-#include <vector>
 #include <algorithm>
 #include <cctype>
+#include <sstream>
 #include <stdexcept>
 
 using namespace std;
