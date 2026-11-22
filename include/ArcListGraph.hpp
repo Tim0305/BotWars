@@ -1,6 +1,7 @@
 #ifndef ARCH_HPP
 #define ARCH_HPP
 
+#include <stdexcept>
 #include <vector>
 
 #include "ArcVertex.hpp"
@@ -8,42 +9,59 @@
 
 using namespace std;
 
-template <typename T, typename U>
+template <typename T>
 class ArcListGraph {
 private:
     struct Arc {
-        T from;
-        U to;
+        int from;
+        int to;
         int weight;
         Arc* nextOut;
         Arc* nextIn;
     };
-    int n;
-    vector<T> srcIds;
-    vector<U> dstIds;
+    vector<T> ids;
     vector<ArcVertex<Arc>> g;
     vector<Arc*> arcs;
 
-    int getSrcIndex(const T& value) { return sequentialSearch(srcIds, value); }
-
-    int getDstIndex(const U& value) { return sequentialSearch(srcIds, value); }
+    int getId(const T& value) const {
+        int index = sequentialSearch(ids, value);
+        return index == NOT_FOUND ? NOT_FOUND : index + 1;
+    }
 
 public:
-    ArcListGraph() {
-        n = 0;
-        srcIds.resize(n + 1);
-        dstIds.resize(n + 1);
-        g.resize(n + 1);
-    }
+    ArcListGraph(const ArcListGraph&) = delete;
+    ArcListGraph& operator=(const ArcListGraph&) = delete;
+    ArcListGraph() { g.resize(1); }
 
     ~ArcListGraph() {
         for (Arc* arc : arcs) delete arc;
     }
 
-    void addEdge(const T& u, const U& v, int weight = 1) {
-        int from = getSrcIndex(u);
-        int to = getDstIndex(v);
+    void addEdge(const T& u, const T& v, int weight = 1) {
+        int from = getId(u);
 
+        // Create vertices if they don't exist
+        if (from == NOT_FOUND) {
+            ids.push_back(u);
+            from = ids.size();
+            g.resize(ids.size() + 1);
+        }
+
+        int to = getId(v);
+        if (to == NOT_FOUND) {
+            ids.push_back(v);
+            to = ids.size();
+            g.resize(ids.size() + 1);
+        }
+
+        // Check if the edge already exists
+        for (Arc* arc = g[from].getOut(); arc != nullptr; arc = arc->nextOut)
+            if (arc->to == to) {
+                arc->weight++;
+                return;
+            }
+
+        // Create new Edge
         Arc* arc = new Arc{from, to, weight, g[from].getOut(), g[to].getIn()};
         g[from].setOut(arc);
         g[to].setIn(arc);
@@ -55,38 +73,49 @@ public:
         arcs.push_back(arc);
     }
 
-    bool hasEdge(const T& u, const U& v) const {
-        int from = getSrcIndex(u);
-        int to = getDstIndex(v);
+    bool hasEdge(const T& u, const T& v) const {
+        int from = getId(u);
+        int to = getId(v);
+
+        if (from == NOT_FOUND || to == NOT_FOUND)
+            return false;
+
         for (Arc* arc = g[from].getOut(); arc != nullptr; arc = arc->nextOut)
             if (arc->to == to)
                 return true;
         return false;
     }
 
-    vector<U> outNeighbors(const T& u) const {
-        int from = getSrcIndex(u);
-        vector<U> result;
-        for (Arc* arc = g[from].getOut(); arc != nullptr; arc = arc->nextOut)
-            result.push_back(arc->to);
+    vector<T> outNeighbors(const T& u) const {
+        int from = getId(u);
+        vector<T> result;
+
+        if (from != NOT_FOUND)
+            for (Arc* arc = g[from].getOut(); arc != nullptr; arc = arc->nextOut)
+                result.push_back(ids[arc->to - 1]);
         return result;
     }
 
-    vector<T> inNeighbors(const U& v) const {
-        int to = getDstIndex(v);
+    vector<T> inNeighbors(const T& v) const {
+        int to = getId(v);
         vector<T> result;
-        for (Arc* arc = g[to].getIn(); arc != nullptr; arc = arc->nextIn)
-            result.push_back(arc->from);
+        if (to != NOT_FOUND)
+            for (Arc* arc = g[to].getIn(); arc != nullptr; arc = arc->nextIn)
+                result.push_back(ids[arc->from - 1]);
         return result;
     }
 
     int getOutDegree(const T& u) const {
-        int from = getSrcIndex(u);
+        int from = getId(u);
+        if (from == NOT_FOUND)
+            throw invalid_argument("Value not found");
         return g[from].getOutDeg();
     }
 
-    int getInDegree(const U& v) const {
-        int to = getDstIndex(v);
+    int getInDegree(const T& v) const {
+        int to = getId(v);
+        if (to == NOT_FOUND)
+            throw invalid_argument("Value not found");
         return g[to].getInDeg();
     }
 };
