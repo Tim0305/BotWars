@@ -9,6 +9,9 @@
 
 #include <sstream>
 #include <vector>
+#include <algorithm>
+#include <cctype>
+#include <stdexcept>
 
 using namespace std;
 
