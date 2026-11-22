@@ -128,17 +128,6 @@ private:
 
 public:
     /**
-     * @brief Degree and access total of a node in a ranking.
-     * @details For the out ranking, degree is the out-degree and accesses is the sum of the
-     * weights of the arcs that leave the node. For the in ranking they are the in versions.
-     */
-    struct NodeRank {
-        T node;
-        int degree;
-        int accesses;
-    };
-
-    /**
      * @brief Creates an empty graph.
      * Complexity: O(1).
      */
@@ -274,10 +263,10 @@ public:
     int getInAccesses(const T& v) const { return g[requireId(v)].getInAccesses(); }
 
     /**
-     * @brief Gets the number of nodes.
+     * @brief Gets the number of vertices.
      * Complexity: O(1).
      */
-    int nodeCount() const { return (int)ids.size(); }
+    int vertexCount() const { return (int)ids.size(); }
 
     /**
      * @brief Gets the number of arcs (distinct origin-destination pairs).
@@ -285,63 +274,7 @@ public:
      */
     int edgeCount() const { return arcCount; }
 
-    /**
-     * @brief Ranks the nodes that have outgoing arcs by out-degree.
-     * Complexity: O(V log V).
-     * @param n Maximum number of nodes to return; zero or less returns an empty vector.
-     * @return vector<NodeRank> Up to n nodes from the largest to the smallest out-degree.
-     * If two nodes have the same degree, the one with more accesses goes first; if they still
-     * tie, the smaller node (using <) goes first. Nodes with out-degree 0 are not ranked.
-     */
-    vector<NodeRank> topByOutDegree(int n) const { return rank(true, n); }
-
-    /**
-     * @brief Ranks the nodes that have incoming arcs by in-degree.
-     * Complexity: O(V log V).
-     * @param n Maximum number of nodes to return; zero or less returns an empty vector.
-     * @return vector<NodeRank> Up to n nodes from the largest to the smallest in-degree.
-     * Ties are broken as in topByOutDegree. Nodes with in-degree 0 are not ranked.
-     */
-    vector<NodeRank> topByInDegree(int n) const { return rank(false, n); }
-
-private:
-    /**
-     * @brief Tells if a goes before b: larger degree, then more accesses, then smaller node.
-     * Complexity: O(1).
-     */
-    static bool ranksBefore(const NodeRank& a, const NodeRank& b) {
-        if (a.degree != b.degree)
-            return a.degree > b.degree;
-        if (a.accesses != b.accesses)
-            return a.accesses > b.accesses;
-        return a.node < b.node;
-    }
-
-    /**
-     * @brief Builds a ranking by out-degree or by in-degree.
-     * Complexity: O(V log V) with the project's stable merge sort.
-     * @param byOut true to rank by out-degree, false to rank by in-degree.
-     * @param n Maximum number of nodes to return.
-     * @return vector<NodeRank> Ranked nodes, cut to n.
-     */
-    vector<NodeRank> rank(bool byOut, int n) const {
-        vector<NodeRank> ranking;
-
-        for (size_t i = 0; i < ids.size(); i++) {
-            int degree = byOut ? g[i].getOutDeg() : g[i].getInDeg();
-            if (degree == 0)
-                continue;
-            int accesses = byOut ? g[i].getOutAccesses() : g[i].getInAccesses();
-            ranking.push_back(NodeRank{ids[i], degree, accesses});
-        }
-
-        mergeSortBy(ranking, ranksBefore);
-
-        size_t keep = n > 0 ? (size_t)n : 0;
-        if (ranking.size() > keep)
-            ranking.erase(ranking.begin() + keep, ranking.end());
-        return ranking;
-    }
+    vector<T> getVertices() const { return ids; }
 };
 
 #endif
