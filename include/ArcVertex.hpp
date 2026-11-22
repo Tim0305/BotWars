@@ -1,7 +1,7 @@
 #ifndef ARCVERTEX_HPP
 #define ARCVERTEX_HPP
 
-template<typename ArcType>
+template <typename ArcType>
 class ArcVertex {
 private:
     ArcType* out = nullptr;
@@ -18,9 +18,10 @@ public:
     int getOutDeg() const { return outDeg; }
     int getInDeg() const { return inDeg; }
 
-    // Setters y modificadores
+    // Setters
     void setOut(ArcType* newOut) { out = newOut; }
     void setIn(ArcType* newIn) { in = newIn; }
+
     void incrementOutDeg() { outDeg++; }
     void incrementInDeg() { inDeg++; }
 };
