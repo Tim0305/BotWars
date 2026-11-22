@@ -40,70 +40,82 @@ public:
 
     /**
      * @brief Gets the first arc that leaves the node.
+     * Complexity: O(1).
      * @return ArcType* First arc of the out list, or nullptr if the node has no outgoing arcs.
      */
     ArcType* getOut() const { return out; }
 
     /**
      * @brief Gets the first arc that enters the node.
+     * Complexity: O(1).
      * @return ArcType* First arc of the in list, or nullptr if the node has no incoming arcs.
      */
     ArcType* getIn() const { return in; }
 
     /**
      * @brief Gets the number of arcs that leave the node.
+     * Complexity: O(1).
      * @return int Out-degree.
      */
     int getOutDeg() const { return outDeg; }
 
     /**
      * @brief Gets the number of arcs that enter the node.
+     * Complexity: O(1).
      * @return int In-degree.
      */
     int getInDeg() const { return inDeg; }
 
     /**
      * @brief Gets the sum of the weights of the arcs that leave the node.
+     * Complexity: O(1).
      * @return int Total accesses made by this node as origin.
      */
     int getOutAccesses() const { return outAccesses; }
 
     /**
      * @brief Gets the sum of the weights of the arcs that enter the node.
+     * Complexity: O(1).
      * @return int Total accesses received by this node as destination.
      */
     int getInAccesses() const { return inAccesses; }
 
     /**
      * @brief Sets the first arc of the out list.
+     * Complexity: O(1).
      * @param newOut New head of the list (the graph links the previous head behind it).
      */
     void setOut(ArcType* newOut) { out = newOut; }
 
     /**
      * @brief Sets the first arc of the in list.
+     * Complexity: O(1).
      * @param newIn New head of the list (the graph links the previous head behind it).
      */
     void setIn(ArcType* newIn) { in = newIn; }
 
     /**
      * @brief Adds one to the out-degree.
+     * Complexity: O(1).
      */
     void incrementOutDeg() { outDeg++; }
 
     /**
      * @brief Adds one to the in-degree.
+     * Complexity: O(1).
      */
     void incrementInDeg() { inDeg++; }
 
     /**
      * @brief Adds accesses to the out total.
+     * Complexity: O(1).
      * @param amount Accesses to add.
      */
     void addOutAccesses(int amount) { outAccesses += amount; }
 
     /**
      * @brief Adds accesses to the in total.
+     * Complexity: O(1).
      * @param amount Accesses to add.
      */
     void addInAccesses(int amount) { inAccesses += amount; }

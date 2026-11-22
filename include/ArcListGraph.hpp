@@ -29,8 +29,12 @@ using namespace std;
  * lists: the out list of its origin and the in list of its destination. The weight of an arc is
  * the number of accesses from the origin to the destination. Adding the same pair again does not
  * create another arc; it adds to the weight. The out-degree, the in-degree and the access totals
- * of a node are counters, so reading them is O(1).
- * For complexity, V is the number of nodes and E is the number of arcs.
+ * of a node are counters, so reading them through ArcVertex is O(1). Public queries by
+ * value first locate the node in the splay index and take amortized O(log V) time.
+ * For complexity, V is the number of nodes and E is the number of arcs. Copying and
+ * comparing a T are assumed O(1); variable-length keys add their copy/comparison costs.
+ * A single splay lookup may take O(V), although a sequence has amortized O(log V)
+ * lookup cost. Insertion also has amortized vector growth. Total graph space is O(V + E).
  * The graph cannot be copied.
  */
 template <typename T>
@@ -54,9 +58,25 @@ private:
     struct IndexEntry {
         T key;
         int id;
+        /**
+         * @brief Checks whether this key is smaller than the other key.
+         * Complexity: O(1), assuming O(1) key comparison.
+         */
         bool operator<(const IndexEntry& other) const { return key < other.key; }
+        /**
+         * @brief Checks whether this key is larger than the other key.
+         * Complexity: O(1), assuming O(1) key comparison.
+         */
         bool operator>(const IndexEntry& other) const { return key > other.key; }
+        /**
+         * @brief Checks whether the keys are equal.
+         * Complexity: O(1), assuming O(1) key comparison.
+         */
         bool operator==(const IndexEntry& other) const { return key == other.key; }
+        /**
+         * @brief Checks whether the keys are different.
+         * Complexity: O(1), assuming O(1) key comparison.
+         */
         bool operator!=(const IndexEntry& other) const { return !(key == other.key); }
     };
 
@@ -95,6 +115,7 @@ private:
 
     /**
      * @brief Gets the position of a node that must exist.
+     * Complexity: amortized O(log V); O(V) for a single worst-case lookup.
      * @param value Node to look for.
      * @return int Position of the node.
      * @throws std::invalid_argument If the node is not in the graph.
@@ -133,7 +154,15 @@ public:
      */
     ArcListGraph() = default;
 
+    /**
+     * @brief Prevents copying the graph and its owning arc pointers.
+     * Complexity: not applicable; this deleted function cannot execute.
+     */
     ArcListGraph(const ArcListGraph&) = delete;
+    /**
+     * @brief Prevents replacing the graph with a shallow copy.
+     * Complexity: not applicable; this deleted function cannot execute.
+     */
     ArcListGraph& operator=(const ArcListGraph&) = delete;
 
     /**
@@ -158,8 +187,11 @@ public:
      * @param v Destination node.
      * @param weight Accesses to add (one per log line).
      * @pre weight must be at least 1.
-     * @post If the arc u -> v already exists, its weight grows by weight; otherwise a new arc is
-     * created with that weight. The degrees only change when a new arc is created.
+     * @post A new arc starts with the supplied weight. An existing arc currently grows by 1,
+     * while both access counters grow by weight. These agree when weight == 1, as used when
+     * loading the log. The degrees only change when a new arc is created.
+     * @warning Repeated insertion with weight > 1 makes the stored arc weight disagree with
+     * the access counters. See ACT43_REVIEW.md for the reproduced defect.
      * @throws std::invalid_argument If weight is less than 1.
      */
     void addEdge(const T& u, const T& v, int weight = 1) {
@@ -202,7 +234,7 @@ public:
 
     /**
      * @brief Checks if there is an arc from u to v. The arc v -> u is a different arc.
-     * Complexity: same as getWeight.
+     * Complexity: amortized O(log V + min(out-degree of u, in-degree of v)).
      */
     bool hasEdge(const T& u, const T& v) const { return getWeight(u, v) > 0; }
 
@@ -274,6 +306,11 @@ public:
      */
     int edgeCount() const { return arcCount; }
 
+    /**
+     * @brief Gets a copy of the node values in insertion order.
+     * Complexity: O(V) time and O(V) additional space, assuming O(1) T copies.
+     * @return vector<T> All node values; changing the result does not change the graph.
+     */
     vector<T> getVertices() const { return ids; }
 };
 
