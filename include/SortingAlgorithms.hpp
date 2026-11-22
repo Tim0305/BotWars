@@ -95,6 +95,7 @@ void insertionSort(std::vector<T>& arr) {
 /**
  * @brief Function that implements the merge logic of Merge sort algorithm
  *
+ * Complexity: O(n), where n = hi - lo + 1, assuming O(1) value and comparator operations.
  * @tparam T any comparable data type
  * @param arr a vector<T> with the n values to sort
  * @param lo an int parameter that specifies the lowest index of the current window
@@ -188,6 +189,7 @@ void mergeSort(std::vector<T>& arr) {
 /**
  * @brief Merge logic of Merge sort using a custom comparator.
  *
+ * Complexity: O(n), where n = hi - lo + 1, assuming O(1) value and comparator operations.
  * @tparam T any data type
  * @tparam Compare Function that returns true if a should come before b
  * @param arr a vector<T> with the n values to sort
@@ -268,6 +270,7 @@ void mergeSortBy(std::vector<T>& arr, Compare comp) {
 /**
  * @brief Implementation of Lomuto partition algorithm with the pivot at the start.
  *
+ * Complexity: O(n), where n = hi - lo + 1, assuming O(1) value and comparator operations.
  * @tparam T any comparable data type
  * @param arr a vector<T> with the n values to sort
  * @param lo an int parameter that specifies the lowest index of the current window

@@ -9,6 +9,7 @@
 
 /**
  * @brief Registers a new access of this IP address
+ * Complexity: O(1).
  * @param success Whether the access was successful (Accepted).
  * @post Increments totalAccesses and increments successfulAccesses only on success.
  */
@@ -20,6 +21,7 @@ void IPRecord::registerAccess(bool success) {
 
 /**
  * @brief Compares only the IP addresses.
+ * Complexity: O(1).
  * @param other Record whose IP is compared.
  * @return true If this IP is less than the other IP.
  */
@@ -27,6 +29,7 @@ bool IPRecord::operator<(const IPRecord& other) const { return ip < other.ip; }
 
 /**
  * @brief Compares only the IP addresses.
+ * Complexity: O(1).
  * @param other Record whose IP is compared.
  * @return true If this IP is greater than the other IP.
  */
@@ -34,6 +37,7 @@ bool IPRecord::operator>(const IPRecord& other) const { return ip > other.ip; }
 
 /**
  * @brief Compares only the IP addresses.
+ * Complexity: O(1).
  * @param other Record whose IP is compared.
  * @return true If this IP is equal to the other IP.
  */
@@ -41,6 +45,7 @@ bool IPRecord::operator==(const IPRecord& other) const { return ip == other.ip; 
 
 /**
  * @brief Compares only the IP addresses.
+ * Complexity: O(1).
  * @param other Record whose IP is compared.
  * @return true If this IP is different from the other IP.
  */
@@ -48,6 +53,7 @@ bool IPRecord::operator!=(const IPRecord& other) const { return ip != other.ip; 
 
 /**
  * @brief Compares only the IP addresses.
+ * Complexity: O(1).
  * @param other Record whose IP is compared.
  * @return true If this IP is less than or equal to the other IP.
  */
@@ -55,6 +61,7 @@ bool IPRecord::operator<=(const IPRecord& other) const { return ip <= other.ip; 
 
 /**
  * @brief Compares only the IP addresses.
+ * Complexity: O(1).
  * @param other Record whose IP is compared.
  * @return true If this IP is greater than or equal to the other IP.
  */

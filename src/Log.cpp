@@ -20,6 +20,7 @@ CompareMethod Log::compareMethod = CompareMethod::DATE_METHOD;
 
 /**
  * @brief Gets the date of the log entry.
+ * Complexity: O(1).
  * @pre The Log object must be initialized.
  * @post Returns a copy of the stored Date object.
  * @return Date The timestamp of the log.
@@ -28,6 +29,7 @@ Date Log::getDate() const { return this->date; }
 
 /**
  * @brief Gets the IP address of the log entry.
+ * Complexity: O(1).
  * @pre The Log object must be initialized.
  * @post Returns a copy of the stored IP object.
  * @return IP4 A copy of the IP address.
@@ -36,6 +38,7 @@ IP4 Log::getIp() const { return this->ip; }
 
 /**
  * @brief Gets the port associated with the log entry.
+ * Complexity: O(1).
  * @pre The Log object must be initialized.
  * @return int The port number.
  */
@@ -43,6 +46,7 @@ int Log::getPort() const { return this->port; }
 
 /**
  * @brief Gets the domain of the log entry.
+ * Complexity: O(d), where d is the domain length, because the string is copied.
  * @pre The Log object must be initialized.
  * @post Returns the domain string.
  * @return string The domain name.
@@ -51,6 +55,7 @@ string Log::getDomain() const { return this->domain; }
 
 /**
  * @brief Gets the message of the log entry.
+ * Complexity: O(m), where m is the message length, because the string is copied.
  * @pre The Log object must be initialized.
  * @post Returns the log message content.
  * @return string The message string.
@@ -61,6 +66,7 @@ string Log::getMessage() const { return this->message; }
  * @brief Overloads the less-than operator to compare two Log objects based on the compareMethod
  * attribute.
  *
+ * Complexity: O(1).
  * @param log The right-hand side Log instance to compare against.
  *
  * @pre Both Log objects must have valid Date/IP4 attributes.
@@ -83,6 +89,7 @@ bool Log::operator<(const Log& log) const {
  * @brief Overloads the greater-than operator to compare two Log objects based on the compareMethod
  * attribute.
  *
+ * Complexity: O(1).
  * @param log The right-hand side Log instance to compare against.
  *
  * @pre Both Log objects must have valid Date/IP4 attributes.
@@ -105,6 +112,7 @@ bool Log::operator>(const Log& log) const {
  * @brief Overloads the equality operator to compare two Log objects based on the compareMethod
  * attribute.
  *
+ * Complexity: O(1).
  * @param log The right-hand side Log instance to compare against.
  *
  * @pre Both Log objects must have valid Date/IP4 attributes.
@@ -127,6 +135,7 @@ bool Log::operator==(const Log& log) const {
 /**
  * @brief Overloads the greater-than-or-equal-to operator based on the compareMethod attribute.
  *
+ * Complexity: O(1).
  * @param log The right-hand side Log instance to compare against.
  *
  * @pre Both Log objects must have valid Date/IP4 attributes.
@@ -148,6 +157,7 @@ bool Log::operator>=(const Log& log) const {
 /**
  * @brief Overloads the less-than-or-equal-to operator based on the compareMethod attribute.
  *
+ * Complexity: O(1).
  * @param log The right-hand side Log instance to compare against.
  *
  * @pre Both Log objects must have valid Date/IP4 attributes.
@@ -168,6 +178,7 @@ bool Log::operator<=(const Log& log) const {
 
 /**
  * @brief Sets the comparison mode shared by all Log objects.
+ * Complexity: O(1).
  * @param compareMethod Comparison field to use: IP_METHOD or DATE_METHOD.
  * @post All subsequent Log comparisons use the selected field.
  * @pre Use IP_METHOD or DATE_METHOD. Keep the same method while sorting or searching.
@@ -179,6 +190,7 @@ void Log::setCompareMethod(const CompareMethod& compareMethod) {
 /**
  * @brief Converts the Log instance attributes into a formatted string representation.
  *
+ * Complexity: O(d + m), where d and m are the domain and message lengths.
  * @pre The Log instance must contain valid member variables.
  * @post Generates a string combining date, IP, port, domain, and message.
  * @return string A line formatted as "Month Day HH:MM:SS a.b.c.d:Port Domain Message",
@@ -198,6 +210,7 @@ string Log::toString() const {
  * @brief Parses a string representation of a log and creates a Log object instance.
  * Format: Month Day HH:MM:SS IP:Port DomainName Message
  *
+ * Complexity: O(n), where n is the input line length.
  * @param strLog The raw string containing log information to be parsed.
  *
  * @pre The string 'strLog' must conform to the expected log text format.

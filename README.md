@@ -1,7 +1,8 @@
 # BotWars
 
 A C++17 program that reads access logs, sorts them, searches by date or IP,
-and shows reports about the IPs with the most accesses.
+shows reports about the IPs with the most accesses, and ranks source IPs and destination
+servers in a directed access graph.
 
 ## Build and run
 
@@ -40,6 +41,7 @@ Do not include blank lines. If the file cannot be loaded, the program shows an e
 - **4. Monitor:** Count accesses by IP and show the reports described below.
 - **5. Monitor Test:** Choose ascending, descending or shuffled order and enter
   the number of records to insert. Shows the time taken and the tree height.
+- **6. Graph Ranking:** Build the access graph and show its size and both top 5 rankings.
 - **0. Exit:** Close the program.
 
 Searches include both ends of the range. The logs do not need to be sorted for

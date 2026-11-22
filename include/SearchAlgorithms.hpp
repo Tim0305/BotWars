@@ -2,6 +2,7 @@
  * @file SearchAlgorithms.hpp
  * @author Team 1
  * @brief Library that defines sequential and binary search algorithms
+ * @details Bounds use n vector elements and assume O(1) comparisons.
  * @date 2026-09-10
  */
 

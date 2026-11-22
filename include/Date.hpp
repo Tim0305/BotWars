@@ -31,12 +31,14 @@ enum Month {
 
 /**
  * @brief Converts a month to its English abbreviation.
+ * Complexity: O(1).
  * @return string The abbreviation, or "Unknown" if the month is invalid.
  */
 string monthToString(const Month&);
 
 /**
  * @brief Converts an English month abbreviation to a Month value.
+ * Complexity: O(1).
  * @return Month The matching month, or Unknown if the text does not match.
  */
 Month stringToMonth(const string&);
@@ -64,6 +66,7 @@ private:
 
     /**
      * @brief Checks the date and time values.
+     * Complexity: O(1).
      * @return true If all values are valid.
      * @return false Otherwise.
      */
@@ -72,11 +75,13 @@ private:
 public:
     /**
      * @brief Creates a Date with day 0, month Unknown and time 00:00:00.
+     * Complexity: O(1).
      */
     Date();
 
     /**
      * @brief Creates a Date with the given day, month, hour, minutes and seconds.
+     * Complexity: O(1).
      * @pre The values must form a valid date and time.
      * @throws std::invalid_argument If the values are invalid.
      */
@@ -84,36 +89,42 @@ public:
 
     /**
      * @brief Gets the day of the date.
+     * Complexity: O(1).
      * @return int The stored day.
      */
     int getDay() const;
 
     /**
      * @brief Gets the month of the date.
+     * Complexity: O(1).
      * @return Month The stored month.
      */
     Month getMonth() const;
 
     /**
      * @brief Gets the hour of the date.
+     * Complexity: O(1).
      * @return int The stored hour.
      */
     int getHour() const;
 
     /**
      * @brief Gets the minutes of the date.
+     * Complexity: O(1).
      * @return int The stored minutes.
      */
     int getMinutes() const;
 
     /**
      * @brief Gets the seconds of the date.
+     * Complexity: O(1).
      * @return int The stored seconds.
      */
     int getSeconds() const;
 
     /**
      * @brief Compares two dates.
+     * Complexity: O(1).
      * @param date Date to compare with.
      * @return true If this date occurs after the given date.
      * @return false Otherwise.
@@ -122,6 +133,7 @@ public:
 
     /**
      * @brief Compares two dates.
+     * Complexity: O(1).
      * @param date Date to compare with.
      * @return true If this date occurs before the given date.
      * @return false Otherwise.
@@ -130,6 +142,7 @@ public:
 
     /**
      * @brief Compares two dates.
+     * Complexity: O(1).
      * @param date Date to compare with.
      * @return true If this date occurs on or after the given date.
      * @return false Otherwise.
@@ -138,6 +151,7 @@ public:
 
     /**
      * @brief Compares two dates.
+     * Complexity: O(1).
      * @param date Date to compare with.
      * @return true If this date occurs on or before the given date.
      * @return false Otherwise.
@@ -146,6 +160,7 @@ public:
 
     /**
      * @brief Compares two dates.
+     * Complexity: O(1).
      * @param date Date to compare with.
      * @return true If this date occurs at the same time as the given date.
      * @return false Otherwise.
@@ -154,12 +169,14 @@ public:
 
     /**
      * @brief Converts the date to text.
+     * Complexity: O(1).
      * @return string The date in Month Day HH:MM:SS format.
      */
     string toString() const;
 
     /**
      * @brief Creates a Date from a string.
+     * Complexity: O(n), where n is the input string length.
      * @param strDate Date in Month Day HH:MM:SS format.
      * @return Date The date read from the string.
      * @throws std::invalid_argument If the date or time values are invalid.

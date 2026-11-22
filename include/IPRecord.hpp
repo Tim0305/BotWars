@@ -23,6 +23,7 @@ struct IPRecord {
 
     /**
      * @brief Construct a new IPRecord object from its first access
+     * Complexity: O(1).
      * @param ip The IP4 address
      * @param success Whether the initial access was successful (Accepted).
      * @post totalAccesses is 1; successfulAccesses is 1 if success is true, otherwise 0.
@@ -32,6 +33,7 @@ struct IPRecord {
 
     /**
      * @brief Registers a new access of this IP address
+     * Complexity: O(1).
      * @param success Whether the access was successful (Accepted).
      * @post Increments totalAccesses and increments successfulAccesses only on success.
      */
@@ -39,6 +41,7 @@ struct IPRecord {
 
     /**
      * @brief Compares only the IP addresses.
+     * Complexity: O(1).
      * @param other Record whose IP is compared.
      * @return true If this IP is less than the other IP.
      */
@@ -46,6 +49,7 @@ struct IPRecord {
 
     /**
      * @brief Compares only the IP addresses.
+     * Complexity: O(1).
      * @param other Record whose IP is compared.
      * @return true If this IP is greater than the other IP.
      */
@@ -53,6 +57,7 @@ struct IPRecord {
 
     /**
      * @brief Compares only the IP addresses.
+     * Complexity: O(1).
      * @param other Record whose IP is compared.
      * @return true If this IP is equal to the other IP.
      */
@@ -60,6 +65,7 @@ struct IPRecord {
 
     /**
      * @brief Compares only the IP addresses.
+     * Complexity: O(1).
      * @param other Record whose IP is compared.
      * @return true If this IP is different from the other IP.
      */
@@ -67,6 +73,7 @@ struct IPRecord {
 
     /**
      * @brief Compares only the IP addresses.
+     * Complexity: O(1).
      * @param other Record whose IP is compared.
      * @return true If this IP is less than or equal to the other IP.
      */
@@ -74,6 +81,7 @@ struct IPRecord {
 
     /**
      * @brief Compares only the IP addresses.
+     * Complexity: O(1).
      * @param other Record whose IP is compared.
      * @return true If this IP is greater than or equal to the other IP.
      */

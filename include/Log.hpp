@@ -50,12 +50,14 @@ private:
 public:
     /**
      * @brief Constructs a Log object with default values.
+     * Complexity: O(1).
      * @post Uses a default Date, IP 0.0.0.0, port 0 and empty domain and message.
      */
     Log() : date(Date()), ip(IP4(0, 0, 0, 0)), port(0), domain(""), message("") {};
 
     /**
      * @brief Constructs a log with the given values, without checking them.
+     * Complexity: O(d + m), where d and m are the domain and message lengths.
      * @param date Timestamp to store.
      * @param ip Source address to store.
      * @param port Port value to store; no range check is performed.
@@ -67,36 +69,42 @@ public:
 
     /**
      * @brief Gets the date of the log.
+     * Complexity: O(1).
      * @return Date The stored date.
      */
     Date getDate() const;
 
     /**
      * @brief Gets the IP address of the log.
+     * Complexity: O(1).
      * @return IP4 The stored IP address.
      */
     IP4 getIp() const;
 
     /**
      * @brief Gets the port of the log.
+     * Complexity: O(1).
      * @return int The stored port.
      */
     int getPort() const;
 
     /**
      * @brief Gets the domain of the log.
+     * Complexity: O(d), where d is the domain length, because the string is copied.
      * @return string The stored domain.
      */
     string getDomain() const;
 
     /**
      * @brief Gets the message of the log.
+     * Complexity: O(m), where m is the message length, because the string is copied.
      * @return string The stored message.
      */
     string getMessage() const;
 
     /**
      * @brief Compares logs using the selected date or IP field.
+     * Complexity: O(1).
      * @param log Log to compare with.
      * @return true If the selected field is greater than the other log's field.
      * @return false Otherwise.
@@ -105,6 +113,7 @@ public:
 
     /**
      * @brief Compares logs using the selected date or IP field.
+     * Complexity: O(1).
      * @param log Log to compare with.
      * @return true If the selected field is less than the other log's field.
      * @return false Otherwise.
@@ -113,6 +122,7 @@ public:
 
     /**
      * @brief Compares logs using the selected date or IP field.
+     * Complexity: O(1).
      * @param log Log to compare with.
      * @return true If the selected field is equal to the other log's field.
      * @return false Otherwise.
@@ -121,6 +131,7 @@ public:
 
     /**
      * @brief Compares logs using the selected date or IP field.
+     * Complexity: O(1).
      * @param log Log to compare with.
      * @return true If the selected field is greater than or equal to the other log's field.
      * @return false Otherwise.
@@ -129,6 +140,7 @@ public:
 
     /**
      * @brief Compares logs using the selected date or IP field.
+     * Complexity: O(1).
      * @param log Log to compare with.
      * @return true If the selected field is less than or equal to the other log's field.
      * @return false Otherwise.
@@ -137,18 +149,21 @@ public:
 
     /**
      * @brief Converts the log to text.
+     * Complexity: O(d + m), where d and m are the domain and message lengths.
      * @return string The date, IP, port, domain and message in one line.
      */
     string toString() const;
 
     /**
      * @brief Selects the field used to compare all Log objects.
+     * Complexity: O(1).
      * @param compareMethod IP_METHOD to compare IPs or DATE_METHOD to compare dates.
      */
     static void setCompareMethod(const CompareMethod& compareMethod);
 
     /**
      * @brief Creates a Log from a string.
+     * Complexity: O(n), where n is the input line length.
      * @param strLog Text in Month Day HH:MM:SS IP:Port Domain Message format.
      * @return Log The log read from the string.
      * @throws std::invalid_argument If the date, IP or port cannot be read as expected.

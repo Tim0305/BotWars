@@ -187,11 +187,8 @@ public:
      * @param v Destination node.
      * @param weight Accesses to add (one per log line).
      * @pre weight must be at least 1.
-     * @post A new arc starts with the supplied weight. An existing arc currently grows by 1,
-     * while both access counters grow by weight. These agree when weight == 1, as used when
-     * loading the log. The degrees only change when a new arc is created.
-     * @warning Repeated insertion with weight > 1 makes the stored arc weight disagree with
-     * the access counters. See ACT43_REVIEW.md for the reproduced defect.
+     * @post A new arc starts with the supplied weight. An existing arc and both endpoint
+     * access counters grow by weight. The degrees only change when a new arc is created.
      * @throws std::invalid_argument If weight is less than 1.
      */
     void addEdge(const T& u, const T& v, int weight = 1) {
@@ -203,7 +200,7 @@ public:
 
         Arc* arc = findArc(from, to);
         if (arc != nullptr) {
-            arc->weight++;
+            arc->weight += weight;
         } else {
             arc = new Arc{from, to, weight, g[from].getOut(), g[to].getIn()};
             g[from].setOut(arc);

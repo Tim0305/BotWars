@@ -13,6 +13,7 @@
 /**
  * @brief Converts a Month enum value to its corresponding string representation.
  *
+ * Complexity: O(1).
  * @param month A constant reference to the Month enum value.
  *
  * @details Unknown and values outside Jan..Dec are formatted as "Unknown".
@@ -53,6 +54,7 @@ string monthToString(const Month& month) {
 /**
  * @brief Parses a string and converts it to its corresponding Month enum value.
  *
+ * Complexity: O(1).
  * @param str A constant reference to the string containing the month abbreviation.
  *
  * @details Accepts only the exact English abbreviations Jan, Feb, Mar, Apr, May, Jun,
@@ -93,6 +95,7 @@ Month stringToMonth(const string& str) {
 /**
  * @brief Constructs a Date object with default values.
  *
+ * Complexity: O(1).
  * @post Creates a placeholder date (day 0, month Unknown, 00:00:00).
  */
 Date::Date() {
@@ -106,6 +109,7 @@ Date::Date() {
 /**
  * @brief Parameterized constructor for the Date class.
  *
+ * Complexity: O(1).
  * @param day Day of the month.
  * @param month Month enum value.
  * @param hour Hour value (0-23).
@@ -133,6 +137,7 @@ Date::Date(int day, Month month, int hour, int minutes, int seconds) {
 /**
  * @brief Helper function that validates if the date and time attributes are within correct bounds.
  *
+ * Complexity: O(1).
  * @pre Internal attributes (day, month, hour, minutes, seconds) must be set.
  * @post Evaluates logical constraints for days per month, and time ranges.
  * @details February always has 28 days because no year is stored.
@@ -159,6 +164,7 @@ bool Date::isValid() const {
 /**
  * @brief Gets the day of the date.
  *
+ * Complexity: O(1).
  * @pre The Date instance must be initialized.
  * @post Returns the day value.
  * @return int Day of the month, or 0 for a default Date.
@@ -168,6 +174,7 @@ int Date::getDay() const { return this->day; }
 /**
  * @brief Gets the month of the date.
  *
+ * Complexity: O(1).
  * @pre The Date instance must be initialized.
  * @post Returns the Month enum value.
  * @return Month The month of the year, or Unknown for a default Date.
@@ -177,6 +184,7 @@ Month Date::getMonth() const { return this->month; }
 /**
  * @brief Gets the hour component of the time.
  *
+ * Complexity: O(1).
  * @pre The Date instance must be initialized.
  * @post Returns the hour value.
  * @return int Hour value (0-23).
@@ -186,6 +194,7 @@ int Date::getHour() const { return this->hour; }
 /**
  * @brief Gets the minutes component of the time.
  *
+ * Complexity: O(1).
  * @pre The Date instance must be initialized.
  * @post Returns the minutes value.
  * @return int Minutes value (0-59).
@@ -195,6 +204,7 @@ int Date::getMinutes() const { return this->minutes; }
 /**
  * @brief Gets the seconds component of the time.
  *
+ * Complexity: O(1).
  * @pre The Date instance must be initialized.
  * @post Returns the seconds value.
  * @return int Seconds value (0-59).
@@ -204,6 +214,7 @@ int Date::getSeconds() const { return this->seconds; }
 /**
  * @brief Overloads the less-than operator to compare two Date objects.
  *
+ * Complexity: O(1).
  * @param date The right-hand side Date instance to compare against.
  *
  * @pre Both Date objects must be valid.
@@ -226,6 +237,7 @@ bool Date::operator<(const Date& date) const {
 /**
  * @brief Overloads the greater-than operator to chronologically compare two Date objects.
  *
+ * Complexity: O(1).
  * @param date The right-hand side Date instance to compare against.
  *
  * @pre Both Date objects must be valid.
@@ -238,6 +250,7 @@ bool Date::operator>(const Date& date) const { return date < *this; }
 /**
  * @brief Overloads the equality operator to compare two Date objects.
  *
+ * Complexity: O(1).
  * @param date The right-hand side Date instance to compare against.
  *
  * @pre Both Date objects must be valid.
@@ -253,6 +266,7 @@ bool Date::operator==(const Date& date) const {
 /**
  * @brief Overloads the less-than-or-equal-to operator to compare two Date objects.
  *
+ * Complexity: O(1).
  * @param date The right-hand side Date instance to compare against.
  *
  * @pre Both Date objects must be valid.
@@ -265,6 +279,7 @@ bool Date::operator<=(const Date& date) const { return !(date < *this); }
 /**
  * @brief Overloads the greater-than-or-equal-to operator to compare two Date objects.
  *
+ * Complexity: O(1).
  * @param date The right-hand side Date instance to compare against.
  *
  * @pre Both Date objects must be valid.
@@ -277,6 +292,7 @@ bool Date::operator>=(const Date& date) const { return !(*this < date); }
 /**
  * @brief Converts the Date instance attributes into a formatted string.
  *
+ * Complexity: O(1).
  * @pre The Date instance must be initialized.
  * @post Generates a string representation of the date and time.
  * @return string Date in "Month Day HH:MM:SS" format, such as "Jan 1 08:05:09".
@@ -308,6 +324,7 @@ string Date::toString() const {
  * @brief Parses a string representation of a date and constructs a Date object.
  * Format: Month Day HH:MM:SS
  *
+ * Complexity: O(n), where n is the input string length.
  * @param strDate Raw date string to be parsed.
  *
  * @pre The string 'strDate' must follow the expected date string format.
