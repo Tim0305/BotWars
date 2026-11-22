@@ -37,7 +37,7 @@ inline bool byAccessesDesc(const IPRecord& a, const IPRecord& b) {
  * @return vector<IPRecord> Up to n records, from most to least accesses.
  * IPs with the same number of accesses are returned in ascending IP order.
  */
-vector<IPRecord> topIPs(const SplayTree<IPRecord>& splayTree, const int n) {
+inline vector<IPRecord> topIPs(const SplayTree<IPRecord>& splayTree, const int n) {
     vector<IPRecord> records = splayTree.inorder();
 
     mergeSortBy(records, byAccessesDesc);
@@ -57,7 +57,7 @@ vector<IPRecord> topIPs(const SplayTree<IPRecord>& splayTree, const int n) {
  * If the tree is empty, returns only the title and "Total IPs: 0".
  * @details Includes accesses from earlier months, not just the named month.
  */
-string monthSummary(const SplayTree<IPRecord>& splayTree, const Month month) {
+inline string monthSummary(const SplayTree<IPRecord>& splayTree, const Month month) {
     stringstream ss;
 
     // Get all the IP records accumulated up to that moment
@@ -92,7 +92,7 @@ string monthSummary(const SplayTree<IPRecord>& splayTree, const Month month) {
  * @return string Up to 15 IPs with their total accesses, successful accesses
  * and percentage of successful accesses. Ties use ascending IP order.
  */
-string top15IpRecords(const SplayTree<IPRecord>& splayTree) {
+inline string top15IpRecords(const SplayTree<IPRecord>& splayTree) {
     stringstream ss;
 
     // Get up to fifteen records ranked by access count
@@ -119,7 +119,8 @@ string top15IpRecords(const SplayTree<IPRecord>& splayTree) {
  * @return string Matching IPs in ascending order, their counters and total accesses.
  * Returns a report with zero matches if no IP is found or startIp is greater than endIp.
  */
-string queryByIpRange(const SplayTree<IPRecord>& splayTree, const IP4& startIp, const IP4& endIp) {
+inline string queryByIpRange(const SplayTree<IPRecord>& splayTree, const IP4& startIp,
+                             const IP4& endIp) {
     stringstream ss;
 
     // Get all the ip records within a range
@@ -153,7 +154,7 @@ string queryByIpRange(const SplayTree<IPRecord>& splayTree, const IP4& startIp, 
  * 255 for the last number. For example, 192.168.1.5 gives 192.168.1.0 to 192.168.1.255.
  * If IPs have the same highest access count, the lowest IP is selected.
  */
-string queryMostAccessedIpBlock(const SplayTree<IPRecord>& splayTree) {
+inline string queryMostAccessedIpBlock(const SplayTree<IPRecord>& splayTree) {
     stringstream ss;
 
     // Get the most accessed ip

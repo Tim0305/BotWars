@@ -60,8 +60,8 @@ private:
         bool operator!=(const IndexEntry& other) const { return !(key == other.key); }
     };
 
-    vector<T> ids;                    // Node list: position -> node value.
-    vector<ArcVertex<Arc>> g;         // One vertex per node; same positions as ids.
+    vector<T> ids;                        // Node list: position -> node value.
+    vector<ArcVertex<Arc>> g;             // One vertex per node; same positions as ids.
     mutable SplayTree<IndexEntry> index;  // Node value -> position (self-adjusting, so mutable).
     int arcCount = 0;
 
@@ -182,7 +182,7 @@ public:
 
         Arc* arc = findArc(from, to);
         if (arc != nullptr) {
-            arc->weight += weight;
+            arc->weight++;
         } else {
             arc = new Arc{from, to, weight, g[from].getOut(), g[to].getIn()};
             g[from].setOut(arc);

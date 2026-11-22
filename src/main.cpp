@@ -1,7 +1,8 @@
 /**
  * @file main.cpp
  * @author Team 1
- * @brief Main file that sorts logs, searches ranges and runs the IP monitor and its tests.
+ * @brief Main file responsible for sorting logs, searching ranges, running the IP monitor and its
+ * tests, and ranking network accesses.
  * @date 2026-11-22
  */
 
@@ -15,7 +16,9 @@
 #include <string>
 #include <vector>
 
+#include "ArcListGraph.hpp"
 #include "Date.hpp"
+#include "GraphReport.hpp"
 #include "IPRecord.hpp"
 #include "Log.hpp"
 #include "Monitor.hpp"
@@ -178,6 +181,14 @@ void descendingOrder(int N);
 void shuffled(int N);
 
 /**
+ * @brief Prints the top 5 node rankings by in-degree and out-degree
+ * @param logs Vector of logs to read; it is not changed.
+ * @pre The vector must not be empty
+ * @post Prints the ranking reports to the console
+ */
+void graphRanking(const vector<Log>& logs);
+
+/**
  * @brief Loads the log file and shows the application menu.
  * @return int 0 when the program finishes, or 1 if the file cannot be loaded.
  */
@@ -185,6 +196,7 @@ int main() {
     bool appIsRunning = true;
 
     cout << "Monitor -> use file 'bitacora_ordenada_date.txt'" << endl;
+    cout << "Graph Ranking -> use file 'bitacora.txt'" << endl;
 
     // Get the filename
     string bitacoraFilename;
@@ -235,6 +247,11 @@ int main() {
                 monitorTest();
                 break;
             }
+            case 6: {
+                // Graph ranking
+                graphRanking(logs);
+                break;
+            }
         }
     }
 
@@ -252,11 +269,12 @@ int showMainMenu() {
         cout << "[3] Search by ip address" << endl;
         cout << "[4] Monitor" << endl;
         cout << "[5] Monitor Test" << endl;
+        cout << "[6] Graph Ranking" << endl;
         cout << "[0] Exit" << endl;
         cout << "> ";
         cin >> option;
 
-        if (option < 0 || option > 5)
+        if (option < 0 || option > 6)
             cout << endl << "Invalid option. Try again" << endl;
         else
             isValid = true;
@@ -645,4 +663,14 @@ void monitorTest() {
             break;
         }
     }
+}
+
+void graphRanking(const vector<Log>& logs) {
+    NetGraph netGraph;
+
+    // Add the elements into the ArcListGraph
+    for (const Log& log : logs) netGraph.addEdge(log.getIp(), log.getDomain());
+
+    // Report
+    cout << graphReport(netGraph) << endl;
 }
