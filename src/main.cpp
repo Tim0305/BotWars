@@ -14,6 +14,7 @@
 #include <random>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "ArcListGraph.hpp"
@@ -22,6 +23,7 @@
 #include "IPRecord.hpp"
 #include "Log.hpp"
 #include "Monitor.hpp"
+#include "ServerStatus.hpp"
 #include "SortingAlgorithms.hpp"
 #include "Splay.hpp"
 
@@ -188,6 +190,8 @@ void shuffled(int N);
  */
 void graphRanking(const vector<Log>& logs);
 
+void hashTables(const vector<Log>& logs);
+
 /**
  * @brief Loads the log file and shows the application menu.
  * @return int 0 when the program finishes, or 1 if the file cannot be loaded.
@@ -252,6 +256,11 @@ int main() {
                 graphRanking(logs);
                 break;
             }
+            case 7: {
+                // Hash tables
+                hashTables(logs);
+                break;
+            }
         }
     }
 
@@ -270,6 +279,7 @@ int showMainMenu() {
         cout << "[4] Monitor" << endl;
         cout << "[5] Monitor Test" << endl;
         cout << "[6] Graph Ranking" << endl;
+        cout << "[7] Hash tables" << endl;
         cout << "[0] Exit" << endl;
         cout << "> ";
         cin >> option;
@@ -673,4 +683,23 @@ void graphRanking(const vector<Log>& logs) {
 
     // Report
     cout << graphReport(netGraph) << endl;
+}
+
+void hashTables(const vector<Log>& logs) {
+    unordered_map<string, ServerStatus> map;
+
+    for (const Log& log : logs) {
+        if (map.count(log.getDomain()) == 0)
+            // Add a new ServerStatus
+            map[log.getDomain()] = ServerStatus();
+
+        // Update the server status
+        map[log.getDomain()].addIpAccess(log.getIp());
+    }
+
+    // Results
+    for (const auto& pair : map) {
+        cout << "Server: " << pair.first << endl;
+        cout << pair.second.toString() << endl;
+    }
 }

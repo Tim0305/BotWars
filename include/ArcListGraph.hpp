@@ -17,8 +17,6 @@
 #include "SortingAlgorithms.hpp"
 #include "Splay.hpp"
 
-using namespace std;
-
 /**
  * @class ArcListGraph
  * @brief Directed graph where the nodes are kept in a list and every node has two arc lists.
@@ -123,7 +121,7 @@ private:
     int requireId(const T& value) const {
         int id = getId(value);
         if (id == NOT_FOUND)
-            throw invalid_argument("Value not found");
+            throw std::invalid_argument("Value not found");
         return id;
     }
 
@@ -193,7 +191,7 @@ public:
      */
     void addEdge(const T& u, const T& v, int weight = 1) {
         if (weight < 1)
-            throw invalid_argument("Weight must be at least 1");
+            throw std::invalid_argument("Weight must be at least 1");
 
         int from = getOrCreateId(u);
         int to = getOrCreateId(v);
