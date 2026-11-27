@@ -42,6 +42,9 @@ Do not include blank lines. If the file cannot be loaded, the program shows an e
 - **5. Monitor Test:** Choose ascending, descending or shuffled order and enter
   the number of records to insert. Shows the time taken and the tree height.
 - **6. Graph Ranking:** Build the access graph and show its size and both top 5 rankings.
+- **7. Server attempts:** Build a per-server traffic summary with standard hash tables.
+  Choose the ranked server table, or enter a server name to see its hourly counts
+  and per-IP counts.
 - **0. Exit:** Close the program.
 
 Searches include both ends of the range. The logs do not need to be sorted for
@@ -68,6 +71,25 @@ last number. For example, `192.168.1.5` gives the range `192.168.1.0` to
 `192.168.1.255`. The method is named `queryMostAccessedIpBlock()`.
 
 Reports are shown on screen and saved in `output.txt`, replacing its previous contents.
+
+## Server Attempts
+
+Option 7 processes the loaded log records in their existing order. An
+`std::unordered_map` maps each server name to its `ServerStatus`; each status
+contains the server's total attempts, an `std::unordered_map<IP4, int>` with one
+entry per distinct source IP and that IP's attempt count, and 24 counters indexed
+by hour (0 to 23). `IP4` supplies a hash function for use as an unordered-map key.
+
+The server table is ordered by descending attempt count. For each server it
+prints total attempts, distinct IP count, an integer-divided average and a table
+of IP counts. Equal attempt counts have no specified order. The stored hourly
+counters use indices 0 through 23, though the current detail display labels them
+1 through 24. Hash-table lookups and updates take average O(1) time and
+worst-case O(n) time due to collisions. Ranking s servers copies each server's
+IP table and sorts the ranking vector, so the copying cost depends on the total
+number of distinct server/IP pairs as well as s. The program does not classify
+suspicious servers; deciding which ones are suspicious and interpreting their
+log messages remain part of the written report.
 
 ## Monitor Test
 

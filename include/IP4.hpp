@@ -138,15 +138,35 @@ public:
      */
     int getHost() const;
 
+    /**
+     * @brief Packs the address into one value.
+     * Complexity: O(1).
+     * @pre Each component is between 0 and 255.
+     * @return uint32_t packed address
+     */
     uint32_t toUint32() const noexcept;
 
+    /**
+     * @brief Computes a hash value for the address.
+     * Complexity: O(1).
+     * @return std::size_t Hash of the packed address.
+     */
     std::size_t hash() const noexcept;
 };
 
-// Add the hash function to IP4
+/**
+ * @brief Enables IP4 to be used as a key in std unordered containers.
+ * @details Hash collisions are resolved by the container using IP4::operator==.
+ */
 namespace std {
 template <>
 struct hash<IP4> {
+    /**
+     * @brief Returns the hash value used by std unordered containers.
+     * Complexity: O(1).
+     * @param ip Address to hash.
+     * @return std::size_t hash value.
+     */
     std::size_t operator()(const IP4& ip) const noexcept { return ip.hash(); }
 };
-}  // namespace std
+}

@@ -163,8 +163,17 @@ int IP4::getNet3() const { return net3; };
  */
 int IP4::getHost() const { return host; };
 
+/**
+ * @brief Packs the four octets into one 32-bit value.
+ * @pre Each component is between 0 and 255.
+ * @return uint32_t Packed address.
+ */
 uint32_t IP4::toUint32() const noexcept {
     return (uint32_t(net1) << 24) | (uint32_t(net2) << 16) | (uint32_t(net3) << 8) | uint32_t(host);
 }
 
+/**
+ * @brief Computes a hash value for this address.
+ * @return std::size_t Hash of the packed address.
+ */
 std::size_t IP4::hash() const noexcept { return std::hash<uint32_t>{}(toUint32()); }
