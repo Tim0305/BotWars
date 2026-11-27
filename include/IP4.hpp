@@ -138,12 +138,9 @@ public:
      */
     int getHost() const;
 
-    uint32_t toUint32() const noexcept {
-        return (uint32_t(net1) << 24) | (uint32_t(net2) << 16) | (uint32_t(net3) << 8) |
-            uint32_t(host);
-    }
+    uint32_t toUint32() const noexcept;
 
-    std::size_t hash() const noexcept { return std::hash<uint32_t>{}(toUint32()); }
+    std::size_t hash() const noexcept;
 };
 
 // Add the hash function to IP4

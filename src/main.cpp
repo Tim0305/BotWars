@@ -23,6 +23,7 @@
 #include "IPRecord.hpp"
 #include "Log.hpp"
 #include "Monitor.hpp"
+#include "ServerAttempts.hpp"
 #include "ServerStatus.hpp"
 #include "SortingAlgorithms.hpp"
 #include "Splay.hpp"
@@ -190,7 +191,13 @@ void shuffled(int N);
  */
 void graphRanking(const vector<Log>& logs);
 
-void hashTables(const vector<Log>& logs);
+void serverAttempts(const vector<Log>& logs);
+
+void printServersAttempts(const unordered_map<string, ServerStatus>& map);
+
+void printServerAttemptsDetails(const unordered_map<string, ServerStatus>& map, string serverName);
+
+char getAttemptsMenuOption();
 
 /**
  * @brief Loads the log file and shows the application menu.
@@ -257,8 +264,8 @@ int main() {
                 break;
             }
             case 7: {
-                // Hash tables
-                hashTables(logs);
+                // Server attempts
+                serverAttempts(logs);
                 break;
             }
         }
@@ -279,12 +286,12 @@ int showMainMenu() {
         cout << "[4] Monitor" << endl;
         cout << "[5] Monitor Test" << endl;
         cout << "[6] Graph Ranking" << endl;
-        cout << "[7] Hash tables" << endl;
+        cout << "[7] Server attempts" << endl;
         cout << "[0] Exit" << endl;
         cout << "> ";
         cin >> option;
 
-        if (option < 0 || option > 6)
+        if (option < 0 || option > 7)
             cout << endl << "Invalid option. Try again" << endl;
         else
             isValid = true;
@@ -685,21 +692,84 @@ void graphRanking(const vector<Log>& logs) {
     cout << graphReport(netGraph) << endl;
 }
 
-void hashTables(const vector<Log>& logs) {
+void serverAttempts(const vector<Log>& logs) {
     unordered_map<string, ServerStatus> map;
 
+    // Fill the map
     for (const Log& log : logs) {
         if (map.count(log.getDomain()) == 0)
             // Add a new ServerStatus
             map[log.getDomain()] = ServerStatus();
 
         // Update the server status
-        map[log.getDomain()].addIpAccess(log.getIp());
+        map[log.getDomain()].addIpAccess(log.getIp(), log.getDate().getHour());
     }
 
+    // Menu
+    char option = 0;
+    do {
+        option = getAttemptsMenuOption();
+        switch (option) {
+            case 'a': {
+                printServersAttempts(map);
+                break;
+            }
+            case 'b': {
+                string serverName;
+                cout << "Server name: ";
+                cin.ignore();
+                getline(cin, serverName);
+                printServerAttemptsDetails(map, serverName);
+                break;
+            }
+        }
+    } while (option != 'c');
+}
+
+void printServersAttempts(const unordered_map<string, ServerStatus>& map) {
     // Results
-    for (const auto& pair : map) {
-        cout << "Server: " << pair.first << endl;
-        cout << pair.second.toString() << endl;
+    vector<ServerRank> rankings = sortServerRankings(map);
+    for (ServerRank rank : rankings) {
+        cout << "Server: " << rank.server << endl;
+
+        // Sort ips
+        cout << rank.status.toString() << endl;
     }
+}
+
+void printServerAttemptsDetails(const unordered_map<string, ServerStatus>& map, string serverName) {
+    auto it = map.find(serverName);
+    if (it == map.end()) {
+        cout << "No server was found with name '" << serverName << "'" << endl;
+        return;
+    }
+
+    vector<int> hourAttempts = it->second.getHourAttempts();
+    cout << endl << it->second.toString() << endl;
+    cout << "==== Hour Attempts ====" << endl;
+    cout << "Hour" << "\t|\t" << "Attempts" << endl;
+    for (int i = 0; i < hourAttempts.size(); i++) {
+        cout << i + 1 << "\t|\t" << hourAttempts[i] << endl;
+    }
+}
+
+char getAttemptsMenuOption() {
+    char option;
+    bool isValid = false;
+
+    do {
+        cout << endl;
+        cout << "\t[a] Print servers attempts" << endl;
+        cout << "\t[b] Print server attempts details" << endl;
+        cout << "\t[c] Return" << endl;
+        cout << "> ";
+        cin >> option;
+
+        if (option < 'a' || option > 'c')
+            cout << endl << "Invalid option. Try again" << endl;
+        else
+            isValid = true;
+    } while (!isValid);
+
+    return option;
 }

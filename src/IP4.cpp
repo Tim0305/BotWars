@@ -162,3 +162,9 @@ int IP4::getNet3() const { return net3; };
  * @return int The stored number.
  */
 int IP4::getHost() const { return host; };
+
+uint32_t IP4::toUint32() const noexcept {
+    return (uint32_t(net1) << 24) | (uint32_t(net2) << 16) | (uint32_t(net3) << 8) | uint32_t(host);
+}
+
+std::size_t IP4::hash() const noexcept { return std::hash<uint32_t>{}(toUint32()); }
