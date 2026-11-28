@@ -5,7 +5,9 @@
  * @date 2026-10-09
  */
 #pragma once
-
+#include <cstddef>
+#include <cstdint>
+#include <functional>
 #include <string>
 
 /**
