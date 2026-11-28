@@ -80,11 +80,8 @@ contains the server's total attempts, an `std::unordered_map<IP4, int>` with one
 entry per distinct source IP and that IP's attempt count, and 24 counters indexed
 by hour (0 to 23). `IP4` supplies a hash function for use as an unordered-map key.
 
-The server table is ordered by descending attempt count. For each server it
-prints total attempts, distinct IP count, an integer-divided average and a table
-of IP counts. Equal attempt counts have no specified order. The stored hourly
-counters use indices 0 through 23, though the current detail display labels them
-1 through 24. Hash-table lookups and updates take average O(1) time and
+The server table is ordered by descending attempt count. For each server it prints total attempts, distinct IP count, the average attempts per IP of the server (total attempts divided by the distinct IP count, using integer division) and a table with the attempt count of each IP. The table has no average column: the average is only given for the server. Equal attempt counts have no specified order. The stored hourly
+counters use indices 0 through 23, and the detail display show the same hours. Hash-table lookups and updates take average O(1) time and
 worst-case O(n) time due to collisions. Ranking s servers copies each server's
 IP table and sorts the ranking vector, so the copying cost depends on the total
 number of distinct server/IP pairs as well as s. The program does not classify

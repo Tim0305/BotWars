@@ -749,7 +749,7 @@ void printServerAttemptsDetails(const unordered_map<string, ServerStatus>& map, 
     cout << "==== Hour Attempts ====" << endl;
     cout << "Hour" << "\t|\t" << "Attempts" << endl;
     for (int i = 0; i < hourAttempts.size(); i++) {
-        cout << i + 1 << "\t|\t" << hourAttempts[i] << endl;
+        cout << i  << "\t|\t" << hourAttempts[i] << endl;
     }
 }
 
