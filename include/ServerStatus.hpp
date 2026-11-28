@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include <iomanip>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -42,7 +43,11 @@ public:
     }
 
     /**
-     * @brief Formats the table of IP access stats.
+     * @brief Formats the stats of this server: total attempts, number of distinct IPs, the average
+     * attempts per IP of the whole server and a table with the attempts of each IP.
+     * @details The average is for the server, not for each IP: total attempts divided by the number
+     * of distinct IPs, using integer division (the result is truncated). The IP table only shows
+     * the attempt count of each IP; it has no average column.
      * @pre At least one IP has been recorded.
      * @return std::string with all the server stats.
      */
@@ -53,12 +58,10 @@ public:
         ss << "Avg. Attempts: " << attempts / ipAccess.size() << std::endl;
 
         ss << std::endl << "==== IP Table ====";
-        ss << std::endl << "IP \t|\t Attempts \t|\t Avg. Attempts" << std::endl;
+        ss << std::endl << std::left << std::setw(18) << "IP" << "| Attempts" << std::endl;
 
         for (const auto& pair : ipAccess)
-            ss << pair.first.toString() << "\t|\t" << pair.second << "\t|\t"
-               << pair.second / ipAccess.size() << std::endl;
-
+        ss << std::left << std::setw(18) << pair.first.toString() << "| " << pair.second << std::endl;
         return ss.str();
     }
 
@@ -72,5 +75,5 @@ public:
      * @brief Gets a copy of the number of accesses received in each hour.
      * @return std::vector<int> Counts indexed by hour 0 to 23.
      */
-    vector<int> getHourAttempts() const { return hourAttempts; }
+    std::vector<int> getHourAttempts() const { return hourAttempts; }
 };
