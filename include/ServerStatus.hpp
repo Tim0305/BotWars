@@ -61,7 +61,7 @@ public:
         ss << std::endl << std::left << std::setw(18) << "IP" << "| Attempts" << std::endl;
 
         for (const auto& pair : ipAccess)
-        ss << std::left << std::setw(18) << pair.first.toString() << "| " << pair.second << std::endl;
+            ss << std::left << std::setw(18) << pair.first.toString() << "| " << pair.second << std::endl;
         return ss.str();
     }
 
